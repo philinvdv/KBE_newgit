@@ -1,0 +1,716 @@
+# Save by matan on 2024_05_29-12.40.42; build 2023 2022_09_28-20.11.55 183150
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.ModelFromInputFile(inputFileName=
+    'C:/Users/matan/OneDrive - Delft University of Technology/Bureaublad/Matan Neumark/TUDelft Master Aerospace Engineering/Year 1/Q3/AE4204 Knowledge based engineering/Assignment/code/KBE_wingstruc/output/wing_box.inp'
+    , name='wing_box')
+del mdb.models['wing_box']
+mdb.ModelFromInputFile(inputFileName=
+    'C:/Users/matan/OneDrive - Delft University of Technology/Bureaublad/Matan Neumark/TUDelft Master Aerospace Engineering/Year 1/Q3/AE4204 Knowledge based engineering/Assignment/code/KBE_wingstruc/output/wing_box.inp'
+    , name='wing_box')
+mdb.ModelFromInputFile(inputFileName=
+    'C:/Users/matan/OneDrive - Delft University of Technology/Bureaublad/Matan Neumark/TUDelft Master Aerospace Engineering/Year 1/Q3/AE4204 Knowledge based engineering/Assignment/code/KBE_wingstruc/output/plate_tie_adaptor.inp'
+    , name='plate_tie_adaptor')
+#* Number of intervals must be greater than zero.
+del mdb.models['wing_box']
+mdb.ModelFromInputFile(inputFileName=
+    'C:/Users/matan/OneDrive - Delft University of Technology/Bureaublad/Matan Neumark/TUDelft Master Aerospace Engineering/Year 1/Q3/AE4204 Knowledge based engineering/Assignment/code/KBE_wingstruc/output/wing_box.inp'
+    , name='wing_box')
+del mdb.models['wing_box']
+mdb.ModelFromInputFile(inputFileName=
+    'C:/Users/matan/OneDrive - Delft University of Technology/Bureaublad/Matan Neumark/TUDelft Master Aerospace Engineering/Year 1/Q3/AE4204 Knowledge based engineering/Assignment/code/KBE_wingstruc/output/wing_box.inp'
+    , name='wing_box')
+del mdb.models['wing_box']
+mdb.ModelFromInputFile(inputFileName=
+    'C:/Users/matan/OneDrive - Delft University of Technology/Bureaublad/Matan Neumark/TUDelft Master Aerospace Engineering/Year 1/Q3/AE4204 Knowledge based engineering/Assignment/code/KBE_wingstruc/output/wing_box.inp'
+    , name='wing_box')
+del mdb.models['wing_box']
+mdb.ModelFromInputFile(inputFileName=
+    'C:/Users/matan/OneDrive - Delft University of Technology/Bureaublad/Matan Neumark/TUDelft Master Aerospace Engineering/Year 1/Q3/AE4204 Knowledge based engineering/Assignment/code/KBE_wingstruc/output/wing_box.inp'
+    , name='wing_box')
+mdb.ModelFromInputFile(inputFileName=
+    'C:/Users/matan/OneDrive - Delft University of Technology/Bureaublad/Matan Neumark/TUDelft Master Aerospace Engineering/Year 1/Q3/AE4204 Knowledge based engineering/Assignment/code/KBE_wingstruc/output/plate_tie_adaptor_v2.inp'
+    , name='plate_tie_adaptor_v2')
+#* Number of intervals must be greater than zero.
+del mdb.models['wing_box']
+mdb.ModelFromInputFile(inputFileName=
+    'C:/Users/matan/OneDrive - Delft University of Technology/Bureaublad/Matan Neumark/TUDelft Master Aerospace Engineering/Year 1/Q3/AE4204 Knowledge based engineering/Assignment/code/KBE_wingstruc/output/wing_box.inp'
+    , name='wing_box')
+# Save by matan on 2024_05_29-14.48.24; build 2023 2022_09_28-20.11.55 183150
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.ModelFromInputFile(inputFileName=
+    'C:/Users/matan/OneDrive - Delft University of Technology/Bureaublad/Matan Neumark/TUDelft Master Aerospace Engineering/Year 1/Q3/AE4204 Knowledge based engineering/Assignment/code/KBE_wingstruc/output/wing_box_v4.inp'
+    , name='wing_box_v4')
+# Save by matan on 2024_05_30-09.36.58; build 2023 2022_09_28-20.11.55 183150
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+del mdb.models['wing_box']
+mdb.ModelFromInputFile(inputFileName=
+    'C:/Users/matan/OneDrive - Delft University of Technology/Bureaublad/Matan Neumark/TUDelft Master Aerospace Engineering/Year 1/Q3/AE4204 Knowledge based engineering/Assignment/code/KBE_wingstruc/output/wing_box.inp'
+    , name='wing_box')
+#* ValueError: omu_PrimEnum(const cow_String&) - str not allowed: SPOS_2  
+#* Permissible: {S1: 100, : 111, S2: 101, S4: 103, S6: 105, END2: 109, E2: 113, 
+#* E4: 115, INVALID_SURF: 116, S3: 102, SPOS: 106, END1: 108, SNEG: 107, S5: 
+#* 104, E1: 112, E3: 114}
+del mdb.models['wing_box']
+mdb.ModelFromInputFile(inputFileName=
+    'C:/Users/matan/OneDrive - Delft University of Technology/Bureaublad/Matan Neumark/TUDelft Master Aerospace Engineering/Year 1/Q3/AE4204 Knowledge based engineering/Assignment/code/KBE_wingstruc/output/wing_box.inp'
+    , name='wing_box')
+del mdb.models['wing_box']
+mdb.ModelFromInputFile(inputFileName=
+    'C:/Users/matan/OneDrive - Delft University of Technology/Bureaublad/Matan Neumark/TUDelft Master Aerospace Engineering/Year 1/Q3/AE4204 Knowledge based engineering/Assignment/code/KBE_wingstruc/output/wing_box.inp'
+    , name='wing_box')
+del mdb.models['wing_box']
+mdb.ModelFromInputFile(inputFileName=
+    'C:/Users/matan/OneDrive - Delft University of Technology/Bureaublad/Matan Neumark/TUDelft Master Aerospace Engineering/Year 1/Q3/AE4204 Knowledge based engineering/Assignment/code/KBE_wingstruc/output/wing_box.inp'
+    , name='wing_box')
+del mdb.models['wing_box']
+mdb.ModelFromInputFile(inputFileName=
+    'C:/Users/matan/OneDrive - Delft University of Technology/Bureaublad/Matan Neumark/TUDelft Master Aerospace Engineering/Year 1/Q3/AE4204 Knowledge based engineering/Assignment/code/KBE_wingstruc/output/wing_box.inp'
+    , name='wing_box')
+del mdb.models['wing_box']
+mdb.ModelFromInputFile(inputFileName=
+    'C:/Users/matan/OneDrive - Delft University of Technology/Bureaublad/Matan Neumark/TUDelft Master Aerospace Engineering/Year 1/Q3/AE4204 Knowledge based engineering/Assignment/code/KBE_wingstruc/output/wing_box.inp'
+    , name='wing_box')
+del mdb.models['wing_box']
+mdb.ModelFromInputFile(inputFileName=
+    'C:/Users/matan/OneDrive - Delft University of Technology/Bureaublad/Matan Neumark/TUDelft Master Aerospace Engineering/Year 1/Q3/AE4204 Knowledge based engineering/Assignment/code/KBE_wingstruc/output/wing_box.inp'
+    , name='wing_box')
+del mdb.models['wing_box']
+mdb.ModelFromInputFile(inputFileName=
+    'C:/Users/matan/OneDrive - Delft University of Technology/Bureaublad/Matan Neumark/TUDelft Master Aerospace Engineering/Year 1/Q3/AE4204 Knowledge based engineering/Assignment/code/KBE_wingstruc/output/wing_box.inp'
+    , name='wing_box')
+del mdb.models['wing_box']
+mdb.ModelFromInputFile(inputFileName=
+    'C:/Users/matan/OneDrive - Delft University of Technology/Bureaublad/Matan Neumark/TUDelft Master Aerospace Engineering/Year 1/Q3/AE4204 Knowledge based engineering/Assignment/code/KBE_wingstruc/output/wing_box.inp'
+    , name='wing_box')
+del mdb.models['wing_box']
+mdb.ModelFromInputFile(inputFileName=
+    'C:/Users/matan/OneDrive - Delft University of Technology/Bureaublad/Matan Neumark/TUDelft Master Aerospace Engineering/Year 1/Q3/AE4204 Knowledge based engineering/Assignment/code/KBE_wingstruc/output/wing_box.inp'
+    , name='wing_box')
+del mdb.models['wing_box']
+mdb.ModelFromInputFile(inputFileName=
+    'C:/Users/matan/OneDrive - Delft University of Technology/Bureaublad/Matan Neumark/TUDelft Master Aerospace Engineering/Year 1/Q3/AE4204 Knowledge based engineering/Assignment/code/KBE_wingstruc/output/wing_box.inp'
+    , name='wing_box')
+del mdb.models['wing_box']
+mdb.ModelFromInputFile(inputFileName=
+    'C:/Users/matan/OneDrive - Delft University of Technology/Bureaublad/Matan Neumark/TUDelft Master Aerospace Engineering/Year 1/Q3/AE4204 Knowledge based engineering/Assignment/code/KBE_wingstruc/output/wing_box.inp'
+    , name='wing_box')
+del mdb.models['wing_box']
+mdb.ModelFromInputFile(inputFileName=
+    'C:/Users/matan/OneDrive - Delft University of Technology/Bureaublad/Matan Neumark/TUDelft Master Aerospace Engineering/Year 1/Q3/AE4204 Knowledge based engineering/Assignment/code/KBE_wingstruc/output/wing_box.inp'
+    , name='wing_box')
+del mdb.models['wing_box']
+mdb.ModelFromInputFile(inputFileName=
+    'C:/Users/matan/OneDrive - Delft University of Technology/Bureaublad/Matan Neumark/TUDelft Master Aerospace Engineering/Year 1/Q3/AE4204 Knowledge based engineering/Assignment/code/KBE_wingstruc/output/wing_box.inp'
+    , name='wing_box')
+del mdb.models['wing_box']
+mdb.ModelFromInputFile(inputFileName=
+    'C:/Users/matan/OneDrive - Delft University of Technology/Bureaublad/Matan Neumark/TUDelft Master Aerospace Engineering/Year 1/Q3/AE4204 Knowledge based engineering/Assignment/code/KBE_wingstruc/output/wing_box.inp'
+    , name='wing_box')
+del mdb.models['wing_box']
+mdb.ModelFromInputFile(inputFileName=
+    'C:/Users/matan/OneDrive - Delft University of Technology/Bureaublad/Matan Neumark/TUDelft Master Aerospace Engineering/Year 1/Q3/AE4204 Knowledge based engineering/Assignment/code/KBE_wingstruc/output/wing_box.inp'
+    , name='wing_box')
+del mdb.models['wing_box']
+mdb.ModelFromInputFile(inputFileName=
+    'C:/Users/matan/OneDrive - Delft University of Technology/Bureaublad/Matan Neumark/TUDelft Master Aerospace Engineering/Year 1/Q3/AE4204 Knowledge based engineering/Assignment/code/KBE_wingstruc/output/wing_box.inp'
+    , name='wing_box')
+del mdb.models['wing_box']
+mdb.ModelFromInputFile(inputFileName=
+    'C:/Users/matan/OneDrive - Delft University of Technology/Bureaublad/Matan Neumark/TUDelft Master Aerospace Engineering/Year 1/Q3/AE4204 Knowledge based engineering/Assignment/code/KBE_wingstruc/output/wing_box.inp'
+    , name='wing_box')
+del mdb.models['wing_box']
+mdb.ModelFromInputFile(inputFileName=
+    'C:/Users/matan/OneDrive - Delft University of Technology/Bureaublad/Matan Neumark/TUDelft Master Aerospace Engineering/Year 1/Q3/AE4204 Knowledge based engineering/Assignment/code/KBE_wingstruc/output/wing_box.inp'
+    , name='wing_box')
+del mdb.models['wing_box']
+mdb.ModelFromInputFile(inputFileName=
+    'C:/Users/matan/OneDrive - Delft University of Technology/Bureaublad/Matan Neumark/TUDelft Master Aerospace Engineering/Year 1/Q3/AE4204 Knowledge based engineering/Assignment/code/KBE_wingstruc/output/wing_box.inp'
+    , name='wing_box')
+del mdb.models['wing_box']
+mdb.ModelFromInputFile(inputFileName=
+    'C:/Users/matan/OneDrive - Delft University of Technology/Bureaublad/Matan Neumark/TUDelft Master Aerospace Engineering/Year 1/Q3/AE4204 Knowledge based engineering/Assignment/code/KBE_wingstruc/output/wing_box.inp'
+    , name='wing_box')
+mdb.Job(atTime=None, contactPrint=OFF, description='', echoPrint=OFF, 
+    explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF, 
+    memory=90, memoryUnits=PERCENTAGE, model='wing_box', modelPrint=OFF, 
+    multiprocessingMode=DEFAULT, name='Job-1', nodalOutputPrecision=SINGLE, 
+    numCpus=1, numGPUs=0, numThreadsPerMpiProcess=1, queue=None, resultsFormat=
+    ODB, scratch='', type=ANALYSIS, userSubroutine='', waitHours=0, 
+    waitMinutes=0)
+mdb.jobs['Job-1'].submit(consistencyChecking=OFF)
+mdb.models['wing_box'].steps['analysis1'].setValues(maxNumInc=10000)
+mdb.Job(atTime=None, contactPrint=OFF, description='', echoPrint=OFF, 
+    explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF, 
+    memory=90, memoryUnits=PERCENTAGE, model='wing_box', modelPrint=OFF, 
+    multiprocessingMode=DEFAULT, name='Job-2', nodalOutputPrecision=SINGLE, 
+    numCpus=1, numGPUs=0, numThreadsPerMpiProcess=1, queue=None, resultsFormat=
+    ODB, scratch='', type=ANALYSIS, userSubroutine='', waitHours=0, 
+    waitMinutes=0)
+mdb.jobs['Job-2'].submit(consistencyChecking=OFF)
+mdb.Job(atTime=None, contactPrint=OFF, description='', echoPrint=OFF, 
+    explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF, 
+    memory=90, memoryUnits=PERCENTAGE, model='wing_box', modelPrint=OFF, 
+    multiprocessingMode=DEFAULT, name='Job-3', nodalOutputPrecision=SINGLE, 
+    numCpus=1, numGPUs=0, numThreadsPerMpiProcess=1, queue=None, resultsFormat=
+    ODB, scratch='', type=ANALYSIS, userSubroutine='', waitHours=0, 
+    waitMinutes=0)
+mdb.jobs['Job-3'].submit(consistencyChecking=OFF)
+mdb.JobFromInputFile(atTime=None, explicitPrecision=SINGLE, 
+    getMemoryFromAnalysis=True, inputFileName=
+    'C:\\Users\\matan\\OneDrive - Delft University of Technology\\Bureaublad\\Matan Neumark\\TUDelft Master Aerospace Engineering\\Year 1\\Q3\\AE4204 Knowledge based engineering\\Assignment\\code\\KBE_wingstruc\\output\\wing_box.inp'
+    , memory=90, memoryUnits=PERCENTAGE, multiprocessingMode=DEFAULT, name=
+    'wing_box', nodalOutputPrecision=SINGLE, numCpus=1, numGPUs=0, 
+    numThreadsPerMpiProcess=1, queue=None, resultsFormat=ODB, scratch='', type=
+    ANALYSIS, userSubroutine='', waitHours=0, waitMinutes=0)
+mdb.jobs['wing_box'].submit(consistencyChecking=OFF)
+mdb.jobs['Job-1']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'MatanNeumark', 'handle': 0, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'FOR *TIE PAIR (ASSEMBLY_SURFACE-8-ASSEMBLY_SURFACE), ADJUSTMENT WAS SPECIFIED BUT NO NODE WAS ADJUSTED MORE THAN THE ADJUSTMENT DISTANCE = 2.22000E-16.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'FOR *TIE PAIR (ASSEMBLY_SURFACE-10-ASSEMBLY_SURFACE-2), ADJUSTMENT WAS SPECIFIED BUT NO NODE WAS ADJUSTED MORE THAN THE ADJUSTMENT DISTANCE = 2.22000E-16.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'FOR *TIE PAIR (ASSEMBLY_SURFACE-12-ASSEMBLY_SURFACE-1), ADJUSTMENT WAS SPECIFIED BUT NO NODE WAS ADJUSTED MORE THAN THE ADJUSTMENT DISTANCE = 2.22000E-16.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'FOR *TIE PAIR (ASSEMBLY_SURFACE-14-ASSEMBLY_SURFACE-3), ADJUSTMENT WAS SPECIFIED BUT NO NODE WAS ADJUSTED MORE THAN THE ADJUSTMENT DISTANCE = 2.22000E-16.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'FOR *TIE PAIR (ASSEMBLY_SURFACE-9-ASSEMBLY_SURFACE-4), ADJUSTMENT WAS SPECIFIED BUT NO NODE WAS ADJUSTED MORE THAN THE ADJUSTMENT DISTANCE = 2.22000E-16.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '*TIE BETWEEN SURFACE PAIR (ASSEMBLY_SURFACE-11,ASSEMBLY_SURFACE-6) IS REVERTED BACK TO TYPE NODE-TO-SURFACE. THIS CASE MAY HAPPEN IF TYPE SURFACE-TO-SURFACE CANNOT FIND NODES TO TIE TOGETHER OR IF DEFAULT ACOUSTIC-STRUCTURAL TIE IS SPECIFIED INVOLVING SHELLS. PLEASE CHECK THE SURFACE DEFINITIONS OR SPECIFY TYPE=SURFACE TO SURFACE FOR ACOUSTIC-STRUCTURAL TIE.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'PLEASE MAKE SURE THAT THE MESH DENSITY OF THE SECONDARY SURFACE IN THE TIE PAIR (ASSEMBLY_SURFACE-11,ASSEMBLY_SURFACE-6) IS FINER THAN THE MAIN SURFACE.  THE ANALYSIS MAY RUN SLOWER, MAY YIELD INACCURATE RESULTS, AND MAY REQUIRE MORE MEMORY IF THIS IS NOT THE CASE.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '*TIE BETWEEN SURFACE PAIR (ASSEMBLY_SURFACE-13,ASSEMBLY_SURFACE-5) IS REVERTED BACK TO TYPE NODE-TO-SURFACE. THIS CASE MAY HAPPEN IF TYPE SURFACE-TO-SURFACE CANNOT FIND NODES TO TIE TOGETHER OR IF DEFAULT ACOUSTIC-STRUCTURAL TIE IS SPECIFIED INVOLVING SHELLS. PLEASE CHECK THE SURFACE DEFINITIONS OR SPECIFY TYPE=SURFACE TO SURFACE FOR ACOUSTIC-STRUCTURAL TIE.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'FOR *TIE PAIR (ASSEMBLY_SURFACE-13-ASSEMBLY_SURFACE-5), ADJUSTMENT WAS SPECIFIED BUT NO NODE WAS ADJUSTED MORE THAN THE ADJUSTMENT DISTANCE = 2.22000E-16.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '*TIE BETWEEN SURFACE PAIR (ASSEMBLY_SURFACE-15,ASSEMBLY_SURFACE-7) IS REVERTED BACK TO TYPE NODE-TO-SURFACE. THIS CASE MAY HAPPEN IF TYPE SURFACE-TO-SURFACE CANNOT FIND NODES TO TIE TOGETHER OR IF DEFAULT ACOUSTIC-STRUCTURAL TIE IS SPECIFIED INVOLVING SHELLS. PLEASE CHECK THE SURFACE DEFINITIONS OR SPECIFY TYPE=SURFACE TO SURFACE FOR ACOUSTIC-STRUCTURAL TIE.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'FOR *TIE PAIR (ASSEMBLY_SURFACE-15-ASSEMBLY_SURFACE-7), ADJUSTMENT WAS SPECIFIED BUT NO NODE WAS ADJUSTED MORE THAN THE ADJUSTMENT DISTANCE = 2.22000E-16.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '1 nodes have been adjusted. The nodes have been identified in node set WarnNodeAdjust.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'OVERCONSTRAINT CHECKS: NODE 2 INSTANCE REAR_SPAR-INSTANCE IS USED MORE THAN ONCE AS A SECONDARY NODE IN THE *TIE KEYWORD.  THE CONSTRAINT BETWEEN THIS NODE AND THE MAIN SURFACE WITH NODE 4 INSTANCE UPPER_SKIN-INSTANCE IS REMOVED.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'OVERCONSTRAINT CHECKS: NODE 2 INSTANCE REAR_SPAR-INSTANCE IS USED MORE THAN ONCE AS A SECONDARY NODE IN THE *TIE KEYWORD.  THE CONSTRAINT BETWEEN THIS NODE AND THE MAIN SURFACE WITH NODE 4 INSTANCE UPPER_SKIN-INSTANCE IS REMOVED.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'OVERCONSTRAINT CHECKS: NODE 2 INSTANCE FRONT_SPAR-INSTANCE IS USED MORE THAN ONCE AS A SECONDARY NODE IN THE *TIE KEYWORD.  THE CONSTRAINT BETWEEN THIS NODE AND THE MAIN SURFACE WITH NODE 2 INSTANCE UPPER_SKIN-INSTANCE IS REMOVED.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'OVERCONSTRAINT CHECKS: NODE 2 INSTANCE FRONT_SPAR-INSTANCE IS USED MORE THAN ONCE AS A SECONDARY NODE IN THE *TIE KEYWORD.  THE CONSTRAINT BETWEEN THIS NODE AND THE MAIN SURFACE WITH NODE 2 INSTANCE UPPER_SKIN-INSTANCE IS REMOVED.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '16 nodes are either missing intersection with their respective main surface or are outside the adjust zone. The nodes have been identified in node set WarnNodeMissMainIntersect.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '2 nodes are used more than once as a secondary node in *TIE keyword. One of the *TIE constraints at each of these nodes have been removed. The nodes have been identified in node set WarnNodeOverconTieSecondary.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'The aspect ratio for 201 elements exceeds 100 to 1. The elements have been identified in element set WarnElemAspectRatio.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\Job-1.odb', 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(COMPLETED, {'phase': BATCHPRE_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'clientHost': 'MatanNeumark', 'handle': 11732, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 0, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'Job-1', 'memory': 27.0})
+mdb.jobs['Job-1']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 16190.0, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(MINIMUM_MEMORY, {'minimum_memory': 17.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 1, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(STATUS, {'totalTime': 0.01, 'attempts': 1, 
+    'timeIncrement': 0.01, 'increment': 1, 'stepTime': 0.01, 'step': 1, 
+    'jobName': 'Job-1', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-1']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 2, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(STATUS, {'totalTime': 0.02, 'attempts': 1, 
+    'timeIncrement': 0.01, 'increment': 2, 'stepTime': 0.02, 'step': 1, 
+    'jobName': 'Job-1', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-1']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 3, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(STATUS, {'totalTime': 0.035, 'attempts': 1, 
+    'timeIncrement': 0.015, 'increment': 3, 'stepTime': 0.035, 'step': 1, 
+    'jobName': 'Job-1', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-1']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 4, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(STATUS, {'totalTime': 0.0575, 'attempts': 1, 
+    'timeIncrement': 0.0225, 'increment': 4, 'stepTime': 0.0575, 'step': 1, 
+    'jobName': 'Job-1', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-1']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 5, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(STATUS, {'totalTime': 0.09125, 'attempts': 1, 
+    'timeIncrement': 0.03375, 'increment': 5, 'stepTime': 0.09125, 'step': 1, 
+    'jobName': 'Job-1', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-1']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 6, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(STATUS, {'totalTime': 0.141875, 'attempts': 1, 
+    'timeIncrement': 0.050625, 'increment': 6, 'stepTime': 0.141875, 'step': 1, 
+    'jobName': 'Job-1', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-1']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 7, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(STATUS, {'totalTime': 0.2178125, 'attempts': 1, 
+    'timeIncrement': 0.0759375, 'increment': 7, 'stepTime': 0.2178125, 
+    'step': 1, 'jobName': 'Job-1', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job-1']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 8, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(STATUS, {'totalTime': 0.3178125, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 8, 'stepTime': 0.3178125, 'step': 1, 
+    'jobName': 'Job-1', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-1']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 9, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(STATUS, {'totalTime': 0.4178125, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 9, 'stepTime': 0.4178125, 'step': 1, 
+    'jobName': 'Job-1', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-1']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 10, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(STATUS, {'totalTime': 0.5178125, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 10, 'stepTime': 0.5178125, 'step': 1, 
+    'jobName': 'Job-1', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-1']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 11, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(STATUS, {'totalTime': 0.6178125, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 11, 'stepTime': 0.6178125, 'step': 1, 
+    'jobName': 'Job-1', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-1']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 12, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(STATUS, {'totalTime': 0.7178125, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 12, 'stepTime': 0.7178125, 'step': 1, 
+    'jobName': 'Job-1', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-1']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 13, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(STATUS, {'totalTime': 0.8178125, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 13, 'stepTime': 0.8178125, 'step': 1, 
+    'jobName': 'Job-1', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-1']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 14, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(STATUS, {'totalTime': 0.9178125, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 14, 'stepTime': 0.9178125, 'step': 1, 
+    'jobName': 'Job-1', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-1']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 15, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(STATUS, {'totalTime': 1.0, 'attempts': 1, 
+    'timeIncrement': 0.0821875000000001, 'increment': 15, 'stepTime': 1.0, 
+    'step': 1, 'jobName': 'Job-1', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job-1']._Message(END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(COMPLETED, {'phase': STANDARD_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(JOB_COMPLETED, {'time': 'Thu May 30 13:08:10 2024', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-2']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'MatanNeumark', 'handle': 0, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'FOR *TIE PAIR (ASSEMBLY_SURFACE-8-ASSEMBLY_SURFACE), ADJUSTMENT WAS SPECIFIED BUT NO NODE WAS ADJUSTED MORE THAN THE ADJUSTMENT DISTANCE = 2.22000E-16.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'FOR *TIE PAIR (ASSEMBLY_SURFACE-10-ASSEMBLY_SURFACE-2), ADJUSTMENT WAS SPECIFIED BUT NO NODE WAS ADJUSTED MORE THAN THE ADJUSTMENT DISTANCE = 2.22000E-16.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'FOR *TIE PAIR (ASSEMBLY_SURFACE-12-ASSEMBLY_SURFACE-1), ADJUSTMENT WAS SPECIFIED BUT NO NODE WAS ADJUSTED MORE THAN THE ADJUSTMENT DISTANCE = 2.22000E-16.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'FOR *TIE PAIR (ASSEMBLY_SURFACE-14-ASSEMBLY_SURFACE-3), ADJUSTMENT WAS SPECIFIED BUT NO NODE WAS ADJUSTED MORE THAN THE ADJUSTMENT DISTANCE = 2.22000E-16.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'FOR *TIE PAIR (ASSEMBLY_SURFACE-9-ASSEMBLY_SURFACE-4), ADJUSTMENT WAS SPECIFIED BUT NO NODE WAS ADJUSTED MORE THAN THE ADJUSTMENT DISTANCE = 2.22000E-16.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '*TIE BETWEEN SURFACE PAIR (ASSEMBLY_SURFACE-11,ASSEMBLY_SURFACE-6) IS REVERTED BACK TO TYPE NODE-TO-SURFACE. THIS CASE MAY HAPPEN IF TYPE SURFACE-TO-SURFACE CANNOT FIND NODES TO TIE TOGETHER OR IF DEFAULT ACOUSTIC-STRUCTURAL TIE IS SPECIFIED INVOLVING SHELLS. PLEASE CHECK THE SURFACE DEFINITIONS OR SPECIFY TYPE=SURFACE TO SURFACE FOR ACOUSTIC-STRUCTURAL TIE.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'PLEASE MAKE SURE THAT THE MESH DENSITY OF THE SECONDARY SURFACE IN THE TIE PAIR (ASSEMBLY_SURFACE-11,ASSEMBLY_SURFACE-6) IS FINER THAN THE MAIN SURFACE.  THE ANALYSIS MAY RUN SLOWER, MAY YIELD INACCURATE RESULTS, AND MAY REQUIRE MORE MEMORY IF THIS IS NOT THE CASE.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '*TIE BETWEEN SURFACE PAIR (ASSEMBLY_SURFACE-13,ASSEMBLY_SURFACE-5) IS REVERTED BACK TO TYPE NODE-TO-SURFACE. THIS CASE MAY HAPPEN IF TYPE SURFACE-TO-SURFACE CANNOT FIND NODES TO TIE TOGETHER OR IF DEFAULT ACOUSTIC-STRUCTURAL TIE IS SPECIFIED INVOLVING SHELLS. PLEASE CHECK THE SURFACE DEFINITIONS OR SPECIFY TYPE=SURFACE TO SURFACE FOR ACOUSTIC-STRUCTURAL TIE.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'FOR *TIE PAIR (ASSEMBLY_SURFACE-13-ASSEMBLY_SURFACE-5), ADJUSTMENT WAS SPECIFIED BUT NO NODE WAS ADJUSTED MORE THAN THE ADJUSTMENT DISTANCE = 2.22000E-16.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '*TIE BETWEEN SURFACE PAIR (ASSEMBLY_SURFACE-15,ASSEMBLY_SURFACE-7) IS REVERTED BACK TO TYPE NODE-TO-SURFACE. THIS CASE MAY HAPPEN IF TYPE SURFACE-TO-SURFACE CANNOT FIND NODES TO TIE TOGETHER OR IF DEFAULT ACOUSTIC-STRUCTURAL TIE IS SPECIFIED INVOLVING SHELLS. PLEASE CHECK THE SURFACE DEFINITIONS OR SPECIFY TYPE=SURFACE TO SURFACE FOR ACOUSTIC-STRUCTURAL TIE.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'FOR *TIE PAIR (ASSEMBLY_SURFACE-15-ASSEMBLY_SURFACE-7), ADJUSTMENT WAS SPECIFIED BUT NO NODE WAS ADJUSTED MORE THAN THE ADJUSTMENT DISTANCE = 2.22000E-16.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '1 nodes have been adjusted. The nodes have been identified in node set WarnNodeAdjust.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'OVERCONSTRAINT CHECKS: NODE 2 INSTANCE REAR_SPAR-INSTANCE IS USED MORE THAN ONCE AS A SECONDARY NODE IN THE *TIE KEYWORD.  THE CONSTRAINT BETWEEN THIS NODE AND THE MAIN SURFACE WITH NODE 4 INSTANCE UPPER_SKIN-INSTANCE IS REMOVED.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'OVERCONSTRAINT CHECKS: NODE 2 INSTANCE REAR_SPAR-INSTANCE IS USED MORE THAN ONCE AS A SECONDARY NODE IN THE *TIE KEYWORD.  THE CONSTRAINT BETWEEN THIS NODE AND THE MAIN SURFACE WITH NODE 4 INSTANCE UPPER_SKIN-INSTANCE IS REMOVED.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'OVERCONSTRAINT CHECKS: NODE 2 INSTANCE FRONT_SPAR-INSTANCE IS USED MORE THAN ONCE AS A SECONDARY NODE IN THE *TIE KEYWORD.  THE CONSTRAINT BETWEEN THIS NODE AND THE MAIN SURFACE WITH NODE 2 INSTANCE UPPER_SKIN-INSTANCE IS REMOVED.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'OVERCONSTRAINT CHECKS: NODE 2 INSTANCE FRONT_SPAR-INSTANCE IS USED MORE THAN ONCE AS A SECONDARY NODE IN THE *TIE KEYWORD.  THE CONSTRAINT BETWEEN THIS NODE AND THE MAIN SURFACE WITH NODE 2 INSTANCE UPPER_SKIN-INSTANCE IS REMOVED.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '16 nodes are either missing intersection with their respective main surface or are outside the adjust zone. The nodes have been identified in node set WarnNodeMissMainIntersect.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '2 nodes are used more than once as a secondary node in *TIE keyword. One of the *TIE constraints at each of these nodes have been removed. The nodes have been identified in node set WarnNodeOverconTieSecondary.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'The aspect ratio for 201 elements exceeds 100 to 1. The elements have been identified in element set WarnElemAspectRatio.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\Job-2.odb', 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(COMPLETED, {'phase': BATCHPRE_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'clientHost': 'MatanNeumark', 'handle': 9152, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 0, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'Job-2', 'memory': 27.0})
+mdb.jobs['Job-2']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 16190.0, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(MINIMUM_MEMORY, {'minimum_memory': 17.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 1, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STATUS, {'totalTime': 0.01, 'attempts': 1, 
+    'timeIncrement': 0.01, 'increment': 1, 'stepTime': 0.01, 'step': 1, 
+    'jobName': 'Job-2', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-2']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 2, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STATUS, {'totalTime': 0.02, 'attempts': 1, 
+    'timeIncrement': 0.01, 'increment': 2, 'stepTime': 0.02, 'step': 1, 
+    'jobName': 'Job-2', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-2']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 3, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STATUS, {'totalTime': 0.035, 'attempts': 1, 
+    'timeIncrement': 0.015, 'increment': 3, 'stepTime': 0.035, 'step': 1, 
+    'jobName': 'Job-2', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-2']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 4, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STATUS, {'totalTime': 0.0575, 'attempts': 1, 
+    'timeIncrement': 0.0225, 'increment': 4, 'stepTime': 0.0575, 'step': 1, 
+    'jobName': 'Job-2', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-2']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 5, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STATUS, {'totalTime': 0.09125, 'attempts': 1, 
+    'timeIncrement': 0.03375, 'increment': 5, 'stepTime': 0.09125, 'step': 1, 
+    'jobName': 'Job-2', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-2']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 6, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STATUS, {'totalTime': 0.141875, 'attempts': 1, 
+    'timeIncrement': 0.050625, 'increment': 6, 'stepTime': 0.141875, 'step': 1, 
+    'jobName': 'Job-2', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-2']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 7, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STATUS, {'totalTime': 0.2178125, 'attempts': 1, 
+    'timeIncrement': 0.0759375, 'increment': 7, 'stepTime': 0.2178125, 
+    'step': 1, 'jobName': 'Job-2', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job-2']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 8, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STATUS, {'totalTime': 0.3178125, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 8, 'stepTime': 0.3178125, 'step': 1, 
+    'jobName': 'Job-2', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-2']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 9, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STATUS, {'totalTime': 0.4178125, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 9, 'stepTime': 0.4178125, 'step': 1, 
+    'jobName': 'Job-2', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-2']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 10, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STATUS, {'totalTime': 0.5178125, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 10, 'stepTime': 0.5178125, 'step': 1, 
+    'jobName': 'Job-2', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-2']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 11, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STATUS, {'totalTime': 0.6178125, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 11, 'stepTime': 0.6178125, 'step': 1, 
+    'jobName': 'Job-2', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-2']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 12, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STATUS, {'totalTime': 0.7178125, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 12, 'stepTime': 0.7178125, 'step': 1, 
+    'jobName': 'Job-2', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-2']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 13, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STATUS, {'totalTime': 0.8178125, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 13, 'stepTime': 0.8178125, 'step': 1, 
+    'jobName': 'Job-2', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-2']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 14, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STATUS, {'totalTime': 0.9178125, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 14, 'stepTime': 0.9178125, 'step': 1, 
+    'jobName': 'Job-2', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-2']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 15, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STATUS, {'totalTime': 1.0, 'attempts': 1, 
+    'timeIncrement': 0.0821875000000001, 'increment': 15, 'stepTime': 1.0, 
+    'step': 1, 'jobName': 'Job-2', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job-2']._Message(END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(COMPLETED, {'phase': STANDARD_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(JOB_COMPLETED, {'time': 'Thu May 30 13:08:48 2024', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-3']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'MatanNeumark', 'handle': 0, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'FOR *TIE PAIR (ASSEMBLY_SURFACE-8-ASSEMBLY_SURFACE), ADJUSTMENT WAS SPECIFIED BUT NO NODE WAS ADJUSTED MORE THAN THE ADJUSTMENT DISTANCE = 2.22000E-16.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'FOR *TIE PAIR (ASSEMBLY_SURFACE-10-ASSEMBLY_SURFACE-2), ADJUSTMENT WAS SPECIFIED BUT NO NODE WAS ADJUSTED MORE THAN THE ADJUSTMENT DISTANCE = 2.22000E-16.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'FOR *TIE PAIR (ASSEMBLY_SURFACE-12-ASSEMBLY_SURFACE-1), ADJUSTMENT WAS SPECIFIED BUT NO NODE WAS ADJUSTED MORE THAN THE ADJUSTMENT DISTANCE = 2.22000E-16.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'FOR *TIE PAIR (ASSEMBLY_SURFACE-14-ASSEMBLY_SURFACE-3), ADJUSTMENT WAS SPECIFIED BUT NO NODE WAS ADJUSTED MORE THAN THE ADJUSTMENT DISTANCE = 2.22000E-16.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'FOR *TIE PAIR (ASSEMBLY_SURFACE-9-ASSEMBLY_SURFACE-4), ADJUSTMENT WAS SPECIFIED BUT NO NODE WAS ADJUSTED MORE THAN THE ADJUSTMENT DISTANCE = 2.22000E-16.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '*TIE BETWEEN SURFACE PAIR (ASSEMBLY_SURFACE-11,ASSEMBLY_SURFACE-6) IS REVERTED BACK TO TYPE NODE-TO-SURFACE. THIS CASE MAY HAPPEN IF TYPE SURFACE-TO-SURFACE CANNOT FIND NODES TO TIE TOGETHER OR IF DEFAULT ACOUSTIC-STRUCTURAL TIE IS SPECIFIED INVOLVING SHELLS. PLEASE CHECK THE SURFACE DEFINITIONS OR SPECIFY TYPE=SURFACE TO SURFACE FOR ACOUSTIC-STRUCTURAL TIE.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'PLEASE MAKE SURE THAT THE MESH DENSITY OF THE SECONDARY SURFACE IN THE TIE PAIR (ASSEMBLY_SURFACE-11,ASSEMBLY_SURFACE-6) IS FINER THAN THE MAIN SURFACE.  THE ANALYSIS MAY RUN SLOWER, MAY YIELD INACCURATE RESULTS, AND MAY REQUIRE MORE MEMORY IF THIS IS NOT THE CASE.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '*TIE BETWEEN SURFACE PAIR (ASSEMBLY_SURFACE-13,ASSEMBLY_SURFACE-5) IS REVERTED BACK TO TYPE NODE-TO-SURFACE. THIS CASE MAY HAPPEN IF TYPE SURFACE-TO-SURFACE CANNOT FIND NODES TO TIE TOGETHER OR IF DEFAULT ACOUSTIC-STRUCTURAL TIE IS SPECIFIED INVOLVING SHELLS. PLEASE CHECK THE SURFACE DEFINITIONS OR SPECIFY TYPE=SURFACE TO SURFACE FOR ACOUSTIC-STRUCTURAL TIE.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'FOR *TIE PAIR (ASSEMBLY_SURFACE-13-ASSEMBLY_SURFACE-5), ADJUSTMENT WAS SPECIFIED BUT NO NODE WAS ADJUSTED MORE THAN THE ADJUSTMENT DISTANCE = 2.22000E-16.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '*TIE BETWEEN SURFACE PAIR (ASSEMBLY_SURFACE-15,ASSEMBLY_SURFACE-7) IS REVERTED BACK TO TYPE NODE-TO-SURFACE. THIS CASE MAY HAPPEN IF TYPE SURFACE-TO-SURFACE CANNOT FIND NODES TO TIE TOGETHER OR IF DEFAULT ACOUSTIC-STRUCTURAL TIE IS SPECIFIED INVOLVING SHELLS. PLEASE CHECK THE SURFACE DEFINITIONS OR SPECIFY TYPE=SURFACE TO SURFACE FOR ACOUSTIC-STRUCTURAL TIE.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'FOR *TIE PAIR (ASSEMBLY_SURFACE-15-ASSEMBLY_SURFACE-7), ADJUSTMENT WAS SPECIFIED BUT NO NODE WAS ADJUSTED MORE THAN THE ADJUSTMENT DISTANCE = 2.22000E-16.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '1 nodes have been adjusted. The nodes have been identified in node set WarnNodeAdjust.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'OVERCONSTRAINT CHECKS: NODE 2 INSTANCE REAR_SPAR-INSTANCE IS USED MORE THAN ONCE AS A SECONDARY NODE IN THE *TIE KEYWORD.  THE CONSTRAINT BETWEEN THIS NODE AND THE MAIN SURFACE WITH NODE 4 INSTANCE UPPER_SKIN-INSTANCE IS REMOVED.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'OVERCONSTRAINT CHECKS: NODE 2 INSTANCE REAR_SPAR-INSTANCE IS USED MORE THAN ONCE AS A SECONDARY NODE IN THE *TIE KEYWORD.  THE CONSTRAINT BETWEEN THIS NODE AND THE MAIN SURFACE WITH NODE 4 INSTANCE UPPER_SKIN-INSTANCE IS REMOVED.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'OVERCONSTRAINT CHECKS: NODE 2 INSTANCE FRONT_SPAR-INSTANCE IS USED MORE THAN ONCE AS A SECONDARY NODE IN THE *TIE KEYWORD.  THE CONSTRAINT BETWEEN THIS NODE AND THE MAIN SURFACE WITH NODE 2 INSTANCE UPPER_SKIN-INSTANCE IS REMOVED.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'OVERCONSTRAINT CHECKS: NODE 2 INSTANCE FRONT_SPAR-INSTANCE IS USED MORE THAN ONCE AS A SECONDARY NODE IN THE *TIE KEYWORD.  THE CONSTRAINT BETWEEN THIS NODE AND THE MAIN SURFACE WITH NODE 2 INSTANCE UPPER_SKIN-INSTANCE IS REMOVED.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '16 nodes are either missing intersection with their respective main surface or are outside the adjust zone. The nodes have been identified in node set WarnNodeMissMainIntersect.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '2 nodes are used more than once as a secondary node in *TIE keyword. One of the *TIE constraints at each of these nodes have been removed. The nodes have been identified in node set WarnNodeOverconTieSecondary.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'The aspect ratio for 201 elements exceeds 100 to 1. The elements have been identified in element set WarnElemAspectRatio.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\Users\\matan\\OneDrive - Delft University of Technology\\Bureaublad\\Matan Neumark\\TUDelft Master Aerospace Engineering\\Year 1\\Q3\\AE4204 Knowledge based engineering\\Assignment\\code\\KBE_wingstruc\\output\\Job-3.odb', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(COMPLETED, {'phase': BATCHPRE_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'clientHost': 'MatanNeumark', 'handle': 21124, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 0, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'Job-3', 'memory': 27.0})
+mdb.jobs['Job-3']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 16190.0, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(MINIMUM_MEMORY, {'minimum_memory': 17.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 1, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STATUS, {'totalTime': 0.01, 'attempts': 1, 
+    'timeIncrement': 0.01, 'increment': 1, 'stepTime': 0.01, 'step': 1, 
+    'jobName': 'Job-3', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-3']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 2, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STATUS, {'totalTime': 0.02, 'attempts': 1, 
+    'timeIncrement': 0.01, 'increment': 2, 'stepTime': 0.02, 'step': 1, 
+    'jobName': 'Job-3', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-3']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 3, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STATUS, {'totalTime': 0.035, 'attempts': 1, 
+    'timeIncrement': 0.015, 'increment': 3, 'stepTime': 0.035, 'step': 1, 
+    'jobName': 'Job-3', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-3']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 4, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STATUS, {'totalTime': 0.0575, 'attempts': 1, 
+    'timeIncrement': 0.0225, 'increment': 4, 'stepTime': 0.0575, 'step': 1, 
+    'jobName': 'Job-3', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-3']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 5, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STATUS, {'totalTime': 0.09125, 'attempts': 1, 
+    'timeIncrement': 0.03375, 'increment': 5, 'stepTime': 0.09125, 'step': 1, 
+    'jobName': 'Job-3', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-3']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 6, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STATUS, {'totalTime': 0.141875, 'attempts': 1, 
+    'timeIncrement': 0.050625, 'increment': 6, 'stepTime': 0.141875, 'step': 1, 
+    'jobName': 'Job-3', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-3']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 7, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STATUS, {'totalTime': 0.2178125, 'attempts': 1, 
+    'timeIncrement': 0.0759375, 'increment': 7, 'stepTime': 0.2178125, 
+    'step': 1, 'jobName': 'Job-3', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job-3']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 8, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STATUS, {'totalTime': 0.3178125, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 8, 'stepTime': 0.3178125, 'step': 1, 
+    'jobName': 'Job-3', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-3']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 9, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STATUS, {'totalTime': 0.4178125, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 9, 'stepTime': 0.4178125, 'step': 1, 
+    'jobName': 'Job-3', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-3']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 10, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STATUS, {'totalTime': 0.5178125, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 10, 'stepTime': 0.5178125, 'step': 1, 
+    'jobName': 'Job-3', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-3']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 11, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STATUS, {'totalTime': 0.6178125, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 11, 'stepTime': 0.6178125, 'step': 1, 
+    'jobName': 'Job-3', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-3']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 12, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STATUS, {'totalTime': 0.7178125, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 12, 'stepTime': 0.7178125, 'step': 1, 
+    'jobName': 'Job-3', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-3']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 13, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STATUS, {'totalTime': 0.8178125, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 13, 'stepTime': 0.8178125, 'step': 1, 
+    'jobName': 'Job-3', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-3']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 14, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STATUS, {'totalTime': 0.9178125, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 14, 'stepTime': 0.9178125, 'step': 1, 
+    'jobName': 'Job-3', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-3']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 15, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STATUS, {'totalTime': 1.0, 'attempts': 1, 
+    'timeIncrement': 0.0821875000000001, 'increment': 15, 'stepTime': 1.0, 
+    'step': 1, 'jobName': 'Job-3', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job-3']._Message(END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(COMPLETED, {'phase': STANDARD_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(JOB_COMPLETED, {'time': 'Thu May 30 13:09:15 2024', 
+    'jobName': 'Job-3'})
+# Save by matan on 2024_05_30-13.31.19; build 2023 2022_09_28-20.11.55 183150

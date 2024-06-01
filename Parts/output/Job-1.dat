@@ -1,0 +1,722 @@
+1
+
+   Abaqus 2023                                  Date 31-May-2024   Time 16:30:21
+   For use by DELFT UNIVERSITY OF TECHNOLOGY under license from Dassault Systemes or its subsidiary.
+
+
+
+                         The Abaqus Software is a product of:
+
+                           Dassault Systemes SIMULIA Corp.
+                           1301 Atwood Avenue, Suite 101W
+                              Johnston, RI 02919, USA
+ 
+
+
+                   The Abaqus Software is available only under license
+                   from Dassault Systemes or its subsidiary and may be
+                   used or reproduced only in accordance with the terms
+                   of such license.
+ 
+                          On machine MatanNeumark 
+                          you are authorized to run
+                          Abaqus/Standard until 30-Sep-2024
+
+                          Your site id is: 200000000057591 
+
+
+ 
+                    For assistance or any other information you may
+                    obtain contact information for your local office
+                    from the world wide web at:
+
+                      http://www.3ds.com/products/simulia/locations/
+
+ 
+                * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+                *                                                         * 
+                *                   *****************                     * 
+                *                   *  N O T I C E  *                     * 
+                *                   *****************                     * 
+                *                                                         * 
+                *                                                         * 
+                *                       Abaqus 2023                       * 
+                *                                                         * 
+                *          BUILD ID: 2022_09_28-20.11.55 183150           * 
+                *                                                         * 
+                *                                                         * 
+                *  Please make sure you are using                         * 
+                *  release Abaqus 2023 manuals                            * 
+                *  plus the notes accompanying this release.              * 
+                *                                                         * 
+                *                                                         * 
+                *                                                         * 
+                *                                                         * 
+                *                                                         * 
+                *   This program may not be used for commercial purposes  * 
+                *           without payment of a commercial fee.          * 
+                *                                                         * 
+                * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+
+
+ 
+
+
+
+     PROCESSING PART, INSTANCE, AND ASSEMBLY INFORMATION
+   *******************************************************
+
+
+     END PROCESSING PART, INSTANCE, AND ASSEMBLY INFORMATION
+   ***********************************************************
+
+
+
+
+     OPTIONS BEING PROCESSED
+   ***************************
+
+
+  *Heading
+  *Node
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Elset, elset=ASSEMBLY_UPPER_SKIN-INSTANCE_UPPER_SKIN
+  *Node
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Elset, elset=ASSEMBLY_LOWER_SKIN-INSTANCE_LOWER_SKIN
+  *Node
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Elset, elset=ASSEMBLY_FRONT_SPAR-INSTANCE_FRONT_SPAR
+  *Node
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Element, type=S3R
+  *Element, type=S4R
+  *Elset, elset=ASSEMBLY_REAR_SPAR-INSTANCE_REAR_SPAR
+  *Nset, nset=ASSEMBLY_SET
+  *Nset, nset=ASSEMBLY_SET-1
+  *Nset, nset=ASSEMBLY_SET-2
+  *Nset, nset=ASSEMBLY_SET-3
+  *Elset, elset=ASSEMBLY_NONE-ELSET-E2
+  *Elset, elset=ASSEMBLY_NONE-ELSET-E2-1
+  *Elset, elset=ASSEMBLY_NONE-ELSET-E2-2
+  *Elset, elset=ASSEMBLY_NONE-ELSET-E2-3
+  *Elset, elset=ASSEMBLY_NONE-ELSET-E2-4
+  *Elset, elset=ASSEMBLY_NONE-ELSET-E2-5
+  *Elset, elset=ASSEMBLY_NONE-ELSET-E2-6
+  *Elset, elset=ASSEMBLY_NONE-ELSET-E2-7
+  *Elset, elset=ASSEMBLY_NONE-ELSET-E3
+  *Elset, elset=ASSEMBLY_NONE-ELSET-E3-1
+  *Elset, elset=ASSEMBLY_NONE-ELSET-E4
+  *Elset, elset=ASSEMBLY_NONE-ELSET-E4-1
+  *Elset, elset=ASSEMBLY_NONE-ELSET-E4-2
+  *Elset, elset=ASSEMBLY_NONE-ELSET-E4-3
+  *Elset, elset=ASSEMBLY_NONE-ELSET-E4-4
+  *Elset, elset=ASSEMBLY_NONE-ELSET-E4-5
+  *Elset, elset=ASSEMBLY_NONE-SET
+  *Elset, elset=ASSEMBLY_NONE-SET-1
+  *Elset, elset=ASSEMBLY_NONE-SET-2
+  *Elset, elset=ASSEMBLY_NONE-SET-3
+  *Elset, elset=ASSEMBLY_NONE-SET-4
+  *Elset, elset=ASSEMBLY_NONE-SET-5
+  *Elset, elset=ASSEMBLY_NONE-SET-6
+  *Elset, elset=ASSEMBLY_NONE-SET-7
+  *Elset, elset=ASSEMBLY_NONE-SET-8
+  *Elset, elset=ASSEMBLY__SURFACE-10_E2
+  *Elset, elset=ASSEMBLY__SURFACE-10_E3
+  *Elset, elset=ASSEMBLY__SURFACE-11_E2
+  *Elset, elset=ASSEMBLY__SURFACE-11_E4
+  *Elset, elset=ASSEMBLY__SURFACE-12_E2
+  *Elset, elset=ASSEMBLY__SURFACE-12_E4
+  *Elset, elset=ASSEMBLY__SURFACE-13_E2
+  *Elset, elset=ASSEMBLY__SURFACE-13_E4
+  *Elset, elset=ASSEMBLY__SURFACE-14_E2
+  *Elset, elset=ASSEMBLY__SURFACE-14_E3
+  *Elset, elset=ASSEMBLY__SURFACE-15_E2
+  *Elset, elset=ASSEMBLY__SURFACE-15_E4
+  *Elset, elset=ASSEMBLY__SURFACE-16_SPOS
+  *Elset, elset=ASSEMBLY__SURFACE-1_SPOS
+  *Elset, elset=ASSEMBLY__SURFACE-2_SPOS
+  *Elset, elset=ASSEMBLY__SURFACE-3_SPOS
+  *Elset, elset=ASSEMBLY__SURFACE-4_SPOS
+  *Elset, elset=ASSEMBLY__SURFACE-5_SPOS
+  *Elset, elset=ASSEMBLY__SURFACE-6_SPOS
+  *Elset, elset=ASSEMBLY__SURFACE-7_SPOS
+  *Elset, elset=ASSEMBLY__SURFACE-8_E2
+  *Elset, elset=ASSEMBLY__SURFACE-8_E4
+  *Elset, elset=ASSEMBLY__SURFACE-9_E2
+  *Elset, elset=ASSEMBLY__SURFACE-9_E4
+  *Elset, elset=ASSEMBLY__SURFACE_SPOS
+  *material, name=TEST_MATERIAL-2
+  *density
+  *elastic
+  *shellsection, elset=ASSEMBLY_UPPER_SKIN-INSTANCE_UPPER_SKIN, material=TEST_MATERIAL-2
+  *shellsection, elset=ASSEMBLY_LOWER_SKIN-INSTANCE_LOWER_SKIN, material=TEST_MATERIAL-2
+  *shellsection, elset=ASSEMBLY_FRONT_SPAR-INSTANCE_FRONT_SPAR, material=TEST_MATERIAL-2
+  *shellsection, elset=ASSEMBLY_REAR_SPAR-INSTANCE_REAR_SPAR, material=TEST_MATERIAL-2
+  *shellsection, elset=ASSEMBLY_UPPER_SKIN-INSTANCE_UPPER_SKIN, material=TEST_MATERIAL-2
+  *shellsection, elset=ASSEMBLY_LOWER_SKIN-INSTANCE_LOWER_SKIN, material=TEST_MATERIAL-2
+  *shellsection, elset=ASSEMBLY_FRONT_SPAR-INSTANCE_FRONT_SPAR, material=TEST_MATERIAL-2
+  *shellsection, elset=ASSEMBLY_REAR_SPAR-INSTANCE_REAR_SPAR, material=TEST_MATERIAL-2
+  *tie, name=ASSEMBLY_TIE-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-1-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-2-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-3-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-4-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-5-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-6-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-7-1, type=SURFACETOSURFACE, adjust=YES
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-1
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-2
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-3
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-4
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-5
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-6
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-7
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-8
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-9
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-10
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-11
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-12
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-13
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-14
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-15
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-16
+  *tie, name=ASSEMBLY_TIE-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-1-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-2-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-3-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-4-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-5-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-6-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-7-1, type=SURFACETOSURFACE, adjust=YES
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-1
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-2
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-3
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-4
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-5
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-6
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-7
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-8
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-9
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-10
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-11
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-12
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-13
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-14
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-15
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-16
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-1
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-2
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-3
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-4
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-5
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-6
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-7
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-8
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-9
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-10
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-11
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-12
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-13
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-14
+  *surface, type=ELEMENT, name=ASSEMBLY_SURFACE-15
+
+ ***NOTE: DUE TO EXCESSIVE REPORTING, THE ECHO OF THE *SURFACE OPTION IS BEING 
+          SUPPRESSED.
+  *tie, name=ASSEMBLY_TIE-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-1-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-2-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-3-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-4-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-5-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-6-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-7-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-1-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-2-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-3-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-4-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-5-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-6-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-7-1, type=SURFACETOSURFACE, adjust=YES
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *tie, name=ASSEMBLY_TIE-1, type=SURFACETOSURFACE, adjust=YES
+
+ ***WARNING: FOR *TIE PAIR (ASSEMBLY_SURFACE-8-ASSEMBLY_SURFACE), ADJUSTMENT 
+             WAS SPECIFIED BUT NO NODE WAS ADJUSTED MORE THAN THE ADJUSTMENT 
+             DISTANCE = 2.22000E-16.
+  *tie, name=ASSEMBLY_TIE-1-1, type=SURFACETOSURFACE, adjust=YES
+
+ ***WARNING: FOR *TIE PAIR (ASSEMBLY_SURFACE-10-ASSEMBLY_SURFACE-2), ADJUSTMENT 
+             WAS SPECIFIED BUT NO NODE WAS ADJUSTED MORE THAN THE ADJUSTMENT 
+             DISTANCE = 2.22000E-16.
+  *tie, name=ASSEMBLY_TIE-2-1, type=SURFACETOSURFACE, adjust=YES
+
+ ***WARNING: FOR *TIE PAIR (ASSEMBLY_SURFACE-12-ASSEMBLY_SURFACE-1), ADJUSTMENT 
+             WAS SPECIFIED BUT NO NODE WAS ADJUSTED MORE THAN THE ADJUSTMENT 
+             DISTANCE = 2.22000E-16.
+  *tie, name=ASSEMBLY_TIE-3-1, type=SURFACETOSURFACE, adjust=YES
+
+ ***WARNING: FOR *TIE PAIR (ASSEMBLY_SURFACE-14-ASSEMBLY_SURFACE-3), ADJUSTMENT 
+             WAS SPECIFIED BUT NO NODE WAS ADJUSTED MORE THAN THE ADJUSTMENT 
+             DISTANCE = 2.22000E-16.
+  *tie, name=ASSEMBLY_TIE-4-1, type=SURFACETOSURFACE, adjust=YES
+
+ ***WARNING: FOR *TIE PAIR (ASSEMBLY_SURFACE-9-ASSEMBLY_SURFACE-4), ADJUSTMENT 
+             WAS SPECIFIED BUT NO NODE WAS ADJUSTED MORE THAN THE ADJUSTMENT 
+             DISTANCE = 2.22000E-16.
+  *tie, name=ASSEMBLY_TIE-5-1, type=SURFACETOSURFACE, adjust=YES
+
+ ***WARNING: FOR *TIE PAIR (ASSEMBLY_SURFACE-11-ASSEMBLY_SURFACE-6), ADJUSTMENT 
+             WAS SPECIFIED BUT NO NODE WAS ADJUSTED MORE THAN THE ADJUSTMENT 
+             DISTANCE = 2.22000E-16.
+  *tie, name=ASSEMBLY_TIE-6-1, type=SURFACETOSURFACE, adjust=YES
+
+ ***WARNING: FOR *TIE PAIR (ASSEMBLY_SURFACE-13-ASSEMBLY_SURFACE-5), ADJUSTMENT 
+             WAS SPECIFIED BUT NO NODE WAS ADJUSTED MORE THAN THE ADJUSTMENT 
+             DISTANCE = 2.22000E-16.
+  *tie, name=ASSEMBLY_TIE-7-1, type=SURFACETOSURFACE, adjust=YES
+
+ ***WARNING: FOR *TIE PAIR (ASSEMBLY_SURFACE-15-ASSEMBLY_SURFACE-7), ADJUSTMENT 
+             WAS SPECIFIED BUT NO NODE WAS ADJUSTED MORE THAN THE ADJUSTMENT 
+             DISTANCE = 2.22000E-16.
+  *tie, name=ASSEMBLY_TIE-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-1-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-2-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-3-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-4-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-5-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-6-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-7-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-1-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-2-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-3-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-4-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-5-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-6-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-7-1, type=SURFACETOSURFACE, adjust=YES
+
+ ***WARNING: OVERCONSTRAINT CHECKS: NODE 2 INSTANCE REAR_SPAR-INSTANCE IS USED 
+             MORE THAN ONCE AS A SECONDARY NODE IN THE *TIE KEYWORD.  THE 
+             CONSTRAINT BETWEEN THIS NODE AND THE MAIN SURFACE WITH NODE 4 
+             INSTANCE UPPER_SKIN-INSTANCE IS REMOVED.
+
+ ***WARNING: OVERCONSTRAINT CHECKS: NODE 2 INSTANCE REAR_SPAR-INSTANCE IS USED 
+             MORE THAN ONCE AS A SECONDARY NODE IN THE *TIE KEYWORD.  THE 
+             CONSTRAINT BETWEEN THIS NODE AND THE MAIN SURFACE WITH NODE 4 
+             INSTANCE UPPER_SKIN-INSTANCE IS REMOVED.
+
+ ***WARNING: OVERCONSTRAINT CHECKS: NODE 2 INSTANCE FRONT_SPAR-INSTANCE IS USED 
+             MORE THAN ONCE AS A SECONDARY NODE IN THE *TIE KEYWORD.  THE 
+             CONSTRAINT BETWEEN THIS NODE AND THE MAIN SURFACE WITH NODE 2 
+             INSTANCE UPPER_SKIN-INSTANCE IS REMOVED.
+
+ ***WARNING: OVERCONSTRAINT CHECKS: NODE 2 INSTANCE FRONT_SPAR-INSTANCE IS USED 
+             MORE THAN ONCE AS A SECONDARY NODE IN THE *TIE KEYWORD.  THE 
+             CONSTRAINT BETWEEN THIS NODE AND THE MAIN SURFACE WITH NODE 2 
+             INSTANCE UPPER_SKIN-INSTANCE IS REMOVED.
+
+ ***WARNING: OVERCONSTRAINT CHECKS: NODE 4 INSTANCE REAR_SPAR-INSTANCE IS USED 
+             MORE THAN ONCE AS A SECONDARY NODE IN THE *TIE KEYWORD.  THE 
+             CONSTRAINT BETWEEN THIS NODE AND THE MAIN SURFACE WITH NODE 4 
+             INSTANCE LOWER_SKIN-INSTANCE IS REMOVED.
+
+ ***WARNING: OVERCONSTRAINT CHECKS: NODE 4 INSTANCE REAR_SPAR-INSTANCE IS USED 
+             MORE THAN ONCE AS A SECONDARY NODE IN THE *TIE KEYWORD.  THE 
+             CONSTRAINT BETWEEN THIS NODE AND THE MAIN SURFACE WITH NODE 4 
+             INSTANCE LOWER_SKIN-INSTANCE IS REMOVED.
+
+ ***WARNING: OVERCONSTRAINT CHECKS: NODE 4 INSTANCE FRONT_SPAR-INSTANCE IS USED 
+             MORE THAN ONCE AS A SECONDARY NODE IN THE *TIE KEYWORD.  THE 
+             CONSTRAINT BETWEEN THIS NODE AND THE MAIN SURFACE WITH NODE 2 
+             INSTANCE LOWER_SKIN-INSTANCE IS REMOVED.
+
+ ***WARNING: OVERCONSTRAINT CHECKS: NODE 4 INSTANCE FRONT_SPAR-INSTANCE IS USED 
+             MORE THAN ONCE AS A SECONDARY NODE IN THE *TIE KEYWORD.  THE 
+             CONSTRAINT BETWEEN THIS NODE AND THE MAIN SURFACE WITH NODE 2 
+             INSTANCE LOWER_SKIN-INSTANCE IS REMOVED.
+  *tie, name=ASSEMBLY_TIE-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-1-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-2-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-3-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-4-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-5-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-6-1, type=SURFACETOSURFACE, adjust=YES
+  *tie, name=ASSEMBLY_TIE-7-1, type=SURFACETOSURFACE, adjust=YES
+  *output, field, variable=PRESELECT
+  *output, history, variable=PRESELECT
+
+ ***WARNING: 4 nodes are used more than once as a secondary node in *TIE 
+             keyword. One of the *TIE constraints at each of these nodes have 
+             been removed. The nodes have been identified in node set 
+             WarnNodeOverconTieSecondary.
+  *output, field, variable=PRESELECT
+  *output, history, variable=PRESELECT
+  *output, field, variable=PRESELECT
+  *output, history, variable=PRESELECT
+  *Step, name=analysis1, nlgeom=NO
+  *output, field, variable=PRESELECT
+  *output, history, variable=PRESELECT
+  *Step, name=analysis1, nlgeom=NO
+  *Step, name=analysis1, nlgeom=NO
+  *static
+  *dsload
+  *output, field, variable=PRESELECT
+  *output, history, variable=PRESELECT
+  *endstep
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *boundary
+  *Step, name=analysis1, nlgeom=NO
+  *static
+  *endstep
+
+     - (RAMP) OR (STEP) - INDICATE USE OF DEFAULT AMPLITUDES ASSOCIATED WITH THE STEP
+
+ ***WARNING: DEGREE OF FREEDOM 1 IS NOT ACTIVE ON NODE 1 INSTANCE 
+             FRONT_SPAR-INSTANCE - THIS BOUNDARY CONDITION IS IGNORED
+
+ ***WARNING: DEGREE OF FREEDOM 2 IS NOT ACTIVE ON NODE 1 INSTANCE 
+             FRONT_SPAR-INSTANCE - THIS BOUNDARY CONDITION IS IGNORED
+
+ ***WARNING: DEGREE OF FREEDOM 3 IS NOT ACTIVE ON NODE 1 INSTANCE 
+             FRONT_SPAR-INSTANCE - THIS BOUNDARY CONDITION IS IGNORED
+
+ ***WARNING: DEGREE OF FREEDOM 4 IS NOT ACTIVE ON NODE 1 INSTANCE 
+             FRONT_SPAR-INSTANCE - THIS BOUNDARY CONDITION IS IGNORED
+
+ ***WARNING: DEGREE OF FREEDOM 5 IS NOT ACTIVE ON NODE 1 INSTANCE 
+             FRONT_SPAR-INSTANCE - THIS BOUNDARY CONDITION IS IGNORED
+
+ ***WARNING: DEGREE OF FREEDOM 6 IS NOT ACTIVE ON NODE 1 INSTANCE 
+             FRONT_SPAR-INSTANCE - THIS BOUNDARY CONDITION IS IGNORED
+
+ ***WARNING: DEGREE OF FREEDOM 1 IS NOT ACTIVE ON NODE 3 INSTANCE 
+             FRONT_SPAR-INSTANCE - THIS BOUNDARY CONDITION IS IGNORED
+
+ ***WARNING: DEGREE OF FREEDOM 2 IS NOT ACTIVE ON NODE 3 INSTANCE 
+             FRONT_SPAR-INSTANCE - THIS BOUNDARY CONDITION IS IGNORED
+
+ ***WARNING: DEGREE OF FREEDOM 3 IS NOT ACTIVE ON NODE 3 INSTANCE 
+             FRONT_SPAR-INSTANCE - THIS BOUNDARY CONDITION IS IGNORED
+
+ ***WARNING: DEGREE OF FREEDOM 4 IS NOT ACTIVE ON NODE 3 INSTANCE 
+             FRONT_SPAR-INSTANCE - THIS BOUNDARY CONDITION IS IGNORED
+
+ ***WARNING: DEGREE OF FREEDOM 5 IS NOT ACTIVE ON NODE 3 INSTANCE 
+             FRONT_SPAR-INSTANCE - THIS BOUNDARY CONDITION IS IGNORED
+
+ ***WARNING: DEGREE OF FREEDOM 6 IS NOT ACTIVE ON NODE 3 INSTANCE 
+             FRONT_SPAR-INSTANCE - THIS BOUNDARY CONDITION IS IGNORED
+
+ ***WARNING: DEGREE OF FREEDOM 1 IS NOT ACTIVE ON NODE 1 INSTANCE 
+             REAR_SPAR-INSTANCE - THIS BOUNDARY CONDITION IS IGNORED
+
+ ***WARNING: DEGREE OF FREEDOM 2 IS NOT ACTIVE ON NODE 1 INSTANCE 
+             REAR_SPAR-INSTANCE - THIS BOUNDARY CONDITION IS IGNORED
+
+ ***WARNING: DEGREE OF FREEDOM 3 IS NOT ACTIVE ON NODE 1 INSTANCE 
+             REAR_SPAR-INSTANCE - THIS BOUNDARY CONDITION IS IGNORED
+
+ ***WARNING: DEGREE OF FREEDOM 4 IS NOT ACTIVE ON NODE 1 INSTANCE 
+             REAR_SPAR-INSTANCE - THIS BOUNDARY CONDITION IS IGNORED
+
+ ***WARNING: DEGREE OF FREEDOM 5 IS NOT ACTIVE ON NODE 1 INSTANCE 
+             REAR_SPAR-INSTANCE - THIS BOUNDARY CONDITION IS IGNORED
+
+ ***WARNING: DEGREE OF FREEDOM 6 IS NOT ACTIVE ON NODE 1 INSTANCE 
+             REAR_SPAR-INSTANCE - THIS BOUNDARY CONDITION IS IGNORED
+
+ ***WARNING: DEGREE OF FREEDOM 1 IS NOT ACTIVE ON NODE 3 INSTANCE 
+             REAR_SPAR-INSTANCE - THIS BOUNDARY CONDITION IS IGNORED
+
+ ***WARNING: DEGREE OF FREEDOM 2 IS NOT ACTIVE ON NODE 3 INSTANCE 
+             REAR_SPAR-INSTANCE - THIS BOUNDARY CONDITION IS IGNORED
+
+ ***WARNING: DEGREE OF FREEDOM 3 IS NOT ACTIVE ON NODE 3 INSTANCE 
+             REAR_SPAR-INSTANCE - THIS BOUNDARY CONDITION IS IGNORED
+
+ ***WARNING: DEGREE OF FREEDOM 4 IS NOT ACTIVE ON NODE 3 INSTANCE 
+             REAR_SPAR-INSTANCE - THIS BOUNDARY CONDITION IS IGNORED
+
+ ***WARNING: DEGREE OF FREEDOM 5 IS NOT ACTIVE ON NODE 3 INSTANCE 
+             REAR_SPAR-INSTANCE - THIS BOUNDARY CONDITION IS IGNORED
+
+ ***WARNING: DEGREE OF FREEDOM 6 IS NOT ACTIVE ON NODE 3 INSTANCE 
+             REAR_SPAR-INSTANCE - THIS BOUNDARY CONDITION IS IGNORED
+
+ ***NOTE: Boundary conditions are specified on inactive dof of 4 nodes. The 
+          nodes have been identified in node set WarnNodeBCInactiveDof.
+
+
+
+                            P R O B L E M   S I Z E
+
+
+          NUMBER OF ELEMENTS IS                                  3200
+          NUMBER OF NODES IS                                     3625
+          NUMBER OF NODES DEFINED BY THE USER                    3625
+          TOTAL NUMBER OF VARIABLES IN THE MODEL                21750
+          (DEGREES OF FREEDOM PLUS MAX NO. OF ANY LAGRANGE MULTIPLIER
+           VARIABLES. INCLUDE *PRINT,SOLVE=YES TO GET THE ACTUAL NUMBER.)
+
+
+
+                              END OF USER INPUT PROCESSING
+
+
+
+     JOB TIME SUMMARY
+       USER TIME (SEC)      =     0.10    
+       SYSTEM TIME (SEC)    =     0.10    
+       TOTAL CPU TIME (SEC) =     0.20    
+       WALLCLOCK TIME (SEC) =            0
+1
+
+   Abaqus 2023                                  Date 31-May-2024   Time 16:30:25
+   For use by DELFT UNIVERSITY OF TECHNOLOGY under license from Dassault Systemes or its subsidiary.
+
+                                                                                               STEP    1  INCREMENT    1
+                                                                                          TIME COMPLETED IN THIS STEP   0.00    
+
+
+                        S T E P       1     S T A T I C   A N A L Y S I S
+
+
+                                                                                          
+
+     AUTOMATIC TIME CONTROL WITH -
+          A SUGGESTED INITIAL TIME INCREMENT OF                1.000E-02
+          AND A TOTAL TIME PERIOD OF                            1.00    
+          THE MINIMUM TIME INCREMENT ALLOWED IS                1.000E-15
+          THE MAXIMUM TIME INCREMENT ALLOWED IS                0.100    
+
+     LINEAR EQUATION SOLVER TYPE         DIRECT SPARSE
+  
+                   M E M O R Y   E S T I M A T E
+  
+ PROCESS      FLOATING PT       MINIMUM MEMORY        MEMORY TO
+              OPERATIONS           REQUIRED          MINIMIZE I/O
+             PER ITERATION           (MB)               (MB)
+  
+     1          7.30E+08               22                 71
+  
+ NOTE:
+      (1) SINCE ABAQUS DOES NOT PRE-ALLOCATE MEMORY AND ONLY ALLOCATES MEMORY AS NEEDED DURING THE ANALYSIS,
+          THE MEMORY REQUIREMENT PRINTED HERE CAN ONLY BE VIEWED AS A GENERAL GUIDELINE BASED ON THE BEST
+          KNOWLEDGE AVAILABLE AT THE BEGINNING OF A STEP BEFORE THE SOLUTION PROCESS HAS BEGUN.
+      (2) THE ESTIMATE IS NORMALLY UPDATED AT THE BEGINNING OF EVERY STEP. IT IS THE MAXIMUM VALUE OF THE
+          ESTIMATE FROM THE CURRENT STEP TO THE LAST STEP OF THE ANALYSIS, WITH UNSYMMETRIC SOLUTION TAKEN
+          INTO ACCOUNT IF APPLICABLE. 
+      (3) SINCE THE ESTIMATE IS BASED ON THE ACTIVE DEGREES OF FREEDOM IN THE FIRST ITERATION OF THE 
+          CURRENT STEP, THE MEMORY ESTIMATE MIGHT BE SIGNIFICANTLY DIFFERENT THAN ACTUAL USAGE FOR 
+          PROBLEMS WITH SUBSTANTIAL CHANGES IN ACTIVE DEGREES OF FREEDOM BETWEEN STEPS (OR EVEN WITHIN
+          THE SAME STEP). EXAMPLES ARE: PROBLEMS WITH SIGNIFICANT CONTACT CHANGES, PROBLEMS WITH MODEL
+          CHANGE, PROBLEMS WITH BOTH STATIC STEP AND STEADY STATE DYNAMIC PROCEDURES WHERE ACOUSTIC 
+          ELEMENTS WILL ONLY BE ACTIVATED IN THE STEADY STATE DYNAMIC STEPS.
+      (4) FOR MULTI-PROCESS EXECUTION, THE ESTIMATED VALUE OF FLOATING POINT OPERATIONS FOR EACH PROCESS
+          IS BASED ON AN INITIAL SCHEDULING OF OPERATIONS AND MIGHT NOT REFLECT THE ACTUAL FLOATING 
+          POINT OPERATIONS COMPLETED ON EACH PROCESS. OPERATIONS ARE DYNAMICALLY BALANCED DURING EXECUTION, 
+          SO THE ACTUAL BALANCE OF OPERATIONS BETWEEN PROCESSES IS EXPECTED TO BE BETTER THAN THE ESTIMATE
+          PRINTED HERE.
+      (5) THE UPPER LIMIT OF MEMORY THAT CAN BE ALLOCATED BY ABAQUS WILL IN GENERAL DEPEND ON THE VALUE OF
+          THE "MEMORY" PARAMETER AND THE AMOUNT OF PHYSICAL MEMORY AVAILABLE ON THE MACHINE. PLEASE SEE
+          THE "ABAQUS ANALYSIS USER'S MANUAL" FOR MORE DETAILS. THE ACTUAL USAGE OF MEMORY AND OF DISK
+          SPACE FOR SCRATCH DATA WILL DEPEND ON THIS UPPER LIMIT AS WELL AS THE MEMORY REQUIRED TO MINIMIZE
+          I/O. IF THE MEMORY UPPER LIMIT IS GREATER THAN THE MEMORY REQUIRED TO MINIMIZE I/O, THEN THE ACTUAL
+          MEMORY USAGE WILL BE CLOSE TO THE ESTIMATED "MEMORY TO MINIMIZE I/O" VALUE, AND THE SCRATCH DISK
+          USAGE WILL BE CLOSE-TO-ZERO; OTHERWISE, THE ACTUAL MEMORY USED WILL BE CLOSE TO THE PREVIOUSLY
+          MENTIONED MEMORY LIMIT, AND THE SCRATCH DISK USAGE WILL BE ROUGHLY PROPORTIONAL TO THE DIFFERENCE
+          BETWEEN THE ESTIMATED "MEMORY TO MINIMIZE I/O" AND THE MEMORY UPPER LIMIT. HOWEVER ACCURATE
+          ESTIMATE OF THE SCRATCH DISK SPACE IS NOT POSSIBLE.
+      (6) USING "*RESTART, WRITE" CAN GENERATE A LARGE AMOUNT OF DATA WRITTEN IN THE WORK DIRECTORY.
+
+
+          THE ANALYSIS HAS BEEN COMPLETED
+
+
+
+                              ANALYSIS COMPLETE
+                              WITH     41 WARNING MESSAGES ON THE DAT FILE
+
+
+
+     JOB TIME SUMMARY
+       USER TIME (SEC)      =      2.9    
+       SYSTEM TIME (SEC)    =      0.0    
+       TOTAL CPU TIME (SEC) =      2.9    
+       WALLCLOCK TIME (SEC) =            4
