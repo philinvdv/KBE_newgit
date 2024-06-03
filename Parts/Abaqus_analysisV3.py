@@ -13,6 +13,7 @@ from parapy.lib.abaqus.writer import Writer
 from parapy.mesh import Controls, Groups
 from parapy.core import *
 from parapy.geom import *
+import numpy as np
 
 #import MyAssinmnetV2
 from Parts.Meshing import MeshingFunc
@@ -21,27 +22,35 @@ from Parts.Meshing import MeshingFunc
 #import Wing_Class
 
 class AbaqusINPwriter(GeomBase):
-    n_mesh_points = Input(30)
-    mesh_element_length = Input(0.5)
+    # n_mesh_points = Input(30)
+    path = Input()
+    mesh_element_length = Input(0.2)
     density = Input(1000.)
     elastic_modulus = Input(1e9)
     poisson_ratio = Input(0.3)
     skin_thickness = Input(0.003)
     spar_thickness = Input(0.01)
     rib_thickness = Input(0.005)
-    path = Input()
-
-    @Attribute
-    def material(self):
-        material_behaviours= [Density(self.density), ElasticIsotropic(self.elastic_modulus, self.poisson_ratio)]
-        material_properties = Material(name="test_material-2",
-                        behaviours=material_behaviours)
-        return material_properties
-
+    load_factor = Input(2.5)
+    aircraft_mass = Input(10000)
+    span = Input(10)
+    width_centerpiece = Input(3)
+    # number_of_engines = Input(1)
+    engine_position = Input([4, 8])
+    engine_mass = Input(1000)
+    Gravity = 9.81
 
     @Attribute
     def aircraft(self):
         return self.path
+
+    @Attribute
+    def material(self):
+        material_behaviours = [Density(self.density), ElasticIsotropic(self.elastic_modulus, self.poisson_ratio)]
+        material_properties = Material(name="test_material-2",
+                        behaviours=material_behaviours)
+        return material_properties
+
 
 # below are all the parts that make up the wing box
 
@@ -245,45 +254,99 @@ class AbaqusINPwriter(GeomBase):
         my_obj.process_boundary_condition(self.rear_spar, self.meshed_rear_spar.mesh.get_subgrid(self.rear_spar.faces[0].edges[1]).nodes,
                                     U1=0, U2=0, U3=0, UR1=0, UR2=0, UR3=0)
 
+        # Engine as point masses
+        # for n in range(len(self.engine_position)):
+        #     pairs = [(self.lower_skin, node) for node in self.engine_mass_nodes[n]]
+        #     my_obj.process_point_mass(pairs, self.engine_mass, preferred_name=f"engine_{n}_point_mass")
+
+
         return my_obj
 
-
-    nodes_y_coor = []
     @Attribute
-    def span_wise_nodes(self):
+    def engine_mass_nodes(self):
+        nodes_per_engine = []
+        nodes_of_all_engines = []
+        for n in range(len(self.engine_position)):
+            for i in range(len(self.spanwise_nodes[1])):
+                if abs(self.engine_position[n] - self.spanwise_nodes[1][i][1]) <= self.mesh_element_length:
+                    nodes_per_engine.append(self.spanwise_nodes[1][i])
+                else:
+                    continue
+            nodes_of_all_engines.append(nodes_per_engine)
+            nodes_per_engine = []
+        return nodes_of_all_engines
+
+    @Attribute
+    def spanwise_nodes(self):
+        upper_surface_nodes_y_coord = []
+        lower_surface_nodes_y_coord = []
+
         for i in range(len(self.meshed_upper_skin.mesh.subgrid[2].nodes)):
-            self.nodes_y_coor.append(self.meshed_upper_skin.mesh.subgrid[2].nodes[i])
-        self.nodes_y_coor.sort(key=lambda x: x[1])
-        return self.nodes_y_coor
+            upper_surface_nodes_y_coord.append(self.meshed_upper_skin.mesh.subgrid[2].nodes[i])
+            lower_surface_nodes_y_coord.append(self.meshed_lower_skin.mesh.subgrid[2].nodes[i])
+        upper_surface_nodes_y_coord.sort(key=lambda x: x[1])
+        lower_surface_nodes_y_coord.sort(key=lambda x: x[1])
+        return [upper_surface_nodes_y_coord, lower_surface_nodes_y_coord]
 
-
-    node_load=[]
 
     @Attribute
     def loads(self):
-        # node_set = self.my_abaqus_adaptor.add_set(self.meshed_upper_skin.mesh.subgrid[2].nodes, part=self.upper_skin, preferred_name="loadpoints")
-        # face_subgrid = self.mesh.get_subgrid(self.face)
-        # surface = self.abaqus_adaptor.process_element_based_surface(self.face, face_subgrid, label="SPOS")
-         return []
-        #     CLoad(
-        #         nodes=[],
-        #         node_sets=[node_set],
-        #         F3=-1000
-        #     ),
-        #     DLoad(
-        #         elements=[],
-        #         element_sets=[node_set],
-        #         load_type='PX',
-        #         magnitude=1
-        #     ),
-        #     Dsload(
-        #         surface_loads=[(surface, 'P', 1000)]
-        #     )
-        # ]
 
-    # upper_skin_load = self.my_abaqus_adaptor.process_element_based_surface(self.upper_skin,
-    #                                                                        self.meshed_upper_skin.mesh.subgrid[2],
-    #                                                                        label="SPOS")
+        n_sections = round((0.5*self.span - self.width_centerpiece)/self.mesh_element_length)
+        span_sections = np.linspace(self.spanwise_nodes[0][0][1],
+                                    self.spanwise_nodes[0][-1][1],
+                                    n_sections)
+        node_sets = []
+        node_per_section = []
+        for s in range(len(span_sections)-1):
+            for i in range(len(self.spanwise_nodes[0])):
+                if (self.spanwise_nodes[0][i][1] <= span_sections[s+1] and self.spanwise_nodes[0][i][1] >= span_sections[s]):
+                    node_per_section.append(self.spanwise_nodes[0][i])
+                else:
+                    continue
+            node_sets.append(node_per_section)
+            node_per_section = []
+
+        F_total = 0.5 * self.aircraft_mass * self.load_factor * self.Gravity
+        F_y = []
+        F_num = 0
+        n_x_nodes = []
+        n_y_nodes = []
+        for i in range(len(span_sections)):
+            F_num = F_num + (1 - (span_sections[i] / span_sections[-1]))
+        F_0 = F_total / F_num
+        for i in range(len(span_sections)):
+            F_y.append(F_0 * (1 - (span_sections[i] / span_sections[-1])))
+
+        for i in range(len(node_sets)):
+            n_x_nodes.append(len(node_sets[i]))
+
+        F_x = [m/n for m, n in zip(F_y, n_x_nodes)]
+
+        node_lift_load = []
+        for i in range(len(node_sets)):
+            node_set = self.my_abaqus_adaptor.add_set(node_sets[i], part=self.upper_skin, preferred_name="loadpoints")
+            # cload.append(CLoad(nodes=[], node_sets=[node_set], F3=F_x[i]))
+            node_lift_load.append(CLoad(nodes=[], node_sets=[node_set], F3=F_y[i]))
+            # element_load.append(DLoad(elements=[], element_sets=[node_set], load_type='P', magnitude=F_y[i]))
+
+        node_engine_load = []
+        for n in range(len(self.engine_position)):
+            engine_node_set = self.my_abaqus_adaptor.add_set(self.engine_mass_nodes[n], part=self.lower_skin, preferred_name=f"engine_{n}_mass")
+            node_engine_load.append(CLoad(nodes=[], node_sets=[engine_node_set], F3=-self.engine_mass*self.Gravity))
+
+        return [node_lift_load, node_engine_load], [span_sections, node_per_section, node_sets, n_x_nodes, F_total, F_0, F_y, F_x, F_num]
+
+
+    # @Attribute
+    # def force_lines(self):
+    #     lines = []
+    #     for i in range(len(self.loads[1])):
+    #         lines.append([LineSegment(Point(0, self.loads[1][i], 0),
+    #                                   Point(0, self.loads[1][i], 0.0005*self.loads[7][i]))])
+    #     return lines
+
+
 
     @property
     def my_outputs(self):
@@ -298,7 +361,7 @@ class AbaqusINPwriter(GeomBase):
                                          minimum_time_increment=1e-15,
                                          maximum_time_increment=0.1,
                                          initial_time_increment=0.01)],
-                    loads=self.loads,
+                    loads=self.loads[0] + self.loads[1],
                     boundary_conditions=[],
                     outputs=self.my_outputs,
                     interactions=[])

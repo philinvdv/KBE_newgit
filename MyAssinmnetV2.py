@@ -28,6 +28,10 @@ class Aircraft(GeomBase):
     width_centerpiece = Input(5)
     rib_pitch = Input(2)
     hide_mesh = Input(True)
+    load_factor = Input(2.5)
+    aircraft_mass = Input(10000)
+    engine_position = Input([4, 8])
+    engine_mass = Input(1000)
 
     @Part
     def wing(self):
@@ -43,6 +47,12 @@ class Aircraft(GeomBase):
                                      density=self.wing.material_properties[0],
                                      elastic_modulus=self.wing.material_properties[1],
                                      poisson_ratio=self.wing.material_properties[2],
+                                     span=self.span,
+                                     width_centerpiece=self.width_centerpiece,
+                                     load_factor=self.load_factor,
+                                     aircraft_mass = self.aircraft_mass,
+                                     engine_position = self.engine_position,
+                                     engine_mass = self.engine_mass,
                                      hidden=False)
 
     @action()
