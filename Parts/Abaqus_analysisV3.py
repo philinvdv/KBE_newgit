@@ -14,6 +14,7 @@ from parapy.mesh import Controls, Groups
 from parapy.core import *
 from parapy.geom import *
 import numpy as np
+from parapy.core.validate import *
 
 #import MyAssinmnetV2
 from Parts.Meshing import MeshingFunc
@@ -24,20 +25,20 @@ from Parts.Meshing import MeshingFunc
 class AbaqusINPwriter(GeomBase):
     # n_mesh_points = Input(30)
     path = Input()
-    mesh_element_length = Input(0.2)
-    density = Input(1000.)
-    elastic_modulus = Input(1e9)
+    mesh_element_length = Input(0.2, validator=GT(0, msg="Mesh element length cannot be smaller than " "{validator.limit}!"))
+    density = Input(1000., validator=GT(0, msg="Material density cannot be smaller than " "{validator.limit}!"))
+    elastic_modulus = Input(1e9, validator=GT(0, msg="Elastic modulus cannot be smaller than " "{validator.limit}!"))
     poisson_ratio = Input(0.3)
-    skin_thickness = Input(0.003)
-    spar_thickness = Input(0.01)
-    rib_thickness = Input(0.005)
+    skin_thickness = Input(0.003, validator=GT(0, msg="Skin thickness cannot be smaller than " "{validator.limit}!"))
+    spar_thickness = Input(0.01, validator=GT(0, msg="Spar thickness cannot be smaller than " "{validator.limit}!"))
+    rib_thickness = Input(0.005, validator=GT(0, msg="Rib thickness cannot be smaller than " "{validator.limit}!"))
     load_factor = Input(2.5)
-    aircraft_mass = Input(10000)
-    span = Input(10)
-    width_centerpiece = Input(3)
+    aircraft_mass = Input(10000, validator=GT(0, msg="Aircraft mass cannot be smaller than " "{validator.limit}!"))
+    span = Input(10, validator=GT(0, msg="Wing span cannot be smaller than " "{validator.limit}!"))
+    width_centerpiece = Input(3, validator=GT(0, msg="Centre section width cannot be smaller than " "{validator.limit}!"))
     # number_of_engines = Input(1)
     engine_position = Input([4, 8])
-    engine_mass = Input(1000)
+    engine_mass = Input(1000, validator=GE(0, msg="Engine cannot be smaller than " "{validator.limit}!"))
     Gravity = 9.81
 
     @Attribute
@@ -361,7 +362,7 @@ class AbaqusINPwriter(GeomBase):
                                          minimum_time_increment=1e-15,
                                          maximum_time_increment=0.1,
                                          initial_time_increment=0.01)],
-                    loads=self.loads[0] + self.loads[1],
+                    loads=self.loads[0][0] + self.loads[0][1],
                     boundary_conditions=[],
                     outputs=self.my_outputs,
                     interactions=[])

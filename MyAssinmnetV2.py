@@ -18,20 +18,17 @@ DIR = os.path.dirname(__file__)
 
 
 class Aircraft(GeomBase):
-    wing_span = Input(35.8)
-    wing_sweep = Input(25, validator=GE(5.0))
-    hide_mesh = Input(False)
-    n_mesh_points = Input(20)
     """This is the Superclass. It only contains the Wing class."""
-    span = Input(35.8)
-    leading_edge_sweep = Input(25)
-    width_centerpiece = Input(5)
-    rib_pitch = Input(2)
+    span = Input(35.8, validator=GT(0, msg="Wing span cannot be smaller than " "{validator.limit}!"))
+    leading_edge_sweep = Input(25,  validator=Between(-60, 60, msg="Leading edge sweep angle cannot be greater than +-{60}!"))
+    width_centerpiece = Input(5, validator=GT(0, msg="Centre section width cannot be smaller than " "{validator.limit}!"))
+    rib_pitch = Input(2, validator=GT(0, msg="Rib pitch cannot be smaller than " "{validator.limit}!"))
     hide_mesh = Input(True)
-    load_factor = Input(2.5)
-    aircraft_mass = Input(10000)
-    engine_position = Input([4, 8])
-    engine_mass = Input(1000)
+    load_factor = Input(2.5, validator=GT(0, msg="Load factor cannot be smaller than " "{validator.limit}!"))
+    aircraft_mass = Input(10000, validator=GT(0, msg="Aircraft mass cannot be smaller than " "{validator.limit}!"))
+    engine_position = Input([4, 8], validator=Between(0, 60, msg="Engine position has to be between wing root and tip!"))
+    engine_mass = Input(1000, validator=GE(0, msg="Engine mass cannot be smaller than " "{validator.limit}!"))
+
 
     @Part
     def wing(self):

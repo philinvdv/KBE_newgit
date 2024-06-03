@@ -25,9 +25,9 @@ class Wing_me(GeomBase):
 
 
     #Inputs
-    span = Input(35.8, validator=GT(0, msg="{value} cannot be smaller than " "{validator.limit}!"))
-    leading_edge_sweep = Input(25,  validator=Between(-60, 60, msg="{value} cannot be greater than +-{60}!")) #deg
-    root_chord = Input(5.9, validator=GT(0, msg="{value} cannot be smaller than " "{validator.limit}!"))
+    span = Input(35.8, validator=GT(0, msg="Wing span cannot be smaller than " "{validator.limit}!"))
+    leading_edge_sweep = Input(25,  validator=Between(-60, 60, msg="Leading edge sweep angle cannot be greater than +-{60}!")) #deg
+    root_chord = Input(5.9, validator=GT(0, msg="Root chord cannot be smaller than " "{validator.limit}!"))
     twist_angle = Input(0)
     dihedral_angle = Input(0)
     wing_material = Input(0) #should somehow get the properties from this
