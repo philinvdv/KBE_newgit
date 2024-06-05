@@ -16,11 +16,15 @@ from parapy.geom import *
 import numpy as np
 from parapy.core.validate import *
 
+
 #import MyAssinmnetV2
 from Parts.Meshing import MeshingFunc
 #from MyAssinmnetV2 import Aircraft
 #from Parts.Wing_Class import Wing_me
 #import Wing_Class
+
+# backwardCompatibility.setValues(includeDeprecated=True, reportDeprecated=False)
+
 
 class AbaqusINPwriter(GeomBase):
     # n_mesh_points = Input(30)
@@ -371,11 +375,14 @@ class AbaqusINPwriter(GeomBase):
     def my_inp_writer(self):
         return Writer(adaptor=self.my_abaqus_adaptor, steps=[self.my_step])
 
-
-
 if __name__ == '__main__':
     from parapy.gui import display
 
     my_obj = AbaqusINPwriter()
     my_obj.my_inp_writer.write('output//wing_box.inp')
+
+
+
+
     display(my_obj)
+

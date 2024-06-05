@@ -1,16 +1,9 @@
-from math import radians, tan
 from parapy.geom import *
 from parapy.core import *
 
-from parapy.lib.abaqus.writer import Writer
-
-import numpy as np
-from parapy.geom.generic.positioning import VX, VY  # parapy.geom from 1.2.9
-from parapy.core.decorators import Action
-from parapy.core.decorators import Action
-
 from parapy.core.validate import *
 import Parts
+import Parts.output
 from parapy.exchange import STEPWriter
 import os
 
@@ -26,7 +19,7 @@ class Aircraft(GeomBase):
     hide_mesh = Input(True)
     load_factor = Input(2.5, validator=GT(0, msg="Load factor cannot be smaller than " "{validator.limit}!"))
     aircraft_mass = Input(10000, validator=GT(0, msg="Aircraft mass cannot be smaller than " "{validator.limit}!"))
-    engine_position = Input([4, 8], validator=Between(0, 60, msg="Engine position has to be between wing root and tip!"))
+    engine_position = Input([4, 8]) #, validator=Between(0, 60, msg="Engine position has to be between wing root and tip!"))
     engine_mass = Input(1000, validator=GE(0, msg="Engine mass cannot be smaller than " "{validator.limit}!"))
 
 
@@ -39,7 +32,7 @@ class Aircraft(GeomBase):
 
 
     @Part
-    def abaqus(self):
+    def write_inp(self):
         return Parts.AbaqusINPwriter(path=self.wing,
                                      density=self.wing.material_properties[0],
                                      elastic_modulus=self.wing.material_properties[1],
@@ -52,9 +45,16 @@ class Aircraft(GeomBase):
                                      engine_mass = self.engine_mass,
                                      hidden=False)
 
+    # @Part
+    # def run_abaqus_interpreter(self):
+    #     return Parts.output.ODBinterpreter
     @action()
     def INP_file_writer(self):
-        self.abaqus.my_inp_writer.write('Parts//output//wing_box.inp')
+        self.write_inp.my_inp_writer.write('Parts//output//wing_box.inp')
+
+    @action()
+    def run_abaqus(self):
+        import Parts.output.ODBinterpreter
 
 #     @Part
 #     def right_wing(self):
@@ -144,12 +144,6 @@ class Aircraft(GeomBase):
                       unit='m',
                       filename="aircraft.step")
 
-
-
-
-    # @action
-    # def write_inp_file(self):
-    #     Parts.AbaqusINPwriter().my_inp_writer.write('Parts//output//wing_box.inp')
 
 
 
