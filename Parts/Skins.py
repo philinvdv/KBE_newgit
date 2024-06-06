@@ -2,11 +2,11 @@ from math import radians, tan
 from parapy.geom import *
 from parapy.core import *
 import numpy as np
-from Parts.Meshing import MeshingFunc
-
+from Parts.Meshing import *
+#from Spars import self.front_spar_inner
 
 class Skins(GeomBase):
-    """In this class, the different skin pannels are defined. This is done from different curves, formig rectangles,
+    """In this class, the different skin pannels are defined. This is done from different curves, formig lines,
     forming curves, forming lofts. For upper and lower inner and upper and lower outer"""
     # Define the points for the lines
     length_flanges = Input(0.02)
@@ -76,11 +76,10 @@ class Skins(GeomBase):
         point_3fl = Point(-0.3 * self.root_chord, 0, self.rear_spar_coordinates[1][1] * self.root_chord + self.length_flanges)
         return [point_2l, point_3l, point_2fl, point_3fl]
 
-    # Define four separate lines
-    @Part  # Line from upper point of front spar to upper point of rear spar
+    @Part  # Line from lower point of front spar to lower point of rear spar
     def line_root_low(self):
-        return LineSegment(start=self.points_root_lower_skin[0], end=self.points_root_lower_skin[1],
-                    hidden=True)
+        return LineSegment(start=self.points_root_lower_skin[0], end=self.points_root_lower_skin[1])#,
+                    #hidden=True)
                            #  position = rotate(XOY, 'x', 90, deg=True)
 
 
@@ -109,7 +108,7 @@ class Skins(GeomBase):
         return LoftedSurface(
             profiles=[self.line_root_low, self.line_kink_low],
             mesh_deflection=0.0001,
-                    hidden=True)
+                    )
 
     """Outer skin panels, tip"""
     @Attribute
@@ -141,7 +140,7 @@ class Skins(GeomBase):
         return LoftedSurface(
             profiles=[self.line_kink_upp, self.line_tip_upp],
             mesh_deflection=0.0001,
-                    hidden=True)
+                    )
 
     """Lower skin panel outer"""
     @Attribute
@@ -173,7 +172,7 @@ class Skins(GeomBase):
         return LoftedSurface(
             profiles=[self.line_tip_low, self.line_kink_low],
             mesh_deflection=0.0001,
-                    hidden=True)
+                    )
 
     """Flanges"""
     @Part  # flange for upper skin inner along frontspar
@@ -231,26 +230,33 @@ class Skins(GeomBase):
             profiles=[LineSegment(start=self.points_tip_upper_skin[3], end=self.points_kink_upper_skin[3]),
                       LineSegment(start=self.points_tip_upper_skin[1], end=self.points_kink_upper_skin[1])],
                     hidden=True)
+    # #Fused with flanges
+    # @Part
+    # def fused_inner_upperskin_and_flanges(self):
+    #     return Fused(shape_in=self.inner_upperskin_loft,
+    #                       tool = (self.flange_upperskin_inner_rear, self.flange_upperskin_inner_front))
+    #
+    # @Part
+    # def fused_inner_lowerskin_and_flanges(self):
+    #     return Fused(shape_in=self.inner_lowerskin_loft,
+    #                       tool = (self.flange_lowerskin_inner_rear, self.flange_lowerskin_inner_front))
+    #
+    # @Part
+    # def fused_outer_upperskin_and_flanges(self):
+    #     return Fused(shape_in=self.outer_upperskin_loft,
+    #                       tool = (self.flange_upperskin_outer_rear, self.flange_upperskin_outer_front))
+    #
+    # @Part
+    # def fused_outer_lowerskin_and_flanges(self):
+    #     return Fused(shape_in=self.outer_lowerskin_loft,
+    #                       tool = (self.flange_lowerskin_outer_rear, self.flange_lowerskin_outer_front))
 
-    @Part
-    def fused_inner_upperskin_and_flanges(self):
-        return Fused(shape_in=self.inner_upperskin_loft,
-                          tool = (self.flange_upperskin_inner_rear, self.flange_upperskin_inner_front))
+    # @Part
+    # def fused(self):
+    #     return Fused(shape_in=self.fused_inner_upperskin_and_flanges,
+    #                  tool= (self.front_spar_inner, self.rearspar_inner)
+    #         )
 
-    @Part
-    def fused_inner_lowerskin_and_flanges(self):
-        return Fused(shape_in=self.inner_lowerskin_loft,
-                          tool = (self.flange_lowerskin_inner_rear, self.flange_lowerskin_inner_front))
-
-    @Part
-    def fused_outer_upperskin_and_flanges(self):
-        return Fused(shape_in=self.outer_upperskin_loft,
-                          tool = (self.flange_upperskin_outer_rear, self.flange_upperskin_outer_front))
-
-    @Part
-    def fused_outer_lowerskin_and_flanges(self):
-        return Fused(shape_in=self.outer_lowerskin_loft,
-                          tool = (self.flange_lowerskin_outer_rear, self.flange_lowerskin_outer_front))
     # @Part
     # def mesh_fused_inner_upper_skin(self):
     #     return MeshingFunc(part_class=self.fused_inner_upperskin_and_flanges, n_mesh_points=50)

@@ -23,7 +23,7 @@ class Aircraft(GeomBase):
     engine_mass = Input(1000, validator=GE(0, msg="Engine mass cannot be smaller than " "{validator.limit}!"))
 
 
-    @Part
+    @Part #Sicne the centerpiece depends fully on the geometry of the wing, it is a subclass of the wing
     def wing(self):
         return Parts.Wing_me(hide_mesh=self.hide_mesh, width_centerpiece=self.width_centerpiece, rib_pitch=self.rib_pitch, span=self.span,
                        leading_edge_sweep=self.leading_edge_sweep,

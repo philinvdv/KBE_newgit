@@ -2,12 +2,14 @@ from math import radians, tan, cos
 from parapy.geom import *
 from parapy.core import *
 import numpy as np
-from Meshing import *
+from Parts.Meshing import *
 
 class Wingbox(GeomBase):
     """This class contains the spar geometry, for the front and rear spar of the inner and outer wingbox."""
     thickness_flange = Input(0.02) #m for spars
     length_flanges = Input(0.02) #for skins
+    flange_length_skins = Input(0.02) #for centerpiece
+    flange_length_spars = Input(0.02)
     #The attributes and inputs from Wing() (thus inherited)
     start_wing_to_kink = Input()
     tip_chord_kink = Input()
@@ -36,7 +38,7 @@ class Wingbox(GeomBase):
     def line_root_front(self):
         return LineSegment(start=Point(-0.8 * self.root_chord, 0, self.front_spar_coordinates[0][1] * self.root_chord),
                            end=Point(-0.8 * self.root_chord, 0, self.front_spar_coordinates[1][1] * self.root_chord),
-                           )
+                           hidden=True)
 
     #Moved this to Centerpiece class
     # @Part  # Line for front spar at root centerpiece NEW
@@ -56,20 +58,20 @@ class Wingbox(GeomBase):
     def line_kink_front(self):
         return LineSegment(start=Point(-0.8 * self.tip_chord_kink, self.start_wing_to_kink, self.front_spar_coordinates[0][1] * self.tip_chord_kink),
                            end=Point(-0.8 * self.tip_chord_kink, self.start_wing_to_kink, self.front_spar_coordinates[1][1] * self.tip_chord_kink),
-                           )
+                           hidden=True)
 
     @Part
     def front_spar_inner(self):
         return LoftedSurface(
             profiles=[self.line_root_front, self.line_kink_front],
-            mesh_deflection=0.0001
+            mesh_deflection=0.0001,hidden=True
         )
 
     """Rear spar inner"""
     @Part #this part is the rectangle at the root chord for the rear spar
     def line_root_rear(self):
         return LineSegment(start=Point(-0.3 * self.root_chord, 0, self.rear_spar_coordinates[0][1] * self.root_chord),
-                           end=Point(-0.3 * self.root_chord, 0, self.rear_spar_coordinates[1][1] * self.root_chord))
+                           end=Point(-0.3 * self.root_chord, 0, self.rear_spar_coordinates[1][1] * self.root_chord),hidden=True)
 
     #Moved to Centerpiece class
     # @Part #Mirror to the left wing (move to Centerpiece()?)
@@ -87,13 +89,14 @@ class Wingbox(GeomBase):
     @Part
     def line_kink_rear(self):
         return LineSegment(start=Point(-0.3 * self.tip_chord_kink, self.start_wing_to_kink, self.rear_spar_coordinates[0][1] * self.tip_chord_kink),
-                           end=Point(-0.3 * self.tip_chord_kink, self.start_wing_to_kink, self.rear_spar_coordinates[1][1] * self.tip_chord_kink))
+                           end=Point(-0.3 * self.tip_chord_kink, self.start_wing_to_kink, self.rear_spar_coordinates[1][1] * self.tip_chord_kink),
+                           hidden=True)
 
     @Part
     def rearspar_inner(self):  # generate a surface
         return LoftedSurface(
             profiles=[self.line_root_rear, self.line_kink_rear],
-            mesh_deflection=0.0001
+            mesh_deflection=0.0001,hidden=True
         )
 
     """Front spar outer section"""
@@ -106,13 +109,13 @@ class Wingbox(GeomBase):
                            end=Point((self.span/2 - self.width_centerpiece/2) * np.tan(radians(self.leading_edge_sweep)) + self.tip_chord - self.root_chord
                                             -0.8 * self.tip_chord, #x
                                        self.span/2 - self.width_centerpiece/2, #y
-                                       self.front_spar_coordinates[1][1] * self.tip_chord)) #z
+                                       self.front_spar_coordinates[1][1] * self.tip_chord),hidden=True) #z
 
     @Part
     def frontspar_outer(self):  # generate a surface
         return LoftedSurface(
             profiles=[self.line_kink_front, self.line_tip_front],
-            mesh_deflection=0.0001
+            mesh_deflection=0.0001, hidden=True
         )
 
     # """Rear spar outer section"""
@@ -145,14 +148,14 @@ class Wingbox(GeomBase):
                            end=Point((self.span/2 - self.width_centerpiece/2) * np.tan(radians(self.leading_edge_sweep)) + self.tip_chord - self.root_chord
                                             -0.3 * self.tip_chord, #x
                                        self.span/2 - self.width_centerpiece/2, #y
-                                       self.rear_spar_coordinates[1][1] * self.tip_chord)) #z
+                                       self.rear_spar_coordinates[1][1] * self.tip_chord),hidden=True) #z
 
 
     @Part
     def rearspar_outer(self):  # generate a surface
         return LoftedSurface(
             profiles=[self.line_kink_rear, self.line_tip_rear],
-            mesh_deflection=0.0001
+            mesh_deflection=0.0001, hidden=True
         )
 
 
@@ -160,73 +163,77 @@ class Wingbox(GeomBase):
     @Part
     def flangeline1_front_upper_inner(self): #flang of the front spar, upper inner
         return LineSegment(start=Point(-0.8 * self.root_chord - self.thickness_flange, 0, self.front_spar_coordinates[0][1] * self.root_chord),
-                           end=Point(-0.8 * self.tip_chord_kink - self.thickness_flange, self.start_wing_to_kink, self.front_spar_coordinates[0][1] * self.tip_chord_kink))
+                           end=Point(-0.8 * self.tip_chord_kink - self.thickness_flange, self.start_wing_to_kink, self.front_spar_coordinates[0][1] * self.tip_chord_kink),
+                           hidden=True)
 
     @Part
     def flangeline2_front_upper_inner(self): #flang of the front spar, upper inner
         return LineSegment(start=Point(-0.8 * self.root_chord, 0, self.front_spar_coordinates[0][1] * self.root_chord),
-                           end=Point(-0.8 * self.tip_chord_kink, self.start_wing_to_kink, self.front_spar_coordinates[0][1] * self.tip_chord_kink))
+                           end=Point(-0.8 * self.tip_chord_kink, self.start_wing_to_kink, self.front_spar_coordinates[0][1] * self.tip_chord_kink),
+                           hidden=True)
 
     @Part
     def flange_front_upper_inner(self):
         return LoftedSurface(
             profiles=[self.flangeline1_front_upper_inner, self.flangeline2_front_upper_inner],
-            mesh_deflection=0.0001
+            mesh_deflection=0.0001, hidden=True
         )
 
     @Part
     def flangeline1_front_lower_inner(self): #flange for the frontspar, lower part inner box
         return LineSegment(start=Point(-0.8 * self.root_chord - self.thickness_flange, 0, self.front_spar_coordinates[1][1] * self.root_chord),
-                           end=Point(-0.8 * self.tip_chord_kink - self.thickness_flange, self.start_wing_to_kink, self.front_spar_coordinates[1][1] * self.tip_chord_kink))
+                           end=Point(-0.8 * self.tip_chord_kink - self.thickness_flange, self.start_wing_to_kink, self.front_spar_coordinates[1][1] * self.tip_chord_kink),
+                           hidden=True)
 
     @Part
     def flangeline2_front_lower_inner(self):
         return LineSegment(start=Point(-0.8 * self.root_chord, 0, self.front_spar_coordinates[1][1] * self.root_chord),
-                           end=Point(-0.8 * self.tip_chord_kink, self.start_wing_to_kink, self.front_spar_coordinates[1][1] * self.tip_chord_kink))
+                           end=Point(-0.8 * self.tip_chord_kink, self.start_wing_to_kink, self.front_spar_coordinates[1][1] * self.tip_chord_kink),
+                           hidden=True)
 
     @Part
     def flange_front_lower_inner(self):
         return LoftedSurface(
             profiles=[self.flangeline1_front_lower_inner, self.flangeline2_front_lower_inner],
-            mesh_deflection=0.0001
+            mesh_deflection=0.0001, hidden=True
         )
 
     @Part #For rearspar, upper inner
     def flangeline1_rear_upper_inner(self):
         return LineSegment(start=Point(-0.3 * self.root_chord + self.thickness_flange, 0, self.rear_spar_coordinates[0][1] * self.root_chord),
                            end=Point(-0.3 * self.tip_chord_kink + self.thickness_flange, self.start_wing_to_kink,
-                                       self.rear_spar_coordinates[0][1] * self.tip_chord_kink))
+                                       self.rear_spar_coordinates[0][1] * self.tip_chord_kink),hidden=True)
 
     @Part
     def flangeline2_rear_upper_inner(self):
         return LineSegment(start=Point(-0.3 * self.root_chord, 0, self.rear_spar_coordinates[0][1] * self.root_chord),
                            end=Point(-0.3 * self.tip_chord_kink, self.start_wing_to_kink,
-                                     self.rear_spar_coordinates[0][1] * self.tip_chord_kink))
+                                     self.rear_spar_coordinates[0][1] * self.tip_chord_kink),hidden=True)
 
     @Part
     def flange_front_rear_upper_inner(self):
         return LoftedSurface(
             profiles=[self.flangeline1_rear_upper_inner, self.flangeline2_rear_upper_inner],
-            mesh_deflection=0.0001
+            mesh_deflection=0.0001, hidden=True
         )
 
     @Part #For rearspar, lower inner
     def flangeline1_rear_lower_inner(self):
         return LineSegment(start=Point(-0.3 * self.root_chord + self.thickness_flange, 0, self.rear_spar_coordinates[1][1] * self.root_chord),
                            end=Point(-0.3 * self.tip_chord_kink + self.thickness_flange, self.start_wing_to_kink,
-                                     self.rear_spar_coordinates[1][1] * self.tip_chord_kink))
+                                     self.rear_spar_coordinates[1][1] * self.tip_chord_kink),hidden=True)
 
     @Part
     def flangeline2_rear_lower_inner(self):
         return LineSegment(start=Point(-0.3 * self.root_chord, 0, self.rear_spar_coordinates[1][1] * self.root_chord),
                            end=Point(-0.3 * self.tip_chord_kink, self.start_wing_to_kink,
-                                     self.rear_spar_coordinates[1][1] * self.tip_chord_kink))
+                                     self.rear_spar_coordinates[1][1] * self.tip_chord_kink),hidden=True)
 
     @Part
     def flange_front_rear_lower_inner(self):
         return LoftedSurface(
             profiles=[self.flangeline1_rear_lower_inner, self.flangeline2_rear_lower_inner],
-            mesh_deflection=0.0001
+            mesh_deflection=0.0001, hidden=True
         )
 
 
@@ -238,7 +245,8 @@ class Wingbox(GeomBase):
                                             -0.8 * self.tip_chord - self.thickness_flange, #x
                                        self.span/2 - self.width_centerpiece/2, #y
                                        self.front_spar_coordinates[0][1] * self.tip_chord),
-                           end=Point(-0.8 * self.tip_chord_kink - self.thickness_flange, self.start_wing_to_kink, self.front_spar_coordinates[0][1] * self.tip_chord_kink))
+                           end=Point(-0.8 * self.tip_chord_kink - self.thickness_flange, self.start_wing_to_kink, self.front_spar_coordinates[0][1] * self.tip_chord_kink),
+                           hidden=True)
 
     @Part
     def flangeline2_front_upper_outer(self):  # flang of the front spar, upper inner
@@ -246,14 +254,15 @@ class Wingbox(GeomBase):
                                             -0.8 * self.tip_chord, #x
                                        self.span/2 - self.width_centerpiece/2, #y
                                        self.front_spar_coordinates[0][1] * self.tip_chord),
-                           end=Point(-0.8 * self.tip_chord_kink, self.start_wing_to_kink, self.front_spar_coordinates[0][1] * self.tip_chord_kink))
+                           end=Point(-0.8 * self.tip_chord_kink, self.start_wing_to_kink, self.front_spar_coordinates[0][1] * self.tip_chord_kink),
+                           hidden=True)
 
 
     @Part
     def flange_front_upper_outer(self):
         return LoftedSurface(
             profiles=[self.flangeline1_front_upper_outer, self.flangeline2_front_upper_outer],
-            mesh_deflection=0.0001
+            mesh_deflection=0.0001, hidden=True
         )
 
     @Part
@@ -262,7 +271,8 @@ class Wingbox(GeomBase):
                                             -0.8 * self.tip_chord - self.thickness_flange, #x
                                        self.span/2 - self.width_centerpiece/2, #y
                                        self.front_spar_coordinates[1][1] * self.tip_chord),
-                           end=Point(-0.8 * self.tip_chord_kink - self.thickness_flange, self.start_wing_to_kink, self.front_spar_coordinates[1][1] * self.tip_chord_kink))
+                           end=Point(-0.8 * self.tip_chord_kink - self.thickness_flange, self.start_wing_to_kink, self.front_spar_coordinates[1][1] * self.tip_chord_kink),
+                           hidden=True)
 
     @Part
     def flangeline2_front_lower_outer(self):
@@ -270,13 +280,14 @@ class Wingbox(GeomBase):
                                             -0.8 * self.tip_chord, #x
                                        self.span/2 - self.width_centerpiece/2, #y
                                        self.front_spar_coordinates[1][1] * self.tip_chord),
-                           end=Point(-0.8 * self.tip_chord_kink, self.start_wing_to_kink, self.front_spar_coordinates[1][1] * self.tip_chord_kink))
+                           end=Point(-0.8 * self.tip_chord_kink, self.start_wing_to_kink, self.front_spar_coordinates[1][1] * self.tip_chord_kink),
+                           hidden=True)
 
     @Part
     def flange_front_lower_outer(self):
         return LoftedSurface(
             profiles=[self.flangeline1_front_lower_outer, self.flangeline2_front_lower_outer],
-            mesh_deflection=0.0001
+            mesh_deflection=0.0001, hidden=True
         )
 
 
@@ -289,7 +300,7 @@ class Wingbox(GeomBase):
                                        self.span/2 - self.width_centerpiece/2, #y
                                        self.rear_spar_coordinates[0][1] * self.tip_chord),
                            end=Point(-0.3 * self.tip_chord_kink + self.thickness_flange, self.start_wing_to_kink,
-                                     self.rear_spar_coordinates[0][1] * self.tip_chord_kink))
+                                     self.rear_spar_coordinates[0][1] * self.tip_chord_kink),hidden=True)
 
     @Part
     def flangeline2_rear_upper_outer(self):
@@ -298,13 +309,13 @@ class Wingbox(GeomBase):
                                        self.span/2 - self.width_centerpiece/2, #y
                                        self.rear_spar_coordinates[0][1] * self.tip_chord),
                            end=Point(-0.3 * self.tip_chord_kink, self.start_wing_to_kink,
-                                     self.rear_spar_coordinates[0][1] * self.tip_chord_kink))
+                                     self.rear_spar_coordinates[0][1] * self.tip_chord_kink),hidden=True)
 
     @Part
     def flange_rear_upper_outer(self):
         return LoftedSurface(
             profiles=[self.flangeline1_rear_upper_outer, self.flangeline2_rear_upper_outer],
-            mesh_deflection=0.0001
+            mesh_deflection=0.0001, hidden=True
         )
 
     @Part  # For rearspar, lower outer
@@ -314,7 +325,7 @@ class Wingbox(GeomBase):
                                        self.span/2 - self.width_centerpiece/2, #y
                                        self.rear_spar_coordinates[1][1] * self.tip_chord),
                            end=Point(-0.3 * self.tip_chord_kink + self.thickness_flange, self.start_wing_to_kink,
-                                     self.rear_spar_coordinates[1][1] * self.tip_chord_kink))
+                                     self.rear_spar_coordinates[1][1] * self.tip_chord_kink),hidden=True)
 
     @Part
     def flangeline2_rear_lower_outer(self):
@@ -323,13 +334,13 @@ class Wingbox(GeomBase):
                                        self.span/2 - self.width_centerpiece/2, #y
                                        self.rear_spar_coordinates[1][1] * self.tip_chord),
                            end=Point(-0.3 * self.tip_chord_kink, self.start_wing_to_kink,
-                                     self.rear_spar_coordinates[1][1] * self.tip_chord_kink))
+                                     self.rear_spar_coordinates[1][1] * self.tip_chord_kink),hidden=True)
 
     @Part
     def flange_rear_lower_outer(self):
         return LoftedSurface(
             profiles=[self.flangeline1_rear_lower_outer, self.flangeline2_rear_lower_outer],
-            mesh_deflection=0.0001
+            mesh_deflection=0.0001, hidden=True
         )
 
 
@@ -399,8 +410,7 @@ class Wingbox(GeomBase):
     def inner_upperskin_loft(self):  # generate a surface
         return LoftedSurface(
             profiles=[self.line_root_upp, self.line_kink_upp],
-            mesh_deflection=0.0001,
-            hidden=True)
+            mesh_deflection=0.0001, hidden=True)
 
     """Lower skin panel inner"""
 
@@ -417,8 +427,7 @@ class Wingbox(GeomBase):
 
     @Part  # Line from lower point of front spar to lower point of rear spar
     def line_root_low(self):
-        return LineSegment(start=self.points_root_lower_skin[0], end=self.points_root_lower_skin[1])  # ,
-        # hidden=True)
+        return LineSegment(start=self.points_root_lower_skin[0], end=self.points_root_lower_skin[1], hidden=True)
         #  position = rotate(XOY, 'x', 90, deg=True)
 
     """Upper&lower skin pannel centerpiece"""
@@ -447,6 +456,7 @@ class Wingbox(GeomBase):
     def line_root_upp_centerpiece(self):
         return LineSegment(start=self.points_skin_centerpiece[0],
                            end=self.points_skin_centerpiece[1],
+                           hidden=True
                            #  position = rotate(XOY, 'x', 90, deg=True)
                            )
 
@@ -454,11 +464,12 @@ class Wingbox(GeomBase):
     def upperskin_centerpiece_loft(self):  # generate a surface
         return LoftedSurface(
             profiles=[self.line_root_upp, self.line_root_upp_centerpiece],
-            mesh_deflection=0.0001)
+            mesh_deflection=0.0001, hidden=True)
 
     @Part  # Line from lower point of front spar to lower point of rear spar
     def line_root_low_centerpiece(self):
         return LineSegment(start=self.points_skin_centerpiece[4], end=self.points_skin_centerpiece[5],
+                           hidden=True
                            #  position = rotate(XOY, 'x', 90, deg=True)
                            )
 
@@ -466,7 +477,7 @@ class Wingbox(GeomBase):
     def lowerskin_centerpiece_loft(self):  # generate a surface
         return LoftedSurface(
             profiles=[self.line_root_low, self.line_root_low_centerpiece],
-            mesh_deflection=0.0001
+            mesh_deflection=0.0001, hidden=True
         )
 
     """At kink, lower pannel inner"""
@@ -494,8 +505,7 @@ class Wingbox(GeomBase):
     def inner_lowerskin_loft(self):  # generate a surface
         return LoftedSurface(
             profiles=[self.line_root_low, self.line_kink_low],
-            mesh_deflection=0.0001,
-            hidden=True)
+            mesh_deflection=0.0001, hidden=True)
 
     """Outer skin panels, tip"""
 
@@ -531,8 +541,7 @@ class Wingbox(GeomBase):
     def outer_upperskin_loft(self):  # generate a surface
         return LoftedSurface(
             profiles=[self.line_kink_upp, self.line_tip_upp],
-            mesh_deflection=0.0001,
-            hidden=True)
+            mesh_deflection=0.0001, hidden=True)
 
     """Lower skin panel outer"""
 
@@ -568,8 +577,7 @@ class Wingbox(GeomBase):
     def outer_lowerskin_loft(self):  # generate a surface
         return LoftedSurface(
             profiles=[self.line_tip_low, self.line_kink_low],
-            mesh_deflection=0.0001,
-            hidden=True)
+            mesh_deflection=0.0001, hidden=True)
 
     """Flanges"""
 
@@ -578,7 +586,7 @@ class Wingbox(GeomBase):
         return LoftedSurface(
             profiles=[LineSegment(start=self.points_root_upper_skin[2], end=self.points_kink_upper_skin[2]),
                       LineSegment(start=self.points_root_upper_skin[0], end=self.points_kink_upper_skin[0])],
-            hidden=True)
+        hidden=True)
 
     @Part  # flange for upper skin inner along rearspar
     def flange_upperskin_inner_rear(self):
@@ -633,38 +641,39 @@ class Wingbox(GeomBase):
     @Part
     def fused_inner_upperskin_and_flanges(self):
         return Fused(shape_in=self.inner_upperskin_loft,
-                     tool=(self.flange_upperskin_inner_rear, self.flange_upperskin_inner_front))
+                     tool=(self.flange_upperskin_inner_rear, self.flange_upperskin_inner_front),hidden=True)
 
     @Part
     def fused_inner_lowerskin_and_flanges(self):
         return Fused(shape_in=self.inner_lowerskin_loft,
-                     tool=(self.flange_lowerskin_inner_rear, self.flange_lowerskin_inner_front))
+                     tool=(self.flange_lowerskin_inner_rear, self.flange_lowerskin_inner_front),hidden=True)
 
     @Part
     def fused_outer_upperskin_and_flanges(self):
         return Fused(shape_in=self.outer_upperskin_loft,
-                     tool=(self.flange_upperskin_outer_rear, self.flange_upperskin_outer_front))
+                     tool=(self.flange_upperskin_outer_rear, self.flange_upperskin_outer_front),hidden=True)
 
     @Part
     def fused_outer_lowerskin_and_flanges(self):
         return Fused(shape_in=self.outer_lowerskin_loft,
-                     tool=(self.flange_lowerskin_outer_rear, self.flange_lowerskin_outer_front))
+                     tool=(self.flange_lowerskin_outer_rear, self.flange_lowerskin_outer_front),hidden=True)
 
     @Part
     def fused_wingbox_inner(self):
         return Fused(shape_in=self.fused_inner_upperskin_and_flanges,
-                     tool=(self.front_spar_inner, self.fused_inner_lowerskin_and_flanges, self.rearspar_inner)
-                     )
+                     tool=(self.front_spar_inner, self.fused_inner_lowerskin_and_flanges, self.rearspar_inner),
+                     hidden=True)
 
     @Part
     def fused_wingbox_outer(self):
         return Fused(shape_in= self.fused_outer_upperskin_and_flanges,
-                     tool=(self.frontspar_outer, self.fused_outer_lowerskin_and_flanges, self.rearspar_outer))
+                     tool=(self.frontspar_outer, self.fused_outer_lowerskin_and_flanges, self.rearspar_outer),
+                     hidden=True)
+
     @Part
     def fused_wingbox_total(self):
         return Fused(shape_in=self.fused_wingbox_inner,
                      tool=self.fused_wingbox_outer)
-
 
     # @Part
     # def mesh_fused_inner_upper_skin(self):
@@ -682,6 +691,132 @@ class Wingbox(GeomBase):
     # def mesh_fused_outer_lower_skin(self):
     #     return MeshingFunc(part_class=self.fused_outer_lowerskin_and_flanges, n_mesh_points=50)
 
+    """CENTERPIECE"""
+    """Upper&lower skin pannel centerpiece"""
+
+    @Attribute
+    def points_skin_centerpiece(self):  # first four are for upper, last four are for lower
+        point_2cp = Point(-0.8 * self.root_chord, -self.width_centerpiece,
+                          self.front_spar_coordinates[0][1] * self.root_chord)
+        point_3cp = Point(-0.3 * self.root_chord, -self.width_centerpiece,
+                          self.rear_spar_coordinates[0][1] * self.root_chord)
+        point_2flcp = Point(-0.8 * self.root_chord, -self.width_centerpiece,
+                            self.front_spar_coordinates[0][1] * self.root_chord - self.flange_length_skins)
+        point_3flcp = Point(-0.3 * self.root_chord, -self.width_centerpiece,
+                            self.rear_spar_coordinates[0][1] * self.root_chord - self.flange_length_skins)
+        point_2lcp = Point(-0.8 * self.root_chord, -self.width_centerpiece,
+                           self.front_spar_coordinates[1][1] * self.root_chord)
+        point_3lcp = Point(-0.3 * self.root_chord, -self.width_centerpiece,
+                           self.rear_spar_coordinates[1][1] * self.root_chord)
+        point_2fllcp = Point(-0.8 * self.root_chord, -self.width_centerpiece,
+                             self.front_spar_coordinates[1][1] * self.root_chord + self.flange_length_skins)
+        point_3fllcp = Point(-0.3 * self.root_chord, -self.width_centerpiece,
+                             self.rear_spar_coordinates[1][1] * self.root_chord + self.flange_length_skins)
+        return [point_2cp, point_3cp, point_2flcp, point_3flcp, point_2lcp, point_3lcp, point_2fllcp, point_3fllcp]
+
+    @Part  # This line comes from the Skins file
+    def line_root_upp(self):
+        return LineSegment(start=Point(-0.8 * self.root_chord, 0, self.front_spar_coordinates[0][1] * self.root_chord),
+                           end=Point(-0.3 * self.root_chord, 0, self.rear_spar_coordinates[0][1] * self.root_chord),
+                           #  position = rotate(XOY, 'x', 90, deg=True)
+                           hidden=True)
+
+    @Part  # Line from Skins file
+    def line_root_low(self):
+        return LineSegment(start=Point(-0.8 * self.root_chord, 0, self.front_spar_coordinates[1][1] * self.root_chord),
+                           end=Point(-0.3 * self.root_chord, 0, self.rear_spar_coordinates[1][1] * self.root_chord),hidden=True)
+        #  position = rotate(XOY, 'x', 90, deg=True)
+
+    @Part  # Line from upper point of front spar to upper point of rear spar at centerpiece
+    def line_root_upp_centerpiece(self):
+        return LineSegment(start=self.points_skin_centerpiece[0],
+                           end=self.points_skin_centerpiece[1],
+                           #  position = rotate(XOY, 'x', 90, deg=True)
+                           hidden=True)
+
+    @Part
+    def upperskin_centerpiece_loft(self):  # generate a surface
+        return LoftedSurface(
+            profiles=[self.line_root_upp, self.line_root_upp_centerpiece],
+            mesh_deflection=0.0001, hidden=True)
+
+    @Part  # Line from lower point of front spar to lower point of rear spar
+    def line_root_low_centerpiece(self):
+        return LineSegment(start=self.points_skin_centerpiece[4], end=self.points_skin_centerpiece[5],
+                           #  position = rotate(XOY, 'x', 90, deg=True)
+                           hidden=True)
+
+    @Part
+    def lowerskin_centerpiece_loft(self):  # generate a surface
+        return LoftedSurface(
+            profiles=[self.line_root_low, self.line_root_low_centerpiece],
+            mesh_deflection=0.0001, hidden=True
+        )
+
+    """SPARS CP"""
+
+    @Part  # Line for front spar root
+    def line_root_front(self):
+        return LineSegment(start=Point(-0.8 * self.root_chord, 0, self.front_spar_coordinates[0][1] * self.root_chord),
+                           end=Point(-0.8 * self.root_chord, 0, self.front_spar_coordinates[1][1] * self.root_chord),
+                           hidden=True)
+
+    @Part  # Line for front spar at root centerpiece
+    def mirror_line_root_front(self):
+        return LineSegment(start=Point(-0.8 * self.root_chord, -self.width_centerpiece,
+                                       self.front_spar_coordinates[0][1] * self.root_chord),
+                           end=Point(-0.8 * self.root_chord, -self.width_centerpiece,
+                                     self.front_spar_coordinates[1][1] * self.root_chord),
+                           hidden=True)
+
+    @Part  # Make the frontspar of the centerpiece
+    def frontspar_surf_centerpiece(self):  # generate a surface
+        return LoftedSurface(
+            profiles=[self.line_root_front, self.mirror_line_root_front],
+            mesh_deflection=0.0001, hidden=True
+        )
+
+    @Part  # this is for the rear spar
+    def line_root_rear(self):
+        return LineSegment(start=Point(-0.3 * self.root_chord, 0, self.rear_spar_coordinates[0][1] * self.root_chord),
+                           end=Point(-0.3 * self.root_chord, 0, self.rear_spar_coordinates[1][1] * self.root_chord),
+                           hidden=True)
+
+    @Part  # Mirror to the left wing (move to Centerpiece()?)
+    def mirror_line_root_rear(self):
+        return LineSegment(start=Point(-0.3 * self.root_chord, -self.width_centerpiece,
+                                       self.rear_spar_coordinates[0][1] * self.root_chord),
+                           end=Point(-0.3 * self.root_chord, -self.width_centerpiece,
+                                     self.rear_spar_coordinates[1][1] * self.root_chord),
+                           hidden=True)
+
+    @Part  # for the rear spar of the centerpiece
+    def rearspar_loft_centerpiece(self):  # generate a surface
+        return LoftedSurface(
+            profiles=[self.line_root_rear, self.mirror_line_root_rear],
+            mesh_deflection=0.0001, hidden=True
+        )
+
+    @Part
+    def fused_cp1(self):
+        return Fused(shape_in=self.upperskin_centerpiece_loft,
+                     tool=self.frontspar_surf_centerpiece,hidden=True)
+
+    @Part
+    def fused_cp2(self):
+        return Fused(shape_in=self.lowerskin_centerpiece_loft,
+                     tool=self.rearspar_loft_centerpiece,hidden=True)
+
+    @Part
+    def fused_centerpiece(self):
+        return Fused(shape_in=self.fused_cp1,
+                     tool=self.fused_cp2, hidden=True)
+
+    @Part
+    def fused_wingbox_centerpiece(self):
+        return Fused(shape_in=self.fused_wingbox_total,
+                     tool=self.fused_centerpiece, hidden=True)
+
     """RIBS"""
 
     @Attribute
@@ -693,9 +828,10 @@ class Wingbox(GeomBase):
     def LE_length(self):
         return (self.span / 2 - self.width_centerpiece / 2) / cos(radians(self.leading_edge_sweep))
 
-    @Attribute
+    @Attribute #Start at the start of the wingbox LE, not the wing LE
     def LE_rib_pos(self):
-        return np.linspace(0, self.LE_length, round(self.rib_pitch * (self.span / 2 - self.width_centerpiece / 2)) + 1)
+        start = cos(radians(90 - self.leading_edge_sweep)) * 0.2 * self.root_chord
+        return np.linspace(start, self.LE_length, round(self.rib_pitch * (self.span / 2 - self.width_centerpiece / 2)) + 1)
 
     @Part
     def rib_surfaces(self):
@@ -703,12 +839,12 @@ class Wingbox(GeomBase):
                                   position=translate(rotate(rotate90(translate(self.position, 'y', self.rib_pos[0],
                                                                                'x', - self.root_chord),
                                                                      'x'), 'y', -self.leading_edge_sweep, deg=True),
-                                                     'z', -self.LE_rib_pos[child.index]))
+                                                     'z', -self.LE_rib_pos[child.index]), hidden=True)
 
     @Attribute
     def pts_closed(self):
         """ Extract airfoil coordinates from a data file and create a list of 3D points for the closed airfoil"""
-        with open('../NACA_2412_closed.dat', 'r') as f:
+        with open('NACA_2412_closed.dat', 'r') as f:
             points_cl = []
             for line in f:
                 x, y = line.split(' ', 1)  # separator = " "; max number of split = 1
@@ -721,7 +857,7 @@ class Wingbox(GeomBase):
     @Part  # gives the closed airfoil
     def airfoil_closed(self):  # this curve is on the X-Y plane, with TE = (1, 0, 0) and LE = (0, 0, 0)
         return FittedCurve(points=self.pts_closed,
-                           mesh_deflection=0.0001)
+                           mesh_deflection=0.0001,hidden=True)
 
     @Part  # TransformedCurve is making a carbon copy of the fitted curve, which can be moved (rotated and translated) /
     # from one position to another. /
@@ -732,7 +868,7 @@ class Wingbox(GeomBase):
             curve_in=self.airfoil_closed,
             from_position=rotate(translate(XOY, 'x', 1), 'x', -90, deg=True),
             to_position=self.position,
-            hidden=False
+            hidden=True
         )
 
     @Part
@@ -744,7 +880,7 @@ class Wingbox(GeomBase):
             # this point (the curve TE in this case) / is kept fixed during scaling
             # Can also use "self.position.point" - This extracts the (x,y,z) origin of the wing class position.
             factor=self.root_chord,  # uniform scaling
-            mesh_deflection=0.0001
+            mesh_deflection=0.0001,hidden=True
         )
 
     @Part  # This part creates the rib that closes the wing at the root (do we need it?)
@@ -773,7 +909,7 @@ class Wingbox(GeomBase):
         return ScaledCurve(
             curve_in=self.airfoil_unscaled_tip,
             reference_point=self.airfoil_unscaled_tip.start,
-            factor=self.tip_chord
+            factor=self.tip_chord,hidden=True
         )
 
     @Part  # This part creates the rib that closes the wing at the tip
@@ -801,11 +937,267 @@ class Wingbox(GeomBase):
     #                  shape_in=self.rib_surfaces[child.index],
     #                  tool=self.fused_wingbox_total).parts[0]
 
+    # @Part
+    # def box_less_cone(self):  # Substract the airfoil from the rib
+    #     return Subtracted(shape_in=self.fused_wingbox_total, tool=self.rib_surfaces)
+
+    #ITS GETTING SOMEWHERE
+    # @Part
+    # def intersected(self):
+    #     return IntersectedShapes(shape_in=self.fused_wingbox_total, tool=self.rib_surfaces)
+    #
+    # @Part
+    # def ribs(self):
+    #     return LoftedSurface(profiles=[self.intersected.edges[4]])
+
+    ## Make the ribs fit inside the wingbox
+
+    # @Part #This gives the curves of the ribs in the shape of the wingbox, BUT gives open edges so doesnt work
+    # def intersected(self):
+    #     return IntersectedShapes(quantify=len(self.rib_surfaces),
+    #                              shape_in=self.fused_wingbox_total,
+    #                              tool=self.rib_surfaces[child.index])
+
+    @Part  # This creates 1 rib at the 5th rib
+    def rib_surface5(self):
+        return Face(island=self.intersected[7].edges, hidden=True)
+
+
+    @Part #This gives the curves of the ribs in the shape of the wingbox
+    def intersected_working(self):
+        return IntersectedShapes(quantify=len(self.rib_surfaces),
+                                 shape_in=self.fused_wingbox_centerpiece,
+                                 tool=self.rib_surfaces[child.index], hidden=True)
+
+    @Part  # This creates all ribs, goes into cp still
+    def rib_surface_all(self):
+        return Face(quantify = len(self.intersected_working),
+                    island=self.intersected_working[child.index].edges, hidden=True)
+
+    @Part #This is purely to cut the ribs at the right locations, sucht that they do not go into the centerpiece
+    def box_cp(self):
+        return Box(width=self.root_chord, height=3, length=self.width_centerpiece,
+                   position = translate(XOY,'x', -self.root_chord, 'y',-self.width_centerpiece , 'z', -1.5),
+                   hidden=True)
+
+    @Part  #ribs
+    def ribs_cut(self):  # Substract the box from the ribs
+        return Subtracted(quantify= len(self.rib_surface_all),shape_in=self.rib_surface_all[child.index], tool=self.box_cp)
+
+    #NOW GET IT FOR THE MIRRORED WING
+
+    #@Part  # Mirror and move ribs
+    # def mirrored_wingbox(self):
+    #     return TransformedSurface(
+    #         surface_in=MirroredSurface(surface_in=self.fused_wingbox_total,
+    #                                    reference_point=Point(0, 0, 0),
+    #                                    vector1=(1, 0, 0),
+    #                                    vector2=(0, 0, 1)),  # Original curve to transform
+    #         from_position=self.position,  # Reference position of the original curve
+    #         to_position=translate(XOY, 'x', -1, 'y', -self.width_centerpiece)  # New position of the curve
+    #     )
+
+    @Attribute  # Start at the start of the wingbox LE, not the wing LE
+    def LE_rib_pos_mirrored(self):
+        start = cos(radians(90 - self.leading_edge_sweep)) * 0.2 * self.root_chord
+        return np.linspace(0.03, self.LE_length,
+                           round(self.rib_pitch * (self.span / 2 - self.width_centerpiece / 2)) + 1)
+
     @Part
-    def box_less_cone(self):  # Substract the airfoil from the rib
-        return Subtracted(shape_in=self.fused_wingbox_total, tool=self.rib_surfaces)
+    def rib_surfaces_mirrored(self):
+        return RectangularSurface(quantify=len(self.rib_pos), width=2 * self.root_chord, length=0.5 * self.root_chord,
+                                  position=translate(rotate(rotate90(translate(self.position, 'y', self.rib_pos[0],
+                                                                               'x', - self.root_chord),
+                                                                     'x'), 'y', self.leading_edge_sweep, deg=True),
+                                                     'z', self.width_centerpiece+ self.LE_rib_pos_mirrored[child.index]), hidden=True)
+
+    @Part  # This gives the curves of the ribs in the shape of the wingbox
+    def intersected_working_mirror(self):
+        return IntersectedShapes(quantify=len(self.rib_surfaces_mirrored),
+                                 shape_in=self.fused_wingbox_centerpiece,
+                                 tool=self.rib_surfaces_mirrored[child.index], hidden=False)
+
+    # @Part  # This creates all ribs, goes into cp still
+    # def rib_surface_all_mirror(self):
+    #     return Face(quantify=len(self.intersected_working_mirror),
+    #                 island=self.intersected_working_mirror[child.index].edges, hidden=True)
+    #
+    # @Part  # ribs
+    # def ribs_cut_mirror(self):  # Substract the box from the ribs
+    #     return Subtracted(quantify=len(self.rib_surface_all_mirror), shape_in=self.rib_surface_all_mirror[child.index],
+    #                       tool=self.box_cp)
+
+    """It works until here"""
+
+    # @Part #root rib and wingbox
+    # def intersected_root2(self):
+    #     return IntersectedShapes(shape_in=self.root_rib,
+    #                              tool=self.fused_wingbox_total)
+    #
+    # @Part
+    # def intersected_root(self):
+    #     return IntersectedShapes(quantify=len(self.rib_surfaces),
+    #                              shape_in=self.root_rib,
+    #                              tool=self.rib_surfaces[child.index])
+    #
+    #
+    # @Part
+    # def intersected_root_combined(self):
+    #     return IntersectedShapes(quantify=len(self.intersected_root),
+    #                              shape_in=self.intersected_root2,
+    #                              tool=self.intersected_root[child.index])
+
+
+    # @Part
+    # def intersected_all(self):
+    #     return IntersectedShapes(quantify=len(self.intersected),
+    #                              shape_in=self.intersected_root2,
+    #                              tool=self.intersected[child.index])
+
+    # @Attribute
+    # def combined_edges(self):
+    #     combined_edges = []
+    #     for i in range(len(self.rib_surfaces)):
+    #         combined_edges.append(self.intersected[i].edges + self.intersected_root[i].edges)
+    #     return combined_edges
+
+    # @Part
+    # def wire_try(self):
+    #     return Wire(curves_in=[self.intersected_root, self.intersected])
+
+    # @Part
+    # def wire_try(self):
+    #     return Fused(quantify=len(self.intersected),
+    #         shape_in=self.intersected_root,
+    #                  tool=self.intersected[child.index])
+
+    # @Attribute
+    # def intersection_edges(self):
+    #     return [edge for intersected_shape in self.intersected for edge in intersected_shape.edges]
+    #
+    # @Part
+    # def rib_wire(self):
+    #     return Wire(curves_in=self.intersection_edges)
+    #
+    # @Part
+    # def rib_surface(self):
+    #     return Face(island=self.rib_wire)
+
+    @Attribute
+    def intersection_edges(self):
+        edges = []
+        for intersected_shape in self.intersected:
+            edges.extend(intersected_shape.edges)
+        print(edges)
+
+        return edges
+
+
+    # @Attribute
+    # def intersection_edges(self):
+    #     return [edge for intersected_shape in self.intersected for edge in intersected_shape.edges]
+
+    # @Attribute
+    # def closed_wires(self):
+    #     from parapy.geom.occ.wire import Wire
+    #     from parapy.geom.generic.positioning import Point
+    #     wires = []
+    #
+    #     # Assuming intersection_edges is a list of connected edges but not closed
+    #     for edges in self.intersection_edges:
+    #         if not edges:
+    #             continue
+    #
+    #         start_point = edges[0].start
+    #         end_point = edges[-1].end
+    #
+    #         # Create a line segment to close the wire
+    #         closing_line = LineSegment(start=start_point, end=end_point)
+    #
+    #         # Create the wire with the edges and the closing line
+    #         try:
+    #             wire = Wire(curves_in=edges + [closing_line], ordered=True)
+    #             wires.append(wire)
+    #         except Exception as e:
+    #             print(f"Error creating wire: {e}")
+    #
+    #     return wires
+
+    # @Part
+    # def rib_surface(self):
+    #     return Face(quantify=len(self.closed_wires), island=self.closed_wires[child.index])
+
+    # @Attribute
+    # def closed_wires(self):
+    #     from parapy.geom.occ.wire import Wire
+    #     wires = []
+    #     try:
+    #         wire = Wire(closed=True, curves_in=self.intersection_edges)
+    #         wires.append(wire)
+    #     except Exception as e:
+    #         print(f"Error creating wire: {e}")
+    #     return wires
+    #
+    # @Part
+    # def rib_surface(self):
+    #     return Face(quantify=len(self.closed_wires), island=self.closed_wires[child.index])
 
 
 
+    # @Part
+    # def rib_wires(self):
+    #     def create_wire(edge_group):
+    #         return Wire(curves_in=edge_group)
+    #
+    #     # Assuming the intersection edges are grouped per rib surface
+    #     grouped_edges = [self.intersection_edges[i:i + len(self.intersection_edges) // len(self.rib_surfaces)]
+    #                      for i in
+    #                      range(0, len(self.intersection_edges), len(self.intersection_edges) // len(self.rib_surfaces))]
+    #
+    #     return [create_wire(group) for group in grouped_edges]
+    #
+    # @Part
+    # def rib_surfaces(self):
+    #     return Face(quantify=len(self.rib_wires), wire=self.rib_wires[child.index])
+
+    # @Attribute
+    # def grouped_edges(self):
+    #     # Assuming the intersection edges are grouped per rib surface
+    #     n = len(self.intersection_edges) // len(self.rib_surfaces)
+    #     return [self.intersection_edges[i:i + n] for i in range(0, len(self.intersection_edges), n)]
+    #
+    # @Part
+    # def rib_wires(self):
+    #     return Wire(quantify=len(self.grouped_edges), curves_in=self.grouped_edges[child.index])
+    #
+    # @Part
+    # def rib_surfaces(self):
+    #     return Face(quantify=len(self.rib_wires), loops=self.rib_wires[child.index])
 
 
+    # @Part
+    # def rib_surfaces(self):
+    #     return [self.create_surface_from_edge(edge) for edge in self.intersected.edges() if self.is_closed_edge(edge)]
+
+
+    """Try it for only good parts"""
+    # @Attribute
+    # def where_closed_curve(self):
+    #     new_rib_positions = []
+    #     new_LE_rib_pos = []
+    #     tolerance = cos(radians(self.leading_edge_sweep)) * (self.root_chord * cos(np.pi/2 - radians(self.leading_edge_sweep))) #This determines where the lines become closed curves
+    #     for i in range(len(self.rib_pos)):
+    #         if self.rib_pos[i] >= tolerance:
+    #             new_rib_positions.append(self.rib_pos[i])
+    #             new_LE_rib_pos.append(self.LE_rib_pos[i])
+    #     print(new_rib_positions)
+    #
+    #     return new_rib_positions, new_LE_rib_pos
+    #
+    # @Part
+    # def rib_surfaces_new(self):
+    #     return RectangularSurface(quantify=len(self.where_closed_curve[1]), width=2 * self.root_chord, length=0.5 * self.root_chord,
+    #                               position=translate(rotate(rotate90(translate(self.position, 'y', self.where_closed_curve[1][0],
+    #                                                                            'x', - self.root_chord),
+    #                                                                  'x'), 'y', -self.leading_edge_sweep, deg=True),
+    #                                                  'z', -self.where_closed_curve[1][child.index]))

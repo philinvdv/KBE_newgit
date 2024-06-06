@@ -52,19 +52,18 @@ class Wing_me(GeomBase):
     rib_pitch = Input(2, validator=GT(0, msg="{value} cannot be greater than " "{validator.limit}!"))
     hide_mesh = Input(True)
 
-
-
     @Attribute
     def start_wing_to_kink(self):
         return self.kink_location - self.width_centerpiece / 2
 
     @Attribute
     def tip_chord_kink(self):
-        return self.root_chord - self.start_wing_to_kink * np.tan(radians(self.leading_edge_sweep)) #if trailing edge kink has zero sweep
+        return self.root_chord - self.start_wing_to_kink * np.tan(
+            radians(self.leading_edge_sweep))  # if trailing edge kink has zero sweep
 
     @Attribute
     def pts_pre(self):
-        """ Extract airfoil coordinates from a data file and create a list of 3D points"""
+        """ Extract airfoil coordinates from a data file and create a list of 3D points. Also create points for spars (20% and 70%)"""
         front_spar_coordinates = []
         rear_spar_coordinates = []
         with open('NACA_2412_points.dat', 'r') as f:
@@ -82,7 +81,7 @@ class Wing_me(GeomBase):
                     rear_spar_coordinates.append([float(x), float(y), 0])
         return points, front_spar_coordinates, rear_spar_coordinates
 
-    @Attribute #split into the different components
+    @Attribute  # split into the different components (is this needed?)
     def pts(self):
         points, front_spar_coordinates, rear_spar_coordinates = self.pts_pre
         return points
@@ -100,17 +99,17 @@ class Wing_me(GeomBase):
     @Part
     def airfoil_from_3D_points(self):  # this curve is on the X-Y plane, with TE = (1, 0, 0) and LE = (0, 0, 0)
         return FittedCurve(points=self.pts,
-                           mesh_deflection=0.0001)
+                           mesh_deflection=0.0001, hidden=True)
 
     @Part
     def crv1_repositioned_inner(self):  # ***************THIS WON'T WORK!!! ************* a curve built from 3D points /
         # cannot be moved. It stays nailed to its 3D points!
         return FittedCurve(points=self.pts,
                            position=translate(rotate(XOY, 'x', 90, deg=True),
-                                              'x', self.position.x, #-1
+                                              'x', self.position.x,  # -1
                                               'y', self.position.y,
                                               'z', self.position.z),
-                           color="red")
+                           color="red", hidden=True)
 
     @Part  # TransformedCurve is making a carbon copy of the fitted curve, which can be moved (rotated and translated) /
     # from one position to another. /
@@ -120,12 +119,12 @@ class Wing_me(GeomBase):
         return TransformedCurve(
             curve_in=self.airfoil_from_3D_points,
             # the curve to be repositioned
-            #from_position=rotate(translate(XOY, 'x', 1), 'x', -90, deg=True),
+            # from_position=rotate(translate(XOY, 'x', 1), 'x', -90, deg=True),
             from_position=rotate(translate(XOY, 'x', 0), 'x', -90, deg=True),
             # Can be thought of as moving a frame to the position on the curve from which you want to move it. It will
             # now be at the trailing edge and with X-Z plane aligned with curve plane.
             to_position=self.position,  # The wing relative reference system
-            hidden=False
+            hidden=True
         )
 
     @Part  # for the wing tip we use the same type of airfoil used for the wing root. We use again TransformedCurve
@@ -146,10 +145,11 @@ class Wing_me(GeomBase):
         # the unit chord airfoil generated from the .dat file according to their actual chord length
         return ScaledCurve(
             curve_in=self.root_section_unscaled_inner,
-            reference_point=self.root_section_unscaled_inner.start,  # this point (the curve TE in this case) / is kept fixed during scaling
+            reference_point=self.root_section_unscaled_inner.start,
+            # this point (the curve TE in this case) / is kept fixed during scaling
             # Can also use "self.position.point" - This extracts the (x,y,z) origin of the wing class position.
             factor=self.root_chord,  # uniform scaling
-            mesh_deflection=0.0001
+            mesh_deflection=0.0001, hidden=True
         )
 
     @Part
@@ -157,7 +157,7 @@ class Wing_me(GeomBase):
         return ScaledCurve(
             curve_in=self.tip_section_unscaled_inner,
             reference_point=self.tip_section_unscaled_inner.start,
-            factor=self.tip_chord_kink
+            factor=self.tip_chord_kink, hidden=True
         )
 
     @Part
@@ -167,15 +167,17 @@ class Wing_me(GeomBase):
             mesh_deflection=0.0001
         )
 
-    @Part #Mirror and transform
+    @Part  # Mirror and transform
     def transform_mirror_wing_inner(self):
         return TransformedSurface(
-            surface_in=MirroredSurface(surface_in = self.wing_loft_surf_inner, reference_point=Point(0,0,0), vector1=(1,0,0), vector2=(0,0,1)),  # Original curve to transform
+            surface_in=MirroredSurface(surface_in=self.wing_loft_surf_inner, reference_point=Point(0, 0, 0),
+                                       vector1=(1, 0, 0), vector2=(0, 0, 1)),  # Original curve to transform
             from_position=self.position,  # Reference position of the original curve
             to_position=translate(XOY, 'x', -1, 'y', -self.width_centerpiece)  # New position of the curve
         )
 
     """Outer wing"""
+
     @Part  # for the wing tip we use the same type of airfoil used for the wing root. We use again TransformedCurve
     def tip_section_unscaled_outer(self):
         return TransformedCurve(
@@ -184,8 +186,9 @@ class Wing_me(GeomBase):
             from_position=self.root_section_unscaled_inner.position,
             to_position=translate(self.root_section_unscaled_inner.position,  # to_position, i.e. the wing tip section
                                   'y', self.span / 2 - self.width_centerpiece / 2 - self.start_wing_to_kink,
-                                  'x', (self.span/2 - self.width_centerpiece/2) * np.tan(radians(self.leading_edge_sweep)) + self.tip_chord - self.root_chord
-                                  #'x', (self.span / 2 - self.kink_location) * tan(radians(self.leading_edge_sweep)) + self.tip_chord - self.tip_chord_kink + self.start_wing_to_kink * tan(radians(self.leading_edge_sweep))
+                                  'x', (self.span / 2 - self.width_centerpiece / 2) * np.tan(
+                    radians(self.leading_edge_sweep)) + self.tip_chord - self.root_chord
+                                  # 'x', (self.span / 2 - self.kink_location) * tan(radians(self.leading_edge_sweep)) + self.tip_chord - self.tip_chord_kink + self.start_wing_to_kink * tan(radians(self.leading_edge_sweep))
                                   ),  # the sweep is applied
             hidden=True
         )
@@ -195,7 +198,7 @@ class Wing_me(GeomBase):
         return ScaledCurve(
             curve_in=self.tip_section_unscaled_outer,
             reference_point=self.tip_section_unscaled_outer.start,
-            factor=self.tip_chord
+            factor=self.tip_chord, hidden=True
         )
 
     @Part
@@ -205,14 +208,58 @@ class Wing_me(GeomBase):
             mesh_deflection=0.0001
         )
 
-    @Part #Mirror and move outer wing
+    @Part  # Mirror and move outer wing
     def transform_mirror_wing_outer(self):
         return TransformedSurface(
-            surface_in=MirroredSurface(surface_in=self.wing_loft_surf_outer, reference_point=Point(0, 0, 0), vector1=(1, 0, 0),
-                               vector2=(0, 0, 1)),  # Original curve to transform
+            surface_in=MirroredSurface(surface_in=self.wing_loft_surf_outer, reference_point=Point(0, 0, 0),
+                                       vector1=(1, 0, 0),
+                                       vector2=(0, 0, 1)),  # Original curve to transform
             from_position=self.position,  # Reference position of the original curve
             to_position=translate(XOY, 'x', -1, 'y', -self.width_centerpiece)  # New position of the curve
         )
+
+    @Part
+    def my_wingbox(self):
+        return Wingbox(start_wing_to_kink=self.start_wing_to_kink, tip_chord_kink=self.tip_chord_kink, pts=self.pts,
+                       front_spar_coordinates=self.front_spar_coordinates,
+                       rear_spar_coordinates=self.rear_spar_coordinates,  # these are attributes
+                       span=self.span, leading_edge_sweep=self.leading_edge_sweep, root_chord=self.root_chord,
+                       twist_angle=self.twist_angle, dihedral_angle=self.dihedral_angle,
+                       wing_material=self.wing_material,
+                       kink_location=self.kink_location, tip_chord=self.tip_chord,
+                       width_centerpiece=self.width_centerpiece,
+                       hide_mesh=self.hide_mesh, rib_pitch=self.rib_pitch,
+                       position=translate(self.position, 'x', 1, 'y', 0, 'z', 0))
+
+    @Part
+    def my_stringers(self):
+        return Stringer(tip_chord_kink=self.tip_chord_kink,
+                        span=self.span, leading_edge_sweep=self.leading_edge_sweep, root_chord=self.root_chord,
+                        kink_location=self.kink_location, tip_chord=self.tip_chord,
+                        width_centerpiece=self.width_centerpiece,
+                        position=translate(self.position, 'x', 1, 'y', 0, 'z', 0))
+
+    # @Part
+    # def my_ribs(self):
+    #     return Rib(rib_pitch=self.rib_pitch, root_chord=self.root_chord, tip_chord=self.tip_chord, leading_edge_sweep=self.leading_edge_sweep,
+    #                width_centerpiece=self.width_centerpiece, span=self.span,
+    #                position=translate(self.position, 'x', 1, 'y', 0, 'z', 0))
+    #
+    # @Part
+    # def my_stringers(self):
+    #     return Stringer(root_chord = self.root_chord, position=translate(self.position, 'x', 1, 'y', 0, 'z', 0))
+
+    @Part
+    def centerpiece(self):
+        return Centerpiece(start_wing_to_kink=self.start_wing_to_kink, tip_chord_kink=self.tip_chord_kink, pts=self.pts,
+                           front_spar_coordinates=self.front_spar_coordinates,
+                           rear_spar_coordinates=self.rear_spar_coordinates,  # these are attributes
+                           span=self.span, leading_edge_sweep=self.leading_edge_sweep, root_chord=self.root_chord,
+                           twist_angle=self.twist_angle, dihedral_angle=self.dihedral_angle,
+                           wing_material=self.wing_material,
+                           kink_location=self.kink_location, tip_chord=self.tip_chord,
+                           width_centerpiece=self.width_centerpiece,
+                           position=translate(self.position, 'x', 1, 'y', 0, 'z', 0))
 
     @Part
     def my_spars(self):
@@ -237,11 +284,19 @@ class Wing_me(GeomBase):
                      width_centerpiece=self.width_centerpiece,
                      position=translate(self.position, 'x', 1, 'y', 0, 'z', 0))
 
-    @Part
-    def my_ribs(self):
-        return Rib(rib_pitch=self.rib_pitch, root_chord=self.root_chord, leading_edge_sweep=self.leading_edge_sweep,
-                   width_centerpiece=self.width_centerpiece, span=self.span,
-                   position=translate(self.position, 'x', 1, 'y', 0, 'z', 0))
+    # @Part
+    # def wingbox_inner(self):
+    #     return ComposedSurface()
+
+    @Attribute
+    def parts_list(self):
+        return [Wing_me().wing_loft_surf_inner,
+                Wing_me().wing_loft_surf_outer,
+                Wing_me().my_skins.inner_upperskin_loft,
+                Wing_me().my_skins.inner_lowerskin_loft,
+                Wing_me().my_skins.outer_upperskin_loft,
+                Wing_me().my_skins.outer_lowerskin_loft,
+                Wing_me().my_spars.front_spar_inner]
 
 
     @Part
