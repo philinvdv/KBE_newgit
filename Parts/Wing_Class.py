@@ -8,22 +8,27 @@ from parapy.core.widgets import (
     Button, CheckBox, ColorPicker, Dropdown, FilePicker, MultiCheckBox,
     ObjectPicker, SingleSelection, TextField)
 from parapy.core.validate import *
-from Parts.Spars import Spars
-from Parts.RibPart import Rib
-from Parts.Skins import Skins
+
 import os
 import pandas as pd
+
+from Parts.Skins import *
+from Parts.Spars import *
+from Parts.RibPart import *
+from Parts.Centerpiece import *
+from Parts.Wingbox import *
+from Parts.Meshing import *
+from Parts.Stringers import *
 
 DIR = os.path.dirname(__file__)
 material_library = pd.read_excel(io='Parts/Material_library.xlsx')
 material_names=[]
 for name in range(len(material_library.iloc[:, 0])):
     material_names.append(material_library.iloc[name, 0])
+
 class Wing_me(GeomBase):
     """This class contains the wing itself, from the loaded airfoil points. Contains the components that are in the wing
     as well, including the (front and rear) spars and the (upper and lower) skins."""
-
-
     #Inputs
     span = Input(35.8, validator=GT(0, msg="Wing span cannot be smaller than " "{validator.limit}!"))
     leading_edge_sweep = Input(25,  validator=Between(-60, 60, msg="Leading edge sweep angle cannot be greater than +-{60}!")) #deg
@@ -288,28 +293,28 @@ class Wing_me(GeomBase):
     # def wingbox_inner(self):
     #     return ComposedSurface()
 
-    @Attribute
-    def parts_list(self):
-        return [Wing_me().wing_loft_surf_inner,
-                Wing_me().wing_loft_surf_outer,
-                Wing_me().my_skins.inner_upperskin_loft,
-                Wing_me().my_skins.inner_lowerskin_loft,
-                Wing_me().my_skins.outer_upperskin_loft,
-                Wing_me().my_skins.outer_lowerskin_loft,
-                Wing_me().my_spars.front_spar_inner]
+    # @Attribute
+    # def parts_list(self):
+    #     return [Wing_me().wing_loft_surf_inner,
+    #             Wing_me().wing_loft_surf_outer,
+    #             Wing_me().my_skins.inner_upperskin_loft,
+    #             Wing_me().my_skins.inner_lowerskin_loft,
+    #             Wing_me().my_skins.outer_upperskin_loft,
+    #             Wing_me().my_skins.outer_lowerskin_loft,
+    #             Wing_me().my_spars.front_spar_inner]
+    #
 
-
-    @Part
-    def fused_wing_box(self):
-        return Fused(shape_in=self.my_skins.fused_outer_lowerskin_and_flanges,
-                     tool=(self.my_skins.fused_outer_upperskin_and_flanges,
-                           self.my_skins.fused_inner_lowerskin_and_flanges,
-                           self.my_skins.fused_inner_upperskin_and_flanges,
-                           self.my_spars.rearspar_outer,
-                           self.my_spars.rearspar_inner,
-                           self.my_spars.frontspar_outer,
-                           self.my_spars.front_spar_inner,
-                           ))
+    # @Part
+    # def fused_wing_box(self):
+    #     return Fused(shape_in=self.my_skins.fused_outer_lowerskin_and_flanges,
+    #                  tool=(self.my_skins.fused_outer_upperskin_and_flanges,
+    #                        self.my_skins.fused_inner_lowerskin_and_flanges,
+    #                        self.my_skins.fused_inner_upperskin_and_flanges,
+    #                        self.my_spars.rearspar_outer,
+    #                        self.my_spars.rearspar_inner,
+    #                        self.my_spars.frontspar_outer,
+    #                        self.my_spars.front_spar_inner,
+    #                        ))
     # @Attribute
     # def parts_list(self):
     #     return [Wing_me().wing_loft_surf_inner,

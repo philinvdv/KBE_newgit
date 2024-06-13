@@ -3,6 +3,7 @@ from parapy.geom import *
 from parapy.core import *
 import numpy as np
 from Parts.Meshing import *
+from Parts.CustomPlane import *
 
 class Wingbox(GeomBase):
     """This class contains the spar geometry, for the front and rear spar of the inner and outer wingbox."""
@@ -29,7 +30,10 @@ class Wingbox(GeomBase):
     # Define the points for the lines
 
     rib_pitch = Input()
-
+    nr_stringers_upper_inner = Input(4)
+    nr_stringers_lower_inner = Input(4)
+    nr_stringers_upper_outer = Input(4)
+    nr_stringers_lower_outer = Input(4)
 
     """SPARS"""
 
@@ -958,9 +962,9 @@ class Wingbox(GeomBase):
     #                              shape_in=self.fused_wingbox_total,
     #                              tool=self.rib_surfaces[child.index])
 
-    @Part  # This creates 1 rib at the 5th rib
-    def rib_surface5(self):
-        return Face(island=self.intersected[7].edges, hidden=True)
+    # @Part  # This creates 1 rib at the 5th rib
+    # def rib_surface5(self):
+    #     return Face(island=self.intersected[7].edges, hidden=True)
 
 
     @Part #This gives the curves of the ribs in the shape of the wingbox
@@ -1015,7 +1019,7 @@ class Wingbox(GeomBase):
     def intersected_working_mirror(self):
         return IntersectedShapes(quantify=len(self.rib_surfaces_mirrored),
                                  shape_in=self.fused_wingbox_centerpiece,
-                                 tool=self.rib_surfaces_mirrored[child.index], hidden=False)
+                                 tool=self.rib_surfaces_mirrored[child.index], hidden=True)
 
     # @Part  # This creates all ribs, goes into cp still
     # def rib_surface_all_mirror(self):

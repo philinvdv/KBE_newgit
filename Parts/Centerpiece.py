@@ -3,6 +3,8 @@ from parapy.geom import *
 from parapy.core import *
 import numpy as np
 from Parts.Skins import *
+from Parts.CustomPlane import *
+from Parts.Stringer_part import *
 
 class Centerpiece(GeomBase):
     flange_length_skins = Input(0.02)
@@ -27,10 +29,12 @@ class Centerpiece(GeomBase):
     width_centerpiece = Input()
     rib_pitch_cp = Input(2)
 
-    nr_stringers_upper_inner = Input(4)
-    nr_stringers_lower_inner = Input(4)
-    nr_stringers_upper_outer = Input(4)
-    nr_stringers_lower_outer = Input(4)
+    # nr_stringers_upper_inner = Input(4)
+    # nr_stringers_lower_inner = Input(4)
+    # nr_stringers_upper_outer = Input(4)
+    # nr_stringers_lower_outer = Input(4)
+    nr_stringers_upper_CP = Input(5)
+    nr_stringers_lower_CP = Input(6)
 
     """Upper&lower skin pannel centerpiece"""
     @Attribute
@@ -179,12 +183,110 @@ class Centerpiece(GeomBase):
     """STRINGERS"""
     @Attribute
     def LE_stringer_points_upper_cp(self):
-        return np.linspace(0.3 * self.root_chord, 0.8 * self.root_chord, (0.8 * self.root_chord - 0.3 * self.root_chord) / (self.nr_stringers_upper_inner + 1))
+        space = np.linspace(0.3 * self.root_chord, 0.8 * self.root_chord,
+                           self.nr_stringers_upper_CP + 2)
+        points = np.delete(space, 0)
+        points_ = np.delete(points, -1)
+        return points_
 
     @Attribute
-    def kink_stringer_points_upper_cp(self):
-        return np.linspace(0.3 * self.tip_chord_kink, 0.8 * self.tip_chord_kink,
-                           (0.8 * self.tip_chord_kink - 0.3 * self.tip_chord_kink) / (self.nr_stringers_upper_inner + 1))
+    def LE_stringer_points_lower_cp(self):
+        space = np.linspace(0.3 * self.root_chord, 0.8 * self.root_chord,
+                            self.nr_stringers_lower_CP + 2)
+        points = np.delete(space, 0)
+        points_ = np.delete(points, -1)
+        return points_
+
+    # @Attribute
+    # def kink_stringer_points_upper_cp(self):
+    #     return np.linspace(0.3 * self.tip_chord_kink, 0.8 * self.tip_chord_kink,
+    #                        (0.8 * self.tip_chord_kink - 0.3 * self.tip_chord_kink) / (self.nr_stringers_upper_inner + 1))
+
+
+
+    @Part #upper CP stringers
+    def stringers_CP_upper(self):
+        return CustomPlane(quantify = self.nr_stringers_upper_CP,
+                           stringer_location_1 = self.LE_stringer_points_upper_cp[child.index],
+                           stringer_location_2 = self.LE_stringer_points_upper_cp[child.index],
+                           width_section = self.width_centerpiece,
+                           chord = self.root_chord,
+                           sign = -1, start_y=0)
+
+    @Part #lower CP stringers
+    def stringers_CP_lower(self):
+        return CustomPlane(quantify = self.nr_stringers_lower_CP,
+                           stringer_location_1 = self.LE_stringer_points_lower_cp[child.index],
+                           stringer_location_2 = self.LE_stringer_points_lower_cp[child.index],
+                           width_section = self.width_centerpiece,
+                           chord = self.root_chord,
+                           sign = -1, start_y=0)
+
+    @Part  # This gives the curves on the wingbox at the location of the stringers
+    def intersected_str_upper(self):
+        return IntersectedShapes(
+            quantify=len(self.stringers_CP_upper),
+            shape_in=self.upperskin_centerpiece_loft,
+            tool=self.stringers_CP_upper[child.index].custom_plane,
+            hidden=False
+        )
+
+    @Part  # This gives the curves on the wingbox at the location of the stringers
+    def intersected_str_lower(self):
+        return IntersectedShapes(
+            quantify=len(self.stringers_CP_lower),
+            shape_in=self.lowerskin_centerpiece_loft,
+            tool=self.stringers_CP_lower[child.index].custom_plane,
+            hidden=False
+        )
+
+    # @Part #This is purely to cut the ribs at the right locations, sucht that they do not go into the centerpiece
+    # def box_cp(self):
+    #     return Box(width=self.root_chord, height=3, length=self.width_centerpiece,
+    #                position = translate(XOY,'x', -self.root_chord, 'y',-self.width_centerpiece , 'z', -1.5),
+    #                hidden=False)
+
+    # @Part  # This creates plane
+    # def plane_cp(self):
+    #     return Face(quantify=len(self.stringers_CP_upper),
+    #                 island=self.stringers_CP_upper.wire[child.index])
+
+    # @Part  # upper CP stringers
+    # def stringers_CP_upper(self):
+    #     return Stringer_Part(quantify=self.nr_stringers_upper_CP,
+    #                        stringer_location_1=self.LE_stringer_points_upper_cp[child.index],
+    #                        stringer_location_2=self.LE_stringer_points_upper_cp[child.index],
+    #                        width_section=self.width_centerpiece,
+    #                        chord=self.root_chord,
+    #                        sign=-1, start_y=0)
+    #
+    # @Part  # lower CP stringers
+    # def stringers_CP_lower(self):
+    #     return Stringer_Part(quantify=self.nr_stringers_lower_CP,
+    #                        stringer_location_1=self.LE_stringer_points_lower_cp[child.index],
+    #                        stringer_location_2=self.LE_stringer_points_lower_cp[child.index],
+    #                        width_section=self.width_centerpiece,
+    #                        chord=self.root_chord,
+    #                        sign=-1, start_y=0)
+
+#Maybe try substracted or another class?
+
+    # @Part
+    # def string_cut(self):  # Substract the box from the ribs
+    #     return Subtracted(quantify=len(self.stringers_CP_upper), shape_in=self.stringers_CP_upper[child.index],
+    #                       tool=self.upperskin_centerpiece_loft)
+
+    # @Part  # This gives the curves of the wingbox at the location of the stringers
+    # def intersected_str_upper(self):
+    #     return IntersectedShapes(quantify=len(self.stringers_CP_upper),
+    #                              shape_in=self.box_cp,
+    #                              tool=self.stringers_CP_upper[child.index], hidden=False)
+
+    # @Part  # This gives the curves of the wingbox at the location of the stringers
+    # def intersected_str_upper(self):
+    #     return IntersectedShapes(quantify=len(self.stringers_CP_upper),
+    #                                  shape_in=self.fused_centerpiece,
+    #         tool = self.stringers_CP_upper[child.index].shape, hidden = False)
 
     # @Part
     # def box_1_str_cp(self):

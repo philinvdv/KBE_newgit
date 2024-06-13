@@ -2,10 +2,11 @@ from parapy.geom import *
 from parapy.core import *
 
 from parapy.core.validate import *
-import Parts
+from Parts import *
 import Parts.output
 from parapy.exchange import STEPWriter
 import os
+from Parts.Wing_Class import *
 
 DIR = os.path.dirname(__file__)
 
@@ -25,36 +26,36 @@ class Aircraft(GeomBase):
 
     @Part #Sicne the centerpiece depends fully on the geometry of the wing, it is a subclass of the wing
     def wing(self):
-        return Parts.Wing_me(hide_mesh=self.hide_mesh, width_centerpiece=self.width_centerpiece, rib_pitch=self.rib_pitch, span=self.span,
+        return Wing_me(hide_mesh=self.hide_mesh, width_centerpiece=self.width_centerpiece, rib_pitch=self.rib_pitch, span=self.span,
                        leading_edge_sweep=self.leading_edge_sweep,
                     position=translate(self.position, 'x', -1, 'y', 0, 'z',
                                        0))  # Puts the origin at the trailing edge of the kink
 
 
-    @Part
-    def write_inp(self):
-        return Parts.AbaqusINPwriter(path=self.wing,
-                                     density=self.wing.material_properties[0],
-                                     elastic_modulus=self.wing.material_properties[1],
-                                     poisson_ratio=self.wing.material_properties[2],
-                                     span=self.span,
-                                     width_centerpiece=self.width_centerpiece,
-                                     load_factor=self.load_factor,
-                                     aircraft_mass = self.aircraft_mass,
-                                     engine_position = self.engine_position,
-                                     engine_mass = self.engine_mass,
-                                     hidden=False)
-
     # @Part
-    # def run_abaqus_interpreter(self):
-    #     return Parts.output.ODBinterpreter
-    @action()
-    def INP_file_writer(self):
-        self.write_inp.my_inp_writer.write('Parts//output//wing_box.inp')
-
-    @action()
-    def run_abaqus(self):
-        import Parts.output.ODBinterpreter
+    # def write_inp(self):
+    #     return Parts.AbaqusINPwriter(path=self.wing,
+    #                                  density=self.wing.material_properties[0],
+    #                                  elastic_modulus=self.wing.material_properties[1],
+    #                                  poisson_ratio=self.wing.material_properties[2],
+    #                                  span=self.span,
+    #                                  width_centerpiece=self.width_centerpiece,
+    #                                  load_factor=self.load_factor,
+    #                                  aircraft_mass = self.aircraft_mass,
+    #                                  engine_position = self.engine_position,
+    #                                  engine_mass = self.engine_mass,
+    #                                  hidden=False)
+    #
+    # # @Part
+    # # def run_abaqus_interpreter(self):
+    # #     return Parts.output.ODBinterpreter
+    # @action()
+    # def INP_file_writer(self):
+    #     self.write_inp.my_inp_writer.write('Parts//output//wing_box.inp')
+    #
+    # @action()
+    # def run_abaqus(self):
+    #     import Parts.output.ODBinterpreter
 
 #     @Part
 #     def right_wing(self):
@@ -132,14 +133,14 @@ class Aircraft(GeomBase):
 
     @Part
     def step_writer(self):
-        return STEPWriter(nodes=[Parts.Wing_me().my_skins.fused_inner_upperskin_and_flanges,
-                             Parts.Wing_me().my_skins.fused_inner_lowerskin_and_flanges,
-                             Parts.Wing_me().my_skins.fused_outer_upperskin_and_flanges,
-                             Parts.Wing_me().my_skins.fused_outer_lowerskin_and_flanges,
-                             Parts.Wing_me().my_spars.front_spar_inner,
-                             Parts.Wing_me().my_spars.frontspar_outer,
-                             Parts.Wing_me().my_spars.rearspar_inner,
-                             Parts.Wing_me().my_spars.rearspar_outer],
+        return STEPWriter(nodes=[Wing_me().my_skins.fused_inner_upperskin_and_flanges,
+                             Wing_me().my_skins.fused_inner_lowerskin_and_flanges,
+                             Wing_me().my_skins.fused_outer_upperskin_and_flanges,
+                             Wing_me().my_skins.fused_outer_lowerskin_and_flanges,
+                             Wing_me().my_spars.front_spar_inner,
+                             Wing_me().my_spars.frontspar_outer,
+                             Wing_me().my_spars.rearspar_inner,
+                             Wing_me().my_spars.rearspar_outer],
                       default_directory=DIR,
                       unit='m',
                       filename="aircraft.step")
