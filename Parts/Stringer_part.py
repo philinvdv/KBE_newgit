@@ -4,37 +4,67 @@ from math import radians
 import numpy as np
 
 class Stringer_Part(GeomBase):
-    """This custom-made class is designed to put planes at the location of the stringers, depending on the """
-    # nr_stringers = Input()
-    # chord_1 = Input() #Chord at the left
-    # chord_2 = Input() #Chord at the right
+    """This custom-made class is designed to create the L-shaped stringers and put them on the locations as determined
+    with the CustomPlane class. The only necessary inputs are the width of the section, the desired width of the
+    stringer and the edge/ line at which the stringer needs to be located"""
 
-    stringer_location_1 = Input() #left
-    stringer_location_2 = Input() #right
-    width_section = Input() #This is either the width of the centerpiece, the inner wingbox or the outer wingbox
-    chord = Input()
-    sign = Input() #-1 for centerpiece, 1 for the rest
-    start_y = Input() #0 for centerpiece and inner, start_wing_to_kink for outer
-
-    width_stringer = Input(0.1)
-    height_stringer = Input(0.10)
-
-    @Attribute #returns the angle in degrees
-    def angle_stringer(self):
-        alpha = np.arctan((self.stringer_location_1 - self.stringer_location_2) / self.width_section)
-        return np.degrees(alpha)
+    width_stringer = Input(0.1) # Width of the rectangular surface=stringer. The width is also the height
+    #height_stringer = Input(0.10)
+    edge_in = Input()  # Input edge. This will probs be a list like the stringer locations in the custom plane class
+    up_down = Input() #If the L-stringer is poiting up, the value should be +1. If pointing down then -1
 
     @Attribute
-    def length_stringer(self):
-        return self.width_section / np.cos(radians(self.angle_stringer))
+    def start_point(self): #Start point of the edge
+        return self.edge_in.start
+
+    @Attribute
+    def end_point(self): #End point of the edge
+        return self.edge_in.end
+
+    @Attribute
+    def edge_vector(self): #Vector representing the direction of the edge
+        return self.end_point - self.start_point
+
+    @Attribute
+    def edge_length(self): #Length of the edge
+        return self.edge_vector.length
+
+
+    @Attribute
+    def surface_position(self): #Position of the rectangular surface
+        mid_point = self.start_point + 0.5 * self.edge_vector
+        angle_updown = np.arctan2(self.edge_vector.z, self.edge_vector.x) #- 0.115
+        angle_leftright = np.arctan2(self.edge_vector.x, self.edge_vector.y)
+        return rotate(rotate(translate(self.position, 'x', mid_point.x,
+                                       'y', mid_point.y,
+                                       'z', mid_point.z),
+                             'y', angle_updown, deg=False),
+                            'z', -angle_leftright, deg=False)
+
 
     @Part
-    def custom_plane(self): #Have to position the middle point of the stringer
-        return RectangularSurface(width=0.25 * self.height_stringer, length=self.length_stringer,
-                       position=rotate(rotate90(translate(self.position,
-                                            'y', self.start_y+
-                                                    self.sign*0.5*np.cos(radians(self.angle_stringer))*self.length_stringer,
-                                            'x', - self.stringer_location_1 +
-                                                    0.5*np.sin(radians(self.angle_stringer))*self.length_stringer,
-                                            'z', 0.5),
-                                            'y'),'x', self.angle_stringer, deg=True))
+    def rectangular_surface(self):
+        return RectangularSurface(
+            width=self.width_stringer,
+            length=self.edge_length,
+            position=self.surface_position
+        )
+
+    @Attribute
+    def surface_position_90(self):  # Position of the rectangular surface
+        mid_point = self.start_point + 0.5 * self.edge_vector
+        angle_updown = np.arctan2(self.edge_vector.z, self.edge_vector.x)  # - 0.115
+        angle_leftright = np.arctan2(self.edge_vector.x, self.edge_vector.y)
+        return rotate90(rotate(rotate(translate(self.position, 'x', mid_point.x - 0.5 * self.width_stringer,
+                                                'y', mid_point.y,
+                                                'z', mid_point.z + self.up_down * 0.5 * self.width_stringer),
+                             'y', angle_updown, deg=False),
+                      'z', -angle_leftright, deg=False), 'y')
+
+    @Part
+    def rectangular_surface_90(self):
+        return RectangularSurface(
+            width=self.width_stringer,
+            length=self.edge_length,
+            position=self.surface_position_90
+        )

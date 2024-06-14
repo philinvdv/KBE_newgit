@@ -85,7 +85,16 @@ class Centerpiece(GeomBase):
     def upperskin_centerpiece_loft(self):  # generate a surface
         return LoftedSurface(
             profiles=[self.line_root_upp, self.line_root_upp_centerpiece],
-            mesh_deflection=0.0001)
+            mesh_deflection=0.0001, hidden=True)
+
+    @Part  # Mirror and transform
+    def transform_mirror_CP_upperskin(self):
+        return TransformedSurface(
+            surface_in=MirroredSurface(surface_in=self.upperskin_centerpiece_loft, reference_point=Point(0, 0, 0),
+                                       vector1=(1, 0, 0), vector2=(0, 0, 1)),  # Original curve to transform
+            from_position=self.position,  # Reference position of the original curve
+            to_position=translate(XOY, 'x', 0, 'y', -2*self.width_centerpiece)  # New position of the curve
+        )
 
     @Part  # Line from lower point of front spar to lower point of rear spar
     def line_root_low_centerpiece(self):
@@ -97,7 +106,16 @@ class Centerpiece(GeomBase):
     def lowerskin_centerpiece_loft(self):  # generate a surface
         return LoftedSurface(
             profiles=[self.line_root_low, self.line_root_low_centerpiece],
-            mesh_deflection=0.0001
+            mesh_deflection=0.0001, hidden=True
+        )
+
+    @Part  # Mirror and transform
+    def transform_mirror_CP_lowerskin(self):
+        return TransformedSurface(
+            surface_in=MirroredSurface(surface_in=self.lowerskin_centerpiece_loft, reference_point=Point(0, 0, 0),
+                                       vector1=(1, 0, 0), vector2=(0, 0, 1)),  # Original curve to transform
+            from_position=self.position,  # Reference position of the original curve
+            to_position=translate(XOY, 'x', 0, 'y', -2*self.width_centerpiece)  # New position of the curve
         )
 
     """SPARS"""
@@ -117,7 +135,16 @@ class Centerpiece(GeomBase):
     def frontspar_surf_centerpiece(self):  # generate a surface
         return LoftedSurface(
             profiles=[self.line_root_front, self.mirror_line_root_front],
-            mesh_deflection=0.0001
+            mesh_deflection=0.0001, hidden=True
+        )
+
+    @Part  # Mirror and transform
+    def transform_mirror_CP_frontspar(self):
+        return TransformedSurface(
+            surface_in=MirroredSurface(surface_in=self.frontspar_surf_centerpiece, reference_point=Point(0, 0, 0),
+                                       vector1=(1, 0, 0), vector2=(0, 0, 1)),  # Original curve to transform
+            from_position=self.position,  # Reference position of the original curve
+            to_position=translate(XOY, 'x', 0, 'y', -2*self.width_centerpiece)  # New position of the curve
         )
 
     @Part #this is for the rear spar
@@ -136,7 +163,16 @@ class Centerpiece(GeomBase):
     def rearspar_loft_centerpiece(self):  # generate a surface
         return LoftedSurface(
             profiles=[self.line_root_rear, self.mirror_line_root_rear],
-            mesh_deflection=0.0001
+            mesh_deflection=0.0001, hidden=True
+        )
+
+    @Part  # Mirror and transform
+    def transform_mirror_CP_rearspar(self):
+        return TransformedSurface(
+            surface_in=MirroredSurface(surface_in=self.rearspar_loft_centerpiece, reference_point=Point(0, 0, 0),
+                                       vector1=(1, 0, 0), vector2=(0, 0, 1)),  # Original curve to transform
+            from_position=self.position,  # Reference position of the original curve
+            to_position=translate(XOY, 'x', 0, 'y', -2*self.width_centerpiece)  # New position of the curve
         )
 
     @Part
@@ -172,7 +208,7 @@ class Centerpiece(GeomBase):
     @Part  # This gives the curves of the ribs in the shape of the wingbox
     def intersected_cp(self):
         return IntersectedShapes(quantify=len(self.rib_surfaces_cp),
-                                 shape_in=self.fused_centerpiece,
+                                 shape_in=self.parent.my_wingbox.fused_centerpiece,
                                  tool=self.rib_surfaces_cp[child.index], hidden=True)
 
     @Part  # This creates ribs
@@ -211,7 +247,7 @@ class Centerpiece(GeomBase):
                            stringer_location_2 = self.LE_stringer_points_upper_cp[child.index],
                            width_section = self.width_centerpiece,
                            chord = self.root_chord,
-                           sign = -1, start_y=0)
+                           sign = -1, start_y=0, hidden=True)
 
     @Part #lower CP stringers
     def stringers_CP_lower(self):
@@ -220,7 +256,7 @@ class Centerpiece(GeomBase):
                            stringer_location_2 = self.LE_stringer_points_lower_cp[child.index],
                            width_section = self.width_centerpiece,
                            chord = self.root_chord,
-                           sign = -1, start_y=0)
+                           sign = -1, start_y=0, hidden=True)
 
     @Part  # This gives the curves on the wingbox at the location of the stringers
     def intersected_str_upper(self):
@@ -239,6 +275,18 @@ class Centerpiece(GeomBase):
             tool=self.stringers_CP_lower[child.index].custom_plane,
             hidden=False
         )
+
+    @Part #This gives the flat part of the stringer. The 0 is to prevent erros; there is only 1 line however
+    def stringer_upper_CP(self):
+        return Stringer_Part(quantify=len(self.intersected_str_upper),
+                             edge_in=self.intersected_str_upper[child.index].edges[0], up_down=-1)
+
+    @Part  # This gives the flat part of the stringer. The 0 is to prevent erros; there is only 1 line however
+    def stringer_lower_CP(self):
+        return Stringer_Part(quantify=len(self.intersected_str_lower),
+                             edge_in=self.intersected_str_lower[child.index].edges[0], up_down=1)
+
+
 
     # @Part #This is purely to cut the ribs at the right locations, sucht that they do not go into the centerpiece
     # def box_cp(self):

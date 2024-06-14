@@ -16,16 +16,17 @@ class Rib(GeomBase):
 
     @Attribute
     def rib_pos(self):
-        return np.linspace(0, self.span / 2 -self.width_centerpiece/2,
+        return np.linspace(0, self.span / 2 - self.width_centerpiece/2,
                            round(self.rib_pitch * (self.span / 2 - self.width_centerpiece / 2)) + 1)
 
     @Attribute
     def LE_length(self):
         return (self.span / 2 - self.width_centerpiece/2) / cos(radians(self.leading_edge_sweep))
 
-    @Attribute
+    @Attribute #Start at the start of the wingbox LE, not the wing LE
     def LE_rib_pos(self):
-        return np.linspace(0, self.LE_length, round(self.rib_pitch * (self.span / 2-self.width_centerpiece/2)) + 1)
+        start = cos(radians(90 - self.leading_edge_sweep)) * 0.2 * self.root_chord
+        return np.linspace(start, self.LE_length, round(self.rib_pitch * (self.span / 2 - self.width_centerpiece / 2)) + 1)
 
     #I now did this just with the closed airfoil shape, easier than cutting
     # def root_rib(self):
@@ -43,12 +44,11 @@ class Rib(GeomBase):
 
     @Part
     def rib_surfaces(self):
-        return RectangularSurface(quantify=len(self.rib_pos), width=2*self.root_chord, length=0.5*self.root_chord,
+        return RectangularSurface(quantify=len(self.rib_pos), width=2 * self.root_chord, length=0.5 * self.root_chord,
                                   position=translate(rotate(rotate90(translate(self.position, 'y', self.rib_pos[0],
-                                                            'x', - self.root_chord),
-                                                  'x'),'y', -self.leading_edge_sweep, deg=True),
-                                  'z', -self.LE_rib_pos[child.index]))
-
+                                                                               'x', - self.root_chord),
+                                                                     'x'), 'y', -self.leading_edge_sweep, deg=True),
+                                                     'z', -self.LE_rib_pos[child.index]), hidden=True)
 
     @Attribute
     def pts_closed(self):
@@ -66,7 +66,7 @@ class Rib(GeomBase):
     @Part #gives the closed airfoil
     def airfoil_closed(self):  # this curve is on the X-Y plane, with TE = (1, 0, 0) and LE = (0, 0, 0)
         return FittedCurve(points=self.pts_closed,
-                           mesh_deflection=0.0001)
+                           mesh_deflection=0.0001, hidden=True)
 
     @Part  # TransformedCurve is making a carbon copy of the fitted curve, which can be moved (rotated and translated) /
     # from one position to another. /
@@ -77,7 +77,7 @@ class Rib(GeomBase):
             curve_in=self.airfoil_closed,
             from_position=rotate(translate(XOY, 'x', 1), 'x', -90, deg=True),
             to_position=self.position,
-            hidden=False
+            hidden=True
         )
 
     @Part
@@ -88,10 +88,10 @@ class Rib(GeomBase):
             reference_point=self.airfoil_unscaled_root.start,  # this point (the curve TE in this case) / is kept fixed during scaling
             # Can also use "self.position.point" - This extracts the (x,y,z) origin of the wing class position.
             factor=self.root_chord,  # uniform scaling
-            mesh_deflection=0.0001
+            mesh_deflection=0.0001, hidden=True
         )
 
-    @Part #This part creates the rib that closes the wing at the root (do we need it?)
+    @Part #This part creates the rib that closes the wing at the root. It separates the wing from the centerpiece
     def root_rib(self):
         return Face(island=self.airfoil_root)
 
@@ -115,12 +115,61 @@ class Rib(GeomBase):
         return ScaledCurve(
             curve_in=self.airfoil_unscaled_tip,
             reference_point=self.airfoil_unscaled_tip.start,
-            factor=self.tip_chord
+            factor=self.tip_chord, hidden=True
         )
 
     @Part #This part creates the rib that closes the wing at the tip
     def tip_rib(self):
         return Face(island=self.airfoil_tip)
+
+    #Now lets get the actual ribs
+    @Part  # This gives the curves of the ribs in the shape of the wingbox
+    def intersected_edges_ribs(self):
+        return IntersectedShapes(quantify=len(self.rib_surfaces),
+                                 shape_in=self.fused_wingbox_centerpiece,
+                                 tool=self.rib_surfaces[child.index], hidden=False)
+
+    @Part  # This creates all ribs, but they go into the centerpiece still
+    def rib_surface_all(self):
+        return Face(quantify=len(self.intersected_edges_ribs),
+                    island=self.intersected_edges_ribs[child.index].edges, hidden=True)
+
+    @Part  # This is purely to cut the ribs at the right locations, such that they do not go into the centerpiece
+    def box_cp(self): #so this is a huge box at the location of the centerpiece
+        return Box(width=self.root_chord, height=3, length=self.width_centerpiece,
+                   position=translate(XOY, 'x', -self.root_chord, 'y', -self.width_centerpiece, 'z', -1.5),
+                   hidden=True)
+
+    @Part  # actual ribs
+    def ribs_cut(self):  # Substract the box from the ribs to get them in the desired shape
+        return Subtracted(quantify=len(self.rib_surface_all), shape_in=self.rib_surface_all[child.index],
+                          tool=self.box_cp)
+
+
+
+    #Now you can also get it for the mirrored one, but this does not work yet
+
+    @Attribute  # Start at the start of the wingbox LE, not the wing LE
+    def LE_rib_pos_mirrored(self):
+        start = cos(radians(90 - self.leading_edge_sweep)) * 0.2 * self.root_chord
+        return np.linspace(0.03, self.LE_length,
+                           round(self.rib_pitch * (self.span / 2 - self.width_centerpiece / 2)) + 1)
+
+    @Part
+    def rib_surfaces_mirrored(self):
+        return RectangularSurface(quantify=len(self.rib_pos), width=2 * self.root_chord, length=0.5 * self.root_chord,
+                                  position=translate(rotate(rotate90(translate(self.position, 'y', self.rib_pos[0],
+                                                                               'x', - self.root_chord),
+                                                                     'x'), 'y', self.leading_edge_sweep, deg=True),
+                                                     'z',
+                                                     self.width_centerpiece + self.LE_rib_pos_mirrored[child.index]),
+                                  hidden=True)
+
+    @Part  # This gives the curves of the ribs in the shape of the wingbox
+    def intersected_edges_ribs_mirror(self):
+        return IntersectedShapes(quantify=len(self.rib_surfaces_mirrored),
+                                 shape_in=self.fused_wingbox_centerpiece,
+                                 tool=self.rib_surfaces_mirrored[child.index], hidden=True)
 
     # @Part
     # def cutted_rib(self):
@@ -134,9 +183,9 @@ class Rib(GeomBase):
     # def box_less_cone(self):  # Substract the airfoil from the rib
     #     return SubtractedSolid(shape_in=self.root_rib, tool=self.airfoil_closed)
 
-    @Part
-    def my_reference_line(self):
-        return LineSegment(start=Point(0, 0, 0), end=Point(1, 0, 0))
+    # @Part
+    # def my_reference_line(self):
+    #     return LineSegment(start=Point(0, 0, 0), end=Point(1, 0, 0))
 
     # @Part
     # def rib_root_(self):
@@ -149,3 +198,5 @@ class Rib(GeomBase):
 #     from parapy.gui import display
 #     obj = Rib()
 #     display(obj)
+
+

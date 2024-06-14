@@ -178,7 +178,7 @@ class Wing_me(GeomBase):
             surface_in=MirroredSurface(surface_in=self.wing_loft_surf_inner, reference_point=Point(0, 0, 0),
                                        vector1=(1, 0, 0), vector2=(0, 0, 1)),  # Original curve to transform
             from_position=self.position,  # Reference position of the original curve
-            to_position=translate(XOY, 'x', -1, 'y', -self.width_centerpiece)  # New position of the curve
+            to_position=translate(XOY, 'x', -1, 'y', -2*self.width_centerpiece)  # New position of the curve
         )
 
     """Outer wing"""
@@ -220,7 +220,7 @@ class Wing_me(GeomBase):
                                        vector1=(1, 0, 0),
                                        vector2=(0, 0, 1)),  # Original curve to transform
             from_position=self.position,  # Reference position of the original curve
-            to_position=translate(XOY, 'x', -1, 'y', -self.width_centerpiece)  # New position of the curve
+            to_position=translate(XOY, 'x', -1, 'y', -2*self.width_centerpiece)  # New position of the curve
         )
 
     @Part
@@ -236,13 +236,13 @@ class Wing_me(GeomBase):
                        hide_mesh=self.hide_mesh, rib_pitch=self.rib_pitch,
                        position=translate(self.position, 'x', 1, 'y', 0, 'z', 0))
 
-    @Part
-    def my_stringers(self):
-        return Stringer(tip_chord_kink=self.tip_chord_kink,
-                        span=self.span, leading_edge_sweep=self.leading_edge_sweep, root_chord=self.root_chord,
-                        kink_location=self.kink_location, tip_chord=self.tip_chord,
-                        width_centerpiece=self.width_centerpiece,
-                        position=translate(self.position, 'x', 1, 'y', 0, 'z', 0))
+    # @Part
+    # def my_stringers(self):
+    #     return Stringer(tip_chord_kink=self.tip_chord_kink,
+    #                     span=self.span, leading_edge_sweep=self.leading_edge_sweep, root_chord=self.root_chord,
+    #                     kink_location=self.kink_location, tip_chord=self.tip_chord,
+    #                     width_centerpiece=self.width_centerpiece,
+    #                     position=translate(self.position, 'x', 1, 'y', 0, 'z', 0))
 
     # @Part
     # def my_ribs(self):
@@ -266,28 +266,28 @@ class Wing_me(GeomBase):
                            width_centerpiece=self.width_centerpiece,
                            position=translate(self.position, 'x', 1, 'y', 0, 'z', 0))
 
-    @Part
-    def my_spars(self):
-        return Spars(start_wing_to_kink=self.start_wing_to_kink, tip_chord_kink=self.tip_chord_kink, pts=self.pts,
-                     front_spar_coordinates=self.front_spar_coordinates,
-                     rear_spar_coordinates=self.rear_spar_coordinates,  # these are attributes
-                     span=self.span, leading_edge_sweep=self.leading_edge_sweep, root_chord=self.root_chord,
-                     twist_angle=self.twist_angle, dihedral_angle=self.dihedral_angle, wing_material=self.wing_material,
-                     kink_location=self.kink_location, tip_chord=self.tip_chord,
-                     width_centerpiece=self.width_centerpiece,
-                     hide_mesh=self.hide_mesh,
-                     position=translate(self.position, 'x', 1, 'y', 0, 'z', 0))
+    # @Part
+    # def my_spars(self):
+    #     return Spars(start_wing_to_kink=self.start_wing_to_kink, tip_chord_kink=self.tip_chord_kink, pts=self.pts,
+    #                  front_spar_coordinates=self.front_spar_coordinates,
+    #                  rear_spar_coordinates=self.rear_spar_coordinates,  # these are attributes
+    #                  span=self.span, leading_edge_sweep=self.leading_edge_sweep, root_chord=self.root_chord,
+    #                  twist_angle=self.twist_angle, dihedral_angle=self.dihedral_angle, wing_material=self.wing_material,
+    #                  kink_location=self.kink_location, tip_chord=self.tip_chord,
+    #                  width_centerpiece=self.width_centerpiece,
+    #                  hide_mesh=self.hide_mesh,
+    #                  position=translate(self.position, 'x', 1, 'y', 0, 'z', 0))
 
-    @Part
-    def my_skins(self):
-        return Skins(start_wing_to_kink=self.start_wing_to_kink, tip_chord_kink=self.tip_chord_kink, pts=self.pts,
-                     front_spar_coordinates=self.front_spar_coordinates,
-                     rear_spar_coordinates=self.rear_spar_coordinates,  # these are attributes
-                     span=self.span, leading_edge_sweep=self.leading_edge_sweep, root_chord=self.root_chord,
-                     twist_angle=self.twist_angle, dihedral_angle=self.dihedral_angle, wing_material=self.wing_material,
-                     kink_location=self.kink_location, tip_chord=self.tip_chord,
-                     width_centerpiece=self.width_centerpiece,
-                     position=translate(self.position, 'x', 1, 'y', 0, 'z', 0))
+    # @Part
+    # def my_skins(self):
+    #     return Skins(start_wing_to_kink=self.start_wing_to_kink, tip_chord_kink=self.tip_chord_kink, pts=self.pts,
+    #                  front_spar_coordinates=self.front_spar_coordinates,
+    #                  rear_spar_coordinates=self.rear_spar_coordinates,  # these are attributes
+    #                  span=self.span, leading_edge_sweep=self.leading_edge_sweep, root_chord=self.root_chord,
+    #                  twist_angle=self.twist_angle, dihedral_angle=self.dihedral_angle, wing_material=self.wing_material,
+    #                  kink_location=self.kink_location, tip_chord=self.tip_chord,
+    #                  width_centerpiece=self.width_centerpiece,
+    #                  position=translate(self.position, 'x', 1, 'y', 0, 'z', 0))
 
     # @Part
     # def wingbox_inner(self):

@@ -15,7 +15,7 @@ class Aircraft(GeomBase):
     """This is the Superclass. It only contains the Wing class."""
     span = Input(35.8, validator=GT(0, msg="Wing span cannot be smaller than " "{validator.limit}!"))
     leading_edge_sweep = Input(25,  validator=Between(-60, 60, msg="Leading edge sweep angle cannot be greater than +-{60}!"))
-    width_centerpiece = Input(5, validator=GT(0, msg="Centre section width cannot be smaller than " "{validator.limit}!"))
+    width_centerpiece = Input(2.5, validator=GT(0, msg="Centre section width cannot be smaller than " "{validator.limit}!")) #This is the width of half the centerpiece
     rib_pitch = Input(2, validator=GT(0, msg="Rib pitch cannot be smaller than " "{validator.limit}!"))
     hide_mesh = Input(True)
     load_factor = Input(2.5, validator=GT(0, msg="Load factor cannot be smaller than " "{validator.limit}!"))

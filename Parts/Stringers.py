@@ -3,6 +3,7 @@ from parapy.geom import *
 from parapy.core import *
 import numpy as np
 from Parts.CustomPlane import *
+from Parts.Stringer_part import *
 
 class Stringer(GeomBase):
     """In this class, the stringers are defined as well as their locations. You can have a different amount of stringers
@@ -45,14 +46,29 @@ class Stringer(GeomBase):
         pts_kink_ = np.delete(pts_kink, -1)
         return pts_kink_
 
-    @Part  # upper inner stringers
-    def stringers_upper_inner(self):
+    @Part  # plane for upper inner stringers
+    def stringers_upper_inner_plane(self):
         return CustomPlane(quantify=self.nr_stringers_upper_inner,
                            stringer_location_1=self.LE_stringer_pts_upper_inner[child.index],
                            stringer_location_2=self.kink_stringer_pts_upper_inner[child.index],
                            width_section=self.start_wing_to_kink,
                            chord=self.root_chord,
-                           sign=1, start_y=0)
+                           sign=1, start_y=0, hidden=True)
+
+    @Part  # This gives the curves on the wingbox at the location of the stringers
+    def line_str_upper_inner(self):
+        return IntersectedShapes(
+            quantify=len(self.stringers_upper_inner_plane),
+            shape_in=self.parent.my_skins.inner_upperskin_loft, #this takes the upperskin from Skins, which is a sibling
+            tool=self.stringers_upper_inner_plane[child.index].custom_plane,
+            hidden=False
+        )
+
+    @Part
+    def stringer_upper_inner(self):
+        return Stringer_Part(quantify=len(self.line_str_upper_inner),
+                             edge_in=self.line_str_upper_inner[child.index].edges[0], up_down=-1)
+
 
     """Lower inner"""
     @Attribute
@@ -71,14 +87,28 @@ class Stringer(GeomBase):
         pts_kink_ = np.delete(pts_kink, -1)
         return pts_kink_
 
-    @Part  # lower inner CP stringers
-    def stringers_lower_inner(self):
+    @Part  # plane for lower inner stringers
+    def stringers_lower_inner_plane(self):
         return CustomPlane(quantify=self.nr_stringers_lower_inner,
                            stringer_location_1=self.LE_stringer_pts_lower_inner[child.index],
                            stringer_location_2=self.kink_stringer_pts_lower_inner[child.index],
                            width_section=self.start_wing_to_kink,
                            chord=self.root_chord,
-                           sign=1, start_y=0)
+                           sign=1, start_y=0, hidden=True)
+
+    @Part  # This gives the curves on the wingbox at the location of the stringers
+    def line_str_lower_inner(self):
+        return IntersectedShapes(
+            quantify=len(self.stringers_lower_inner_plane),
+            shape_in=self.parent.my_skins.inner_lowerskin_loft, #this takes the lowerskin from Skins, which is a sibling
+            tool=self.stringers_lower_inner_plane[child.index].custom_plane,
+            hidden=False
+        )
+
+    @Part
+    def stringer_lower_inner(self):
+        return Stringer_Part(quantify=len(self.line_str_lower_inner),
+                             edge_in=self.line_str_lower_inner[child.index].edges[0], up_down=1)
 
     """Outer upper"""
     @Attribute
@@ -99,14 +129,28 @@ class Stringer(GeomBase):
         pts_kink_ = np.delete(pts_kink, -1)
         return pts_kink_
 
-    @Part  # upper outer stringers
-    def stringers_upper_outer(self):
+    @Part  # Planes for upper outer stringers
+    def stringers_upper_outer_plane(self):
         return CustomPlane(quantify=self.nr_stringers_upper_outer,
                            stringer_location_1=self.kink_stringer_pts_upper_outer[child.index],
                            stringer_location_2=self.tip_stringer_pts_upper_outer[child.index],
                            width_section=(self.span/2 - self.width_centerpiece/2 - self.start_wing_to_kink),
                            chord=self.root_chord,
-                           sign=1, start_y=self.start_wing_to_kink)
+                           sign=1, start_y=self.start_wing_to_kink, hidden=True)
+
+    @Part  # This gives the curves on the wingbox at the location of the stringers
+    def line_str_upper_outer(self):
+        return IntersectedShapes(
+            quantify=len(self.stringers_upper_outer_plane),
+            shape_in=self.parent.my_skins.outer_upperskin_loft, #this takes the upperskin from Skins, which is a sibling
+            tool=self.stringers_upper_outer_plane[child.index].custom_plane,
+            hidden=False
+        )
+
+    @Part
+    def stringer_upper_outer(self):
+        return Stringer_Part(quantify=len(self.line_str_upper_outer),
+                             edge_in=self.line_str_upper_outer[child.index].edges[0], up_down=-1)
 
     """Outer lower"""
 
@@ -129,14 +173,50 @@ class Stringer(GeomBase):
         return pts_kink_
 
     @Part  # lower outer stringers
-    def stringers_lower_outer(self):
+    def stringers_lower_outer_plane(self):
         return CustomPlane(quantify=self.nr_stringers_lower_outer,
                            stringer_location_1=self.kink_stringer_pts_lower_outer[child.index],
                            stringer_location_2=self.tip_stringer_pts_lower_outer[child.index],
                            width_section=(self.span / 2 - self.width_centerpiece / 2 - self.start_wing_to_kink),
                            chord=self.root_chord,
                            sign=1,
-                           start_y=self.start_wing_to_kink)
+                           start_y=self.start_wing_to_kink, hidden=True)
+
+    @Part  # This gives the curves on the wingbox at the location of the stringers
+    def line_str_lower_outer(self):
+        return IntersectedShapes(
+            quantify=len(self.stringers_lower_outer_plane),
+            shape_in=self.parent.my_skins.outer_lowerskin_loft, #this takes the upperskin from Skins, which is a sibling
+            tool=self.stringers_lower_outer_plane[child.index].custom_plane,
+            hidden=False
+        )
+
+    @Part
+    def stringer_lower_outer(self):
+        return Stringer_Part(quantify=len(self.line_str_lower_outer),
+                             edge_in=self.line_str_lower_outer[child.index].edges[0], up_down=1)
+
+    # @Part  # This gives the curves on the wingbox at the location of the stringers
+    # def intersected_str_upper(self):
+    #     return IntersectedShapes(
+    #         quantify=len(self.stringers_CP_upper),
+    #         shape_in=self.upperskin_centerpiece_loft,
+    #         tool=self.stringers_CP_upper[child.index].custom_plane,
+    #         hidden=False
+    #     )
+    #
+    # @Part  # This gives the curves on the wingbox at the location of the stringers
+    # def intersected_str_lower(self):
+    #     return IntersectedShapes(
+    #         quantify=len(self.stringers_CP_lower),
+    #         shape_in=self.lowerskin_centerpiece_loft,
+    #         tool=self.stringers_CP_lower[child.index].custom_plane,
+    #         hidden=False
+    #     )
+    #
+
+
+
 
     # @Part
     # def lines_upper_inner(self):
