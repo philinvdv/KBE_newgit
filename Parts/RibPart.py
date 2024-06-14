@@ -129,10 +129,18 @@ class Rib(GeomBase):
                                  shape_in=self.fused_wingbox_centerpiece,
                                  tool=self.rib_surfaces[child.index], hidden=False)
 
+    # @Part  # This creates all ribs, but they go into the centerpiece still
+    # def rib_surface_all(self):
+    #     return Face(quantify=len(self.intersected_edges_ribs),
+    #                 island=self.intersected_edges_ribs[child.index].edges, hidden=True)
+
     @Part  # This creates all ribs, but they go into the centerpiece still
     def rib_surface_all(self):
-        return Face(quantify=len(self.intersected_edges_ribs),
-                    island=self.intersected_edges_ribs[child.index].edges, hidden=True)
+        return Face(
+            quantify=len(self.intersected_edges_ribs),
+            island=ComposedCurve(self.intersected_edges_ribs[child.index].edges, ordered=False),
+            hidden=True
+        )
 
     @Part  # This is purely to cut the ribs at the right locations, such that they do not go into the centerpiece
     def box_cp(self): #so this is a huge box at the location of the centerpiece
