@@ -35,9 +35,17 @@ class Wing_me(GeomBase):
     root_chord = Input(5.9, validator=GT(0, msg="Root chord cannot be smaller than " "{validator.limit}!"))
     twist_angle = Input(0)
     dihedral_angle = Input(0)
-    wing_material = Input(0) #should somehow get the properties from this
-    material = Input(material_names[0], widget=Dropdown(material_names,
-                                                       autocompute=False))
+    material = Input(material_names[0], widget=Dropdown(material_names, autocompute=False))
+    skin_thickness = Input(0.003, validator=GT(0, msg="Skin thickness cannot be smaller than " "{validator.limit}!"))
+    upper_inner_skin_thickness = Input(0.003, validator=GT(0, msg="Skin thickness cannot be smaller than " "{validator.limit}!"))
+    upper_outer_skin_thickness = Input(0.003, validator=GT(0, msg="Skin thickness cannot be smaller than " "{validator.limit}!"))
+    lower_inner_skin_thickness = Input(0.003, validator=GT(0, msg="Skin thickness cannot be smaller than " "{validator.limit}!"))
+    lower_outer_skin_thickness = Input(0.003, validator=GT(0, msg="Skin thickness cannot be smaller than " "{validator.limit}!"))
+    spar_thickness = Input(0.05, validator=GT(0, msg="Spar thickness cannot be smaller than " "{validator.limit}!"))
+    rib_thickness = Input(0.005, validator=GT(0, msg="Rib thickness cannot be smaller than " "{validator.limit}!"))
+    centre_section_skin_thickness = Input(0.003, validator=GT(0, msg="Centre section skin thickness cannot be smaller than " "{validator.limit}!"))
+    centre_section_spar_thickness = Input(0.01, validator=GT(0, msg="Centre section spar thickness cannot be smaller than " "{validator.limit}!"))
+    centre_section_rib_thickness = Input(0.005, validator=GT(0, msg="Centre section rib thickness cannot be smaller than " "{validator.limit}!"))
 
     @Attribute
     def material_properties(self):
@@ -45,7 +53,8 @@ class Wing_me(GeomBase):
         density = material_library.iloc[index, 1]
         elastic_modulus = material_library.iloc[index, 2]
         poisson_ratio = material_library.iloc[index, 3]
-        return [density, elastic_modulus, poisson_ratio]
+        yield_strength = material_library.iloc[index, 4]
+        return [density, elastic_modulus, poisson_ratio, yield_strength]
 
 
     def smaller_than_span(self, value):
@@ -55,7 +64,6 @@ class Wing_me(GeomBase):
     tip_chord = Input(1.64, validator=GT(0, msg="{value} cannot be greater than " "{validator.limit}!"))
     width_centerpiece = Input(3, validator=smaller_than_span)
     rib_pitch = Input(2, validator=GT(0, msg="{value} cannot be greater than " "{validator.limit}!"))
-    hide_mesh = Input(True)
 
     @Attribute
     def start_wing_to_kink(self):
@@ -233,7 +241,7 @@ class Wing_me(GeomBase):
                        wing_material=self.wing_material,
                        kink_location=self.kink_location, tip_chord=self.tip_chord,
                        width_centerpiece=self.width_centerpiece,
-                       hide_mesh=self.hide_mesh, rib_pitch=self.rib_pitch,
+                       rib_pitch=self.rib_pitch,
                        position=translate(self.position, 'x', 1, 'y', 0, 'z', 0))
 
     # @Part
@@ -315,37 +323,9 @@ class Wing_me(GeomBase):
     #                        self.my_spars.frontspar_outer,
     #                        self.my_spars.front_spar_inner,
     #                        ))
-    # @Attribute
-    # def parts_list(self):
-    #     return [Wing_me().wing_loft_surf_inner,
-    #             Wing_me().wing_loft_surf_outer,
-    #             Wing_me().my_skins.inner_upperskin_loft,
-    #             Wing_me().my_skins.inner_lowerskin_loft,
-    #             Wing_me().my_skins.outer_upperskin_loft,
-    #             Wing_me().my_skins.outer_lowerskin_loft,
-    #             Wing_me().my_spars.front_spar_inner]
 
-    # @Attribute
-    # def parts_counter(self):
-    #     self.x = + 1
-    #     return self.x
 
-    # for p in range(5):
-    #     @Part
-    #     def mesh(self):
-    #         return MeshingFunc(part_class=self.parts_list[self.p], n_mesh_points=50)
 
-    # @Part
-    # def mesh_inner_loft(self):
-    #     return MeshingFunc(part_class=self.parts_list[0], n_mesh_points=50, hide_mesh=self.hide_mesh)
-    # #
-    # @Part
-    # def mesh_outer_loft(self):
-    #     return MeshingFunc(part_class=self.parts_list[1], n_mesh_points=50, hide_mesh=self.hide_mesh)
-    # #
-    # @Part
-    # def mesh3(self):
-    #     return MeshingFunc(part_class=self.parts_list[2], n_mesh_points=50)
 
 
     # @Part

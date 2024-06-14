@@ -1,12 +1,24 @@
 <component name="InspectionProjectProfileManager">
   <profile version="1.0">
     <option name="myName" value="Project Default" />
-    <inspection_tool class="PyPep8Inspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
-      <option name="ignoredErrors">
-        <list>
-          <option value="E261" />
-          <option value="E265" />
-        </list>
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="12">
+            <item index="0" class="java.lang.String" itemvalue="visualization" />
+            <item index="1" class="java.lang.String" itemvalue="parapy_lib_fem" />
+            <item index="2" class="java.lang.String" itemvalue="section" />
+            <item index="3" class="java.lang.String" itemvalue="load" />
+            <item index="4" class="java.lang.String" itemvalue="material" />
+            <item index="5" class="java.lang.String" itemvalue="assembly" />
+            <item index="6" class="java.lang.String" itemvalue="interaction" />
+            <item index="7" class="java.lang.String" itemvalue="parapy_lib_abaqus" />
+            <item index="8" class="java.lang.String" itemvalue="step" />
+            <item index="9" class="java.lang.String" itemvalue="job" />
+            <item index="10" class="java.lang.String" itemvalue="sketch" />
+            <item index="11" class="java.lang.String" itemvalue="mesh" />
+          </list>
+        </value>
       </option>
     </inspection_tool>
   </profile>

@@ -30,7 +30,6 @@ class Wingbox(GeomBase):
     kink_location = Input()  # measured from centerline of fuselage
     tip_chord = Input()
     width_centerpiece = Input()
-    hide_mesh = Input(True)
     # Define the points for the lines
 
     rib_pitch = Input()
@@ -87,7 +86,7 @@ class Wingbox(GeomBase):
                      twist_angle=self.twist_angle, dihedral_angle=self.dihedral_angle, wing_material=self.wing_material,
                      kink_location=self.kink_location, tip_chord=self.tip_chord,
                      width_centerpiece=self.width_centerpiece,
-                     hide_mesh=self.hide_mesh,
+
                      position=translate(self.position, 'x', 1, 'y', 0, 'z', 0))
 
     @Part

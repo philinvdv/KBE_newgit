@@ -22,7 +22,6 @@ class Spars(GeomBase):
     kink_location = Input()  # measured from centerline of fuselage
     tip_chord = Input()
     width_centerpiece = Input()
-    hide_mesh = Input(True)
 
     """Front spar inner"""
     @Part  # Line for front spar at root NEW
