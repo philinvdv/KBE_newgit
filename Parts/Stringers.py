@@ -67,7 +67,8 @@ class Stringer(GeomBase):
     @Part
     def stringer_upper_inner(self):
         return Stringer_Part(quantify=len(self.line_str_upper_inner),
-                             edge_in=self.line_str_upper_inner[child.index].edges[0], up_down=-1)
+                             edge_in=self.line_str_upper_inner[child.index].edges[0], up_down=-1, angle_sign=1,
+                             width_stringer=0.1)#, angle_y=self.parent.my_skins.angle_upperskin_inner)
 
 
     """Lower inner"""
@@ -108,7 +109,8 @@ class Stringer(GeomBase):
     @Part
     def stringer_lower_inner(self):
         return Stringer_Part(quantify=len(self.line_str_lower_inner),
-                             edge_in=self.line_str_lower_inner[child.index].edges[0], up_down=1)
+                             edge_in=self.line_str_lower_inner[child.index].edges[0], up_down=1, angle_sign=1,
+                             width_stringer=0.1)#, angle_y=0)
 
     """Outer upper"""
     @Attribute
@@ -150,7 +152,8 @@ class Stringer(GeomBase):
     @Part
     def stringer_upper_outer(self):
         return Stringer_Part(quantify=len(self.line_str_upper_outer),
-                             edge_in=self.line_str_upper_outer[child.index].edges[0], up_down=-1)
+                             edge_in=self.line_str_upper_outer[child.index].edges[0], up_down=-1, angle_sign=1,
+                             width_stringer=0.05)#, angle_y=self.parent.my_skins.angle_upperskin_outer)
 
     """Outer lower"""
 
@@ -194,7 +197,8 @@ class Stringer(GeomBase):
     @Part
     def stringer_lower_outer(self):
         return Stringer_Part(quantify=len(self.line_str_lower_outer),
-                             edge_in=self.line_str_lower_outer[child.index].edges[0], up_down=1)
+                             edge_in=self.line_str_lower_outer[child.index].edges[0], up_down=-1,angle_sign=1,
+                             width_stringer=0.05)#, angle_y=0)
 
     # @Part  # This gives the curves on the wingbox at the location of the stringers
     # def intersected_str_upper(self):

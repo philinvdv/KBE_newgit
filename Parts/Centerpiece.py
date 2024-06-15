@@ -65,6 +65,12 @@ class Centerpiece(GeomBase):
                          #  position = rotate(XOY, 'x', 90, deg=True)
                            )
 
+    @Attribute
+    def angle_upperskin_CP(self):
+        return np.arctan((self.front_spar_coordinates[0][1] * self.root_chord
+                          - self.rear_spar_coordinates[0][1] * self.root_chord) /
+                         (0.8 * self.tip_chord - 0.3 * self.tip_chord))
+
     @Part  # Line from Skins file
     def line_root_low(self):
         return LineSegment(start=Point(-0.8 * self.root_chord, 0, self.front_spar_coordinates[1][1] * self.root_chord),
@@ -279,12 +285,14 @@ class Centerpiece(GeomBase):
     @Part #This gives the flat part of the stringer. The 0 is to prevent erros; there is only 1 line however
     def stringer_upper_CP(self):
         return Stringer_Part(quantify=len(self.intersected_str_upper),
-                             edge_in=self.intersected_str_upper[child.index].edges[0], up_down=-1)
+                             edge_in=self.intersected_str_upper[child.index].edges[0], up_down=-1, angle_sign=1,
+                             width_stringer=0.1)#, angle_y=0)
 
     @Part  # This gives the flat part of the stringer. The 0 is to prevent erros; there is only 1 line however
     def stringer_lower_CP(self):
         return Stringer_Part(quantify=len(self.intersected_str_lower),
-                             edge_in=self.intersected_str_lower[child.index].edges[0], up_down=1)
+                             edge_in=self.intersected_str_lower[child.index].edges[0], up_down=1, angle_sign=1,
+                             width_stringer=0.1)#, angle_y=0)
 
 
 

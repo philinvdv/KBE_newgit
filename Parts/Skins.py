@@ -30,11 +30,17 @@ class Skins(GeomBase):
     """Upper skin pannel inner"""
     @Attribute
     def points_root_upper_skin(self):
-        point_2 = Point(-0.8 * self.root_chord, 0, self.front_spar_coordinates[0][1] * self.root_chord)
-        point_3 = Point(-0.3 * self.root_chord, 0, self.rear_spar_coordinates[0][1] * self.root_chord)
+        point_2 = Point(-0.8 * self.root_chord, 0, self.front_spar_coordinates[0][1] * self.root_chord) #frontspar
+        point_3 = Point(-0.3 * self.root_chord, 0, self.rear_spar_coordinates[0][1] * self.root_chord) #rearspar
         point_2fl = Point(-0.8 * self.root_chord, 0, self.front_spar_coordinates[0][1] * self.root_chord - self.length_flanges)
         point_3fl = Point(-0.3 * self.root_chord, 0, self.rear_spar_coordinates[0][1] * self.root_chord - self.length_flanges)
         return [point_2, point_3, point_2fl, point_3fl] #[point_1, point_2, point_3, point_4]
+
+    @Attribute
+    def angle_upperskin_inner(self):
+        return np.arctan((self.front_spar_coordinates[0][1] * ((self.root_chord+self.tip_chord_kink)/2) -
+                            self.rear_spar_coordinates[0][1] * ((self.root_chord+self.tip_chord_kink)/2)) /
+                         (0.8 * ((self.root_chord+self.tip_chord_kink)/2) - 0.3 * ((self.root_chord+self.tip_chord_kink)/2)))
 
     @Part #Line from upper point of front spar to upper point of rear spar
     def line_root_upp(self):
@@ -66,6 +72,7 @@ class Skins(GeomBase):
             profiles=[self.line_root_upp, self.line_kink_upp],
             mesh_deflection=0.0001,
                     hidden=True)
+
     """Lower skin panel inner"""
     @Attribute
     def points_root_lower_skin(self):
@@ -113,19 +120,28 @@ class Skins(GeomBase):
     """Outer skin panels, tip"""
     @Attribute
     def points_tip_upper_skin(self):
-        # point_1 = Point(0,0,0)
-        point_2t = Point((self.span/2 - self.width_centerpiece/2) * np.tan(radians(self.leading_edge_sweep)) + self.tip_chord - self.root_chord-0.8 * self.tip_chord,
+        point_2t = Point((self.span/2 - self.width_centerpiece/2) * np.tan(radians(self.leading_edge_sweep))
+                         + self.tip_chord - self.root_chord-0.8 * self.tip_chord,
                          self.span/2 - self.width_centerpiece/2,
                          self.front_spar_coordinates[0][1] * self.tip_chord)
-        point_3t = Point((self.span/2 - self.width_centerpiece/2) * np.tan(radians(self.leading_edge_sweep)) + self.tip_chord - self.root_chord-0.3 * self.tip_chord,
+        point_3t = Point((self.span/2 - self.width_centerpiece/2) * np.tan(radians(self.leading_edge_sweep))
+                         + self.tip_chord - self.root_chord-0.3 * self.tip_chord,
                          self.span/2 - self.width_centerpiece/2, self.rear_spar_coordinates[0][1] * self.tip_chord)
-        point_2_fl = Point((self.span/2 - self.width_centerpiece/2) * np.tan(radians(self.leading_edge_sweep)) + self.tip_chord - self.root_chord-0.8 * self.tip_chord,
+        point_2_fl = Point((self.span/2 - self.width_centerpiece/2) * np.tan(radians(self.leading_edge_sweep))
+                           + self.tip_chord - self.root_chord-0.8 * self.tip_chord,
                          self.span/2 - self.width_centerpiece/2,
                          self.front_spar_coordinates[0][1] * self.tip_chord - self.length_flanges)
         point_3_fl = Point((self.span / 2 - self.width_centerpiece / 2) * np.tan(
             radians(self.leading_edge_sweep)) + self.tip_chord - self.root_chord - 0.3 * self.tip_chord,
-                         self.span / 2 - self.width_centerpiece / 2, self.rear_spar_coordinates[0][1] * self.tip_chord -self.length_flanges)
+                         self.span / 2 - self.width_centerpiece / 2, self.rear_spar_coordinates[0][1] * self.tip_chord
+                           -self.length_flanges)
         return [point_2t, point_3t, point_2_fl, point_3_fl]
+
+    @Attribute
+    def angle_upperskin_outer(self):
+        return np.arctan((self.front_spar_coordinates[0][1] * ((self.tip_chord+self.tip_chord_kink)/2)
+                            - self.rear_spar_coordinates[0][1] * ((self.tip_chord+self.tip_chord_kink)/2)) /
+                         (0.8 * ((self.tip_chord+self.tip_chord_kink)/2) - 0.3 * ((self.tip_chord+self.tip_chord_kink)/2)))
 
     # Define four separate lines
     @Part  # Line from upper point of front spar to upper point of rear spar

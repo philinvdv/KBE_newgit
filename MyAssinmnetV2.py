@@ -92,29 +92,29 @@ class Aircraft(GeomBase):
                              position=translate(self.position, 'x', -1, 'y', 0, 'z',
                                                 0))  # Puts the origin at the trailing edge of the kink
 
-    @Part
-    def write_inp(self):
-        return Parts.AbaqusINPwriter(path=self.wing,
-                                     density=self.wing.material_properties[0],
-                                     elastic_modulus=self.wing.material_properties[1],
-                                     poisson_ratio=self.wing.material_properties[2],
-                                     skin_thickness=self.wing.skin_thickness,
-                                     upper_inner_skin_thickness=self.wing.upper_inner_skin_thickness,
-                                     upper_outer_skin_thickness=self.wing.upper_outer_skin_thickness,
-                                     lower_inner_skin_thickness=self.wing.lower_inner_skin_thickness,
-                                     lower_outer_skin_thickness=self.wing.lower_outer_skin_thickness,
-                                     spar_thickness=self.wing.spar_thickness,
-                                     rib_thickness=self.wing.rib_thickness,
-                                     centre_section_skin_thickness=self.wing.centre_section_skin_thickness,
-                                     centre_section_spar_thickness=self.wing.centre_section_spar_thickness,
-                                     centre_section_rib_thickness=self.wing.centre_section_rib_thickness,
-                                     span=self.span,
-                                     width_centerpiece=self.width_centerpiece,
-                                     load_factor=self.load_factor,
-                                     aircraft_mass=self.aircraft_mass,
-                                     engine_position=self.engine_position,
-                                     engine_mass=self.engine_mass,
-                                     hidden=False)
+    # @Part
+    # def write_inp(self):
+    #     return Parts.AbaqusINPwriter(path=self.wing,
+    #                                  density=self.wing.material_properties[0],
+    #                                  elastic_modulus=self.wing.material_properties[1],
+    #                                  poisson_ratio=self.wing.material_properties[2],
+    #                                  skin_thickness=self.wing.skin_thickness,
+    #                                  upper_inner_skin_thickness=self.wing.upper_inner_skin_thickness,
+    #                                  upper_outer_skin_thickness=self.wing.upper_outer_skin_thickness,
+    #                                  lower_inner_skin_thickness=self.wing.lower_inner_skin_thickness,
+    #                                  lower_outer_skin_thickness=self.wing.lower_outer_skin_thickness,
+    #                                  spar_thickness=self.wing.spar_thickness,
+    #                                  rib_thickness=self.wing.rib_thickness,
+    #                                  centre_section_skin_thickness=self.wing.centre_section_skin_thickness,
+    #                                  centre_section_spar_thickness=self.wing.centre_section_spar_thickness,
+    #                                  centre_section_rib_thickness=self.wing.centre_section_rib_thickness,
+    #                                  span=self.span,
+    #                                  width_centerpiece=self.width_centerpiece,
+    #                                  load_factor=self.load_factor,
+    #                                  aircraft_mass=self.aircraft_mass,
+    #                                  engine_position=self.engine_position,
+    #                                  engine_mass=self.engine_mass,
+    #                                  hidden=False)
 
     @action()
     def INP_file_writer(self):
