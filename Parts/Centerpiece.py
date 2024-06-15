@@ -7,9 +7,11 @@ from Parts.CustomPlane import *
 from Parts.Stringer_part import *
 
 class Centerpiece(GeomBase):
-    flange_length_skins = Input(0.02)
-    flange_length_spars = Input(0.02)
-    stringer_width_cp = Input(0.1)
+    """This class creates the centerpiece. Since only one wing is analysed, the centerpiece is split in half and only
+    one half is designed in detail. The other half would be a mirrored version with the exact same properties. This class
+    makes all the parts for the centerpiece, so skins, spars, stringers and ribs."""
+    flange_length_skins = Input(0.02) #size of the flanges
+    stringer_width_cp = Input(0.1) #Size of the stringers
 
     # The attributes and inputs from Wing()
     start_wing_to_kink = Input()
@@ -20,7 +22,6 @@ class Centerpiece(GeomBase):
     span = Input()
     leading_edge_sweep = Input()  # deg
     root_chord = Input()
-    wing_material = Input()  # should somehow get the properties from this
     kink_location = Input()  # measured from centerline of fuselage
     tip_chord = Input()
     width_centerpiece = Input()
@@ -50,23 +51,6 @@ class Centerpiece(GeomBase):
                              self.rear_spar_coordinates[1][1] * self.root_chord + self.flange_length_skins)
         return [point_2cp, point_3cp, point_2flcp, point_3flcp, point_2lcp, point_3lcp, point_2fllcp, point_3fllcp]
 
-    @Part #This line comes from the Skins file
-    def line_root_upp(self):
-        return LineSegment(start = Point(-0.8 * self.root_chord, 0, self.front_spar_coordinates[0][1] * self.root_chord),
-                                                   end=Point(-0.3 * self.root_chord, 0, self.rear_spar_coordinates[0][1] * self.root_chord),
-                           hidden=True
-                         #  position = rotate(XOY, 'x', 90, deg=True)
-                           )
-
-    @Part  # Line from Skins file
-    def line_root_low(self):
-        return LineSegment(start=Point(-0.8 * self.root_chord, 0, self.front_spar_coordinates[1][1] * self.root_chord),
-                           end=Point(-0.3 * self.root_chord, 0, self.rear_spar_coordinates[1][1] * self.root_chord),
-                           hidden=True)
-                           #  position = rotate(XOY, 'x', 90, deg=True)
-
-
-
     @Part  # Line from upper point of front spar to upper point of rear spar at centerpiece
     def line_root_upp_centerpiece(self):
         return LineSegment(start=self.points_skin_centerpiece[0],
@@ -74,13 +58,13 @@ class Centerpiece(GeomBase):
                            #  position = rotate(XOY, 'x', 90, deg=True)
                            hidden=True)
 
-    @Part
+    @Part #The one at the wing root exists already, take from Skins and combine with new line
     def upperskin_centerpiece_loft(self):  # generate a surface
         return LoftedSurface(
             profiles=[self.parent.my_wingbox.my_skins.line_root_upp, self.line_root_upp_centerpiece],
             mesh_deflection=0.0001, hidden=False)
 
-    @Part  # Mirror and transform
+    @Part  # Mirror and transform to get the other half of the centerpiece
     def transform_mirror_CP_upperskin(self):
         return TransformedSurface(
             surface_in=MirroredSurface(surface_in=self.upperskin_centerpiece_loft, reference_point=Point(0, 0, 0),
@@ -95,14 +79,14 @@ class Centerpiece(GeomBase):
                            #  position = rotate(XOY, 'x', 90, deg=True)
                            hidden=True)
 
-    @Part
+    @Part  #Lowerskin of the centerpiece
     def lowerskin_centerpiece_loft(self):  # generate a surface
         return LoftedSurface(
             profiles=[self.parent.my_wingbox.my_skins.line_root_low, self.line_root_low_centerpiece],
             mesh_deflection=0.0001, hidden=False
         )
 
-    @Part  # Mirror and transform
+    @Part  # Mirror and transform the lowerskin to get the other half of the CP
     def transform_mirror_CP_lowerskin(self):
         return TransformedSurface(
             surface_in=MirroredSurface(surface_in=self.lowerskin_centerpiece_loft, reference_point=Point(0, 0, 0),
@@ -131,7 +115,7 @@ class Centerpiece(GeomBase):
             mesh_deflection=0.0001, hidden=False
         )
 
-    @Part  # Mirror and transform
+    @Part  # Mirror and transform to the other half
     def transform_mirror_CP_frontspar(self):
         return TransformedSurface(
             surface_in=MirroredSurface(surface_in=self.frontspar_surf_centerpiece, reference_point=Point(0, 0, 0),
@@ -159,7 +143,7 @@ class Centerpiece(GeomBase):
             mesh_deflection=0.0001, hidden=False
         )
 
-    @Part  # Mirror and transform
+    @Part  # Mirror and transform for other half
     def transform_mirror_CP_rearspar(self):
         return TransformedSurface(
             surface_in=MirroredSurface(surface_in=self.rearspar_loft_centerpiece, reference_point=Point(0, 0, 0),
@@ -168,29 +152,14 @@ class Centerpiece(GeomBase):
             to_position=translate(XOY, 'x', 0, 'y', -2*self.width_centerpiece)  # New position of the curve
         )
 
-    @Part
-    def fused_cp1(self):
-        return Fused(shape_in=self.upperskin_centerpiece_loft,
-                     tool=self.frontspar_surf_centerpiece, hidden=True)
-
-    @Part
-    def fused_cp2(self):
-        return Fused(shape_in=self.lowerskin_centerpiece_loft,
-                     tool=self.rearspar_loft_centerpiece, hidden=True)
-
-    @Part
-    def fused_centerpiece(self):
-        return Fused(shape_in=self.fused_cp1,
-                     tool=self.fused_cp2)
-
     """RIBS"""
 
-    @Attribute
+    @Attribute #Similar approach as followed in RibPart.py
     def rib_pos_cp(self):
         return np.linspace(0, -self.width_centerpiece,
                            round(self.rib_pitch_cp * (self.width_centerpiece)) + 1)
 
-    @Part
+    @Part #Make surfaces at the locations of the planes
     def rib_surfaces_cp(self):
         return RectangularSurface(quantify=len(self.rib_pos_cp), width=2 * self.root_chord, length=0.5 * self.root_chord,
                                   position=translate(rotate90(translate(self.position, 'y', self.rib_pos_cp[0],
@@ -198,19 +167,19 @@ class Centerpiece(GeomBase):
                                                                      'x'),
                                                      'z', -self.rib_pos_cp[child.index]), hidden=True)
 
-    @Part  # This gives the curves of the ribs in the shape of the wingbox
+    @Part  # This gives the curves of the ribs in the shape of the centerpiece wingbox
     def intersected_cp(self):
         return IntersectedShapes(quantify=len(self.rib_surfaces_cp),
                                  shape_in=self.parent.my_wingbox.fused_centerpiece,
                                  tool=self.rib_surfaces_cp[child.index], hidden=True)
 
-    @Part  # This creates ribs
+    @Part  # This creates the ribs of the centerpiece
     def ribs_cp(self):
         return Face(quantify=len(self.intersected_cp),
                     island=self.intersected_cp[child.index].edges)
 
     """STRINGERS"""
-    @Attribute
+    @Attribute #define the starting (and ending) points of the stringers
     def LE_stringer_points_upper_cp(self):
         space = np.linspace(0.3 * self.root_chord, 0.8 * self.root_chord,
                            self.nr_stringers_upper_CP + 2)
@@ -218,7 +187,7 @@ class Centerpiece(GeomBase):
         points_ = np.delete(points, -1)
         return points_
 
-    @Attribute
+    @Attribute #define the starting (and ending) points for lower skin
     def LE_stringer_points_lower_cp(self):
         space = np.linspace(0.3 * self.root_chord, 0.8 * self.root_chord,
                             self.nr_stringers_lower_CP + 2)
@@ -227,7 +196,7 @@ class Centerpiece(GeomBase):
         return points_
 
     @Part #upper CP stringers
-    def stringers_CP_upper(self):
+    def stringers_CP_upper(self): #Since symmetric and no sweep, the stringer locations are the same
         return CustomPlane(quantify = self.nr_stringers_upper_CP,
                            stringer_location_1 = self.LE_stringer_points_upper_cp[child.index],
                            stringer_location_2 = self.LE_stringer_points_upper_cp[child.index],
@@ -244,7 +213,7 @@ class Centerpiece(GeomBase):
                            chord = self.root_chord,
                            sign = -1, start_y=0, hidden=True)
 
-    @Part  # This gives the curves on the wingbox at the location of the stringers
+    @Part  # This gives the curves on the wingbox at the location of the upper stringers
     def intersected_str_upper(self):
         return IntersectedShapes(
             quantify=len(self.stringers_CP_upper),
@@ -253,7 +222,7 @@ class Centerpiece(GeomBase):
             hidden=False
         )
 
-    @Part  # This gives the curves on the wingbox at the location of the stringers
+    @Part  # This gives the curves on the wingbox at the location of the lower stringers
     def intersected_str_lower(self):
         return IntersectedShapes(
             quantify=len(self.stringers_CP_lower),
@@ -262,14 +231,15 @@ class Centerpiece(GeomBase):
             hidden=False
         )
 
-    @Part #This gives the flat part of the stringer. The 0 is to prevent erros; there is only 1 line however
+    @Part #This gives the L-stringer. The [0] is to prevent errors; there is only 1 line however in the 'edges' of the
+    #intersection
     def stringer_upper_CP(self):
         return Stringer_Part(quantify=len(self.intersected_str_upper),
                              edge_in=self.intersected_str_upper[child.index].edges[0], up_down=1, angle_sign=1,
-                             width_stringer=self.stringer_width_cp)#, angle_y=0)
+                             width_stringer=self.stringer_width_cp)
 
     @Part  # This gives the flat part of the stringer. The 0 is to prevent erros; there is only 1 line however
     def stringer_lower_CP(self):
         return Stringer_Part(quantify=len(self.intersected_str_lower),
                              edge_in=self.intersected_str_lower[child.index].edges[0], up_down=-1, angle_sign=1,
-                             width_stringer=0.1)#, angle_y=0)
+                             width_stringer=0.1)

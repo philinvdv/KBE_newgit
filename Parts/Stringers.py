@@ -194,4 +194,4 @@ class Stringer(GeomBase):
     def stringer_lower_outer(self):
         return Stringer_Part(quantify=len(self.line_str_lower_outer),
                              edge_in=self.line_str_lower_outer[child.index].edges[0], up_down=-1,angle_sign=-1,
-                             width_stringer=0.5*self.stringer_width)#, angle_y=0)
+                             width_stringer=0.5*self.stringer_width)

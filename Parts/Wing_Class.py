@@ -239,7 +239,6 @@ class Wing_me(GeomBase):
                            front_spar_coordinates=self.front_spar_coordinates,
                            rear_spar_coordinates=self.rear_spar_coordinates,  # these are attributes
                            span=self.span, leading_edge_sweep=self.leading_edge_sweep, root_chord=self.root_chord,
-                           wing_material=self.wing_material,
                            kink_location=self.kink_location, tip_chord=self.tip_chord,
                            width_centerpiece=self.width_centerpiece,
                            nr_stringers_upper_CP=self.nr_stringers_upper_CP,
