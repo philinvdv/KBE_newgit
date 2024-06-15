@@ -1,0 +1,19 @@
+Parameter,Value
+aircraft_name,StockA320ThickStringers
+span,35.8
+leading_edge_sweep,25
+root_chord,5.9
+material_name,Aluminium 7075 T6
+material_density,2810
+material_elastic_modulus,72000000000.0
+material_poisson_ratio,0.33
+skin_thickness,0.003
+upper_inner_skin_thickness,0.003
+upper_outer_skin_thickness,0.003
+lower_inner_skin_thickness,0.003
+lower_outer_skin_thickness,0.003
+spar_thickness,0.05
+rib_thickness,0.005
+centre_section_skin_thickness,0.003
+centre_section_spar_thickness,0.01
+centre_section_rib_thickness,0.005

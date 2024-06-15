@@ -1,0 +1,17 @@
+# -*- coding: mbcs -*-
+from visualization import *
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from connectorBehavior import *
+mdb.JobFromInputFile(inputFileName='wing_box.inp', name='wing_box_job')
+mdb.jobs['wing_box_job'].submit()
+mdb.jobs['wing_box_job'].waitForCompletion()
