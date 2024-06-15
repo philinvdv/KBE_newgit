@@ -36,8 +36,8 @@ class Stringer_Part(GeomBase):
     @Attribute
     def surface_position(self): #Position of the rectangular surface
         mid_point = self.start_point + 0.5 * self.edge_vector
-        #angle_updown = np.arctan2(self.edge_vector.z, self.edge_vector.y) #- 0.115
-        angle_updown = np.arcsin(self.edge_vector.z / self.edge_length)
+        angle_updown = np.arctan2(self.edge_vector.z, self.edge_vector.y) #- 0.115
+        #angle_updown = np.arcsin(self.edge_vector.z / self.edge_length)
         #angle_updown = np.arctan((self.end_point.z - self.start_point.z)/(self.end_point.y - self.start_point.y))
         angle_leftright = np.arctan2(self.edge_vector.x, self.edge_vector.y)
         return rotate(rotate(translate(self.position, 'x', mid_point.x,

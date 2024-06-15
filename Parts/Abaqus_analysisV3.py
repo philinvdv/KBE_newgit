@@ -96,13 +96,13 @@ class AbaqusINPwriter(GeomBase):
         return Fused(shape_in=self.aircraft.my_wingbox.my_spars.rearspar_inner,
                      tool=self.aircraft.my_wingbox.my_spars.rearspar_outer,
                              hidden=False)
-
-    @Part
-    def ribs(self):
-        # return ModifiedShape(self.aircraft.my_wingbox.ribs_cut, keep=self.aircraft.my_wingbox.ribs_cut[0])
-        return Fused(shape_in=self.aircraft.my_wingbox.my_ribs.ribs_cut[1],
-                     tool=self.aircraft.my_wingbox.my_ribs.ribs_cut[2:-1],
-                             hidden=False)
+    #
+    # @Part
+    # def ribs(self):
+    #     # return ModifiedShape(self.aircraft.my_wingbox.ribs_cut, keep=self.aircraft.my_wingbox.ribs_cut[0])
+    #     return Fused(shape_in=self.aircraft.my_wingbox.my_ribs.ribs_cut[1],
+    #                  tool=self.aircraft.my_wingbox.my_ribs.ribs_cut[2:-1],
+    #                          hidden=False)
 
 
 
@@ -177,14 +177,14 @@ class AbaqusINPwriter(GeomBase):
     #                               [EdgeGroup(shape=self.ribs.edges[idy]) for idy in range(len(self.ribs.edges))],
     #                        mesh_element_length=self.mesh_element_length)
 
-    @Part
-    def meshed_ribs(self):
-        return MeshingFunc(part_class=self.aircraft.my_wingbox.my_ribs.ribs_cut[1],
-                           groups=[FaceGroup(shape=self.ribs.faces)] +
-                                  [EdgeGroup(shape=self.ribs.edges)] +
-                                  [FaceGroup(shape=self.ribs.faces[idx]) for idx in range(len(self.ribs.faces))] +
-                                  [EdgeGroup(shape=self.ribs.edges[idy]) for idy in range(len(self.ribs.edges))],
-                           mesh_element_length=self.mesh_element_length)
+    # @Part
+    # def meshed_ribs(self):
+    #     return MeshingFunc(part_class=self.aircraft.my_wingbox.my_ribs.ribs_cut[1],
+    #                        groups=[FaceGroup(shape=self.ribs.faces)] +
+    #                               [EdgeGroup(shape=self.ribs.edges)] +
+    #                               [FaceGroup(shape=self.ribs.faces[idx]) for idx in range(len(self.ribs.faces))] +
+    #                               [EdgeGroup(shape=self.ribs.edges[idy]) for idy in range(len(self.ribs.edges))],
+    #                        mesh_element_length=self.mesh_element_length)
 
     @Part
     def meshed_ribs_cp(self):

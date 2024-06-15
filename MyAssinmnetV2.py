@@ -20,19 +20,9 @@ import operator
 import csv
 import glob
 from parapy.core.widgets import FilePicker
-#from Parts.Wing_Class import *
 
 DIR = os.path.dirname(__file__)
 
-
-# partial_filename = "configuration"
-#
-# configuration_files = glob.glob(f"*{partial_filename}*.csv")
-#
-# material_library = pd.read_excel(io='Parts/output.xlsx')
-# material_names=[]
-# for name in range(len(material_library.iloc[:, 0])):
-#     material_names.append(material_library.iloc[name, 0])
 
 class Aircraft(GeomBase):
     """This is the Superclass. It only contains the Wing class."""
@@ -40,12 +30,10 @@ class Aircraft(GeomBase):
     saved_aircraft_configuration = Input('Parts/output/my_aircraft_name_configuration.csv',
                                          widget=FilePicker(wildcard="*.csv", default_dir="Parts/output"))
 
-    span = Input(35.8, validator=GT(0, msg="Wing span cannot be smaller than " "{validator.limit}!"))
-    leading_edge_sweep = Input(25,  validator=Between(-60, 60, msg="Leading edge sweep angle cannot be greater than +-{60}!"))
-    width_centerpiece = Input(2.5, validator=GT(0, msg="Centre section width cannot be smaller than " "{validator.limit}!")) #This is the width of half the centerpiece
-    # leading_edge_sweep = Input(25, validator=Between(-60, 60, msg="Leading edge sweep angle cannot be greater than +-{60}!"))
-    # width_centerpiece = Input(2.5, validator=GT(0, msg="Centre section width cannot be smaller than " "{validator.limit}!"))
-    rib_pitch = Input(2, validator=GT(0, msg="Rib pitch cannot be smaller than " "{validator.limit}!"))
+    span = Input(35.8, validator=GT(0, msg="Wing span cannot be smaller than " "{validator.limit}!")) #span of the aircraft in meters
+    leading_edge_sweep = Input(25,  validator=Between(-60, 60, msg="Leading edge sweep angle cannot be greater than +-{60}!")) #in degrees
+    width_centerpiece = Input(2.5, validator=GT(0, msg="Centre section width cannot be smaller than " "{validator.limit}!")) #This is the width of half the total centerpiece, so basically from the middle of the fuselage until where the actual wing starts (outside of the fuselage)
+    rib_pitch = Input(2, validator=GT(0, msg="Rib pitch cannot be smaller than " "{validator.limit}!")) #pitch between the ribs in meters
     load_factor = Input(2.5, validator=GT(0, msg="Load factor cannot be smaller than " "{validator.limit}!"))
     aircraft_mass = Input(10000, validator=GT(0, msg="Aircraft mass cannot be smaller than " "{validator.limit}!"))
     engine_position = Input([4])  # , validator=Between(0, 60, msg="Engine position has to be between wing root and tip!"))
@@ -53,8 +41,6 @@ class Aircraft(GeomBase):
     root_chord = Input(5.9, validator=GT(0, msg="Root chord cannot be smaller than " "{validator.limit}!"))
     tip_chord = Input(1.64, validator=GT(0, msg="{value} cannot be greater than " "{validator.limit}!"))
     kink_location = Input(6, validator=Parts.Wing_me.smaller_than_span) #measured from centerline of fuselage
-    # twist_angle = Input(0)
-    # dihedral_angle = Input(0)
     material = Input(Parts.Wing_Class.material_names[0], widget=Dropdown(Parts.Wing_Class.material_names, autocompute=False))
     skin_thickness = Input(0.003, validator=GT(0, msg="Skin thickness cannot be smaller than " "{validator.limit}!"))
     upper_inner_skin_thickness = Input(0.003, validator=GT(0, msg="Skin thickness cannot be smaller than " "{validator.limit}!"))
@@ -67,7 +53,15 @@ class Aircraft(GeomBase):
     centre_section_spar_thickness = Input(0.01, validator=GT(0, msg="Centre section spar thickness cannot be smaller than " "{validator.limit}!"))
     centre_section_rib_thickness = Input(0.005, validator=GT(0, msg="Centre section rib thickness cannot be smaller than " "{validator.limit}!"))
 
-    @Part  # Sicne the centerpiece depends fully on the geometry of the wing, it is a subclass of the wing
+    nr_stringers_upper_inner = Input(6) #number of stringers in the inner wingbox on the upperskin
+    nr_stringers_lower_inner = Input(5) #number of stringers in the inner wingbox on the lowerskin
+    nr_stringers_upper_outer = Input(4) #number of stringers in the outer wingbox on the upperskin
+    nr_stringers_lower_outer = Input(4) #number of stringers in the outer wingbox on the lowerskin
+    nr_stringers_upper_CP = Input(4) #number of stringers in the centerpiece on the upperskin
+    nr_stringers_lower_CP = Input(4) #number of stringers in the centerpiece on the upperskin
+
+    @Part  # Since the centerpiece depends fully on the geometry of the wing and is basically an extended part of the wing
+    #as well as the connection between the wings , it is a subclass of the wing
     def wing(self):
         return Parts.Wing_me(span=self.span,
                              leading_edge_sweep=self.leading_edge_sweep,
@@ -89,32 +83,38 @@ class Aircraft(GeomBase):
                              centre_section_skin_thickness=self.centre_section_skin_thickness,
                              centre_section_spar_thickness=self.centre_section_spar_thickness,
                              centre_section_rib_thickness=self.centre_section_rib_thickness,
+                             nr_stringers_upper_inner=self.nr_stringers_upper_inner,
+                             nr_stringers_lower_inner=self.nr_stringers_lower_inner,
+                             nr_stringers_upper_outer=self.nr_stringers_upper_outer,
+                             nr_stringers_lower_outer=self.nr_stringers_lower_outer,
+                             nr_stringers_upper_CP=self.nr_stringers_upper_CP,
+                             nr_stringers_lower_CP=self.nr_stringers_lower_CP,
                              position=translate(self.position, 'x', -1, 'y', 0, 'z',
                                                 0))  # Puts the origin at the trailing edge of the kink
 
-    # @Part
-    # def write_inp(self):
-    #     return Parts.AbaqusINPwriter(path=self.wing,
-    #                                  density=self.wing.material_properties[0],
-    #                                  elastic_modulus=self.wing.material_properties[1],
-    #                                  poisson_ratio=self.wing.material_properties[2],
-    #                                  skin_thickness=self.wing.skin_thickness,
-    #                                  upper_inner_skin_thickness=self.wing.upper_inner_skin_thickness,
-    #                                  upper_outer_skin_thickness=self.wing.upper_outer_skin_thickness,
-    #                                  lower_inner_skin_thickness=self.wing.lower_inner_skin_thickness,
-    #                                  lower_outer_skin_thickness=self.wing.lower_outer_skin_thickness,
-    #                                  spar_thickness=self.wing.spar_thickness,
-    #                                  rib_thickness=self.wing.rib_thickness,
-    #                                  centre_section_skin_thickness=self.wing.centre_section_skin_thickness,
-    #                                  centre_section_spar_thickness=self.wing.centre_section_spar_thickness,
-    #                                  centre_section_rib_thickness=self.wing.centre_section_rib_thickness,
-    #                                  span=self.span,
-    #                                  width_centerpiece=self.width_centerpiece,
-    #                                  load_factor=self.load_factor,
-    #                                  aircraft_mass=self.aircraft_mass,
-    #                                  engine_position=self.engine_position,
-    #                                  engine_mass=self.engine_mass,
-    #                                  hidden=False)
+    @Part
+    def write_inp(self):
+        return Parts.AbaqusINPwriter(path=self.wing,
+                                     density=self.wing.material_properties[0],
+                                     elastic_modulus=self.wing.material_properties[1],
+                                     poisson_ratio=self.wing.material_properties[2],
+                                     skin_thickness=self.wing.skin_thickness,
+                                     upper_inner_skin_thickness=self.wing.upper_inner_skin_thickness,
+                                     upper_outer_skin_thickness=self.wing.upper_outer_skin_thickness,
+                                     lower_inner_skin_thickness=self.wing.lower_inner_skin_thickness,
+                                     lower_outer_skin_thickness=self.wing.lower_outer_skin_thickness,
+                                     spar_thickness=self.wing.spar_thickness,
+                                     rib_thickness=self.wing.rib_thickness,
+                                     centre_section_skin_thickness=self.wing.centre_section_skin_thickness,
+                                     centre_section_spar_thickness=self.wing.centre_section_spar_thickness,
+                                     centre_section_rib_thickness=self.wing.centre_section_rib_thickness,
+                                     span=self.span,
+                                     width_centerpiece=self.width_centerpiece,
+                                     load_factor=self.load_factor,
+                                     aircraft_mass=self.aircraft_mass,
+                                     engine_position=self.engine_position,
+                                     engine_mass=self.engine_mass,
+                                     hidden=False)
 
     @action()
     def INP_file_writer(self):
