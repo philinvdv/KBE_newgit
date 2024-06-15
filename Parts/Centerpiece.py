@@ -4,7 +4,7 @@ from parapy.core import *
 import numpy as np
 from Parts.Skins import *
 from Parts.CustomPlane import *
-from Parts.Stringer_part import *
+from Parts.StringerPart import *
 
 class Centerpiece(GeomBase):
     """This class creates the centerpiece. Since only one wing is analysed, the centerpiece is split in half and only
@@ -234,12 +234,12 @@ class Centerpiece(GeomBase):
     @Part #This gives the L-stringer. The [0] is to prevent errors; there is only 1 line however in the 'edges' of the
     #intersection
     def stringer_upper_CP(self):
-        return Stringer_Part(quantify=len(self.intersected_str_upper),
+        return StringerPart(quantify=len(self.intersected_str_upper),
                              edge_in=self.intersected_str_upper[child.index].edges[0], up_down=1, angle_sign=1,
                              width_stringer=self.stringer_width_cp)
 
     @Part  # This gives the flat part of the stringer. The 0 is to prevent erros; there is only 1 line however
     def stringer_lower_CP(self):
-        return Stringer_Part(quantify=len(self.intersected_str_lower),
+        return StringerPart(quantify=len(self.intersected_str_lower),
                              edge_in=self.intersected_str_lower[child.index].edges[0], up_down=-1, angle_sign=1,
                              width_stringer=0.1)

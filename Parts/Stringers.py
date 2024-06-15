@@ -3,7 +3,7 @@ from parapy.geom import *
 from parapy.core import *
 import numpy as np
 from Parts.CustomPlane import *
-from Parts.Stringer_part import *
+from Parts.StringerPart import *
 
 class Stringer(GeomBase):
     """In this class, the stringers are defined as well as their locations. You can have a different amount of stringers
@@ -60,10 +60,10 @@ class Stringer(GeomBase):
             hidden=False
         )
 
-    @Part #Use the custom made Stringer_Part class to generate stringers at the locations defined by the lines. See
-    #Stringer_part.py for more information
+    @Part #Use the custom made StringerPart class to generate stringers at the locations defined by the lines. See
+    #StringerPart.py for more information
     def stringer_upper_inner(self):
-        return Stringer_Part(quantify=len(self.line_str_upper_inner),
+        return StringerPart(quantify=len(self.line_str_upper_inner),
                              edge_in=self.line_str_upper_inner[child.index].edges[0], up_down=-1, angle_sign=1,
                              width_stringer=self.stringer_width)
 
@@ -105,7 +105,7 @@ class Stringer(GeomBase):
 
     @Part #This gives the actual stringers
     def stringer_lower_inner(self):
-        return Stringer_Part(quantify=len(self.line_str_lower_inner),
+        return StringerPart(quantify=len(self.line_str_lower_inner),
                              edge_in=self.line_str_lower_inner[child.index].edges[0], up_down=1, angle_sign=1,
                              width_stringer=self.stringer_width)
 
@@ -120,8 +120,8 @@ class Stringer(GeomBase):
 
     @Attribute #This one is slightly different, since the outer wingbox does not start at the origin
     def tip_stringer_pts_upper_outer(self):
-        start_x = -((self.span / 2 - self.width_centerpiece) * np.tan(
-                    radians(self.leading_edge_sweep)) + self.tip_chord - self.root_chord)
+        start_x = -((self.span / 2 - self.width_centerpiece) * np.tan(radians(self.leading_edge_sweep))
+                    + self.tip_chord - self.root_chord)
         sp_kink = np.linspace(start_x + 0.3 * self.tip_chord, start_x + 0.8 * self.tip_chord,
                               (self.nr_stringers_upper_outer + 2))
         pts_kink = np.delete(sp_kink, 0)
@@ -148,7 +148,7 @@ class Stringer(GeomBase):
 
     @Part
     def stringer_upper_outer(self):
-        return Stringer_Part(quantify=len(self.line_str_upper_outer),
+        return StringerPart(quantify=len(self.line_str_upper_outer),
                              edge_in=self.line_str_upper_outer[child.index].edges[0], up_down=-1, angle_sign=1,
                              width_stringer=0.5*self.stringer_width)#, angle_y=self.parent.my_skins.angle_upperskin_outer)
 
@@ -192,6 +192,6 @@ class Stringer(GeomBase):
 
     @Part
     def stringer_lower_outer(self):
-        return Stringer_Part(quantify=len(self.line_str_lower_outer),
+        return StringerPart(quantify=len(self.line_str_lower_outer),
                              edge_in=self.line_str_lower_outer[child.index].edges[0], up_down=-1,angle_sign=-1,
                              width_stringer=0.5*self.stringer_width)

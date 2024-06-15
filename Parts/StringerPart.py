@@ -4,7 +4,7 @@ from math import radians
 import math
 import numpy as np
 
-class Stringer_Part(GeomBase):
+class StringerPart(GeomBase):
     """This custom-made class is designed to create the L-shaped stringers and put them on the locations as determined
     with the CustomPlane class. The only necessary inputs are the width of the section, the desired width of the
     stringer and the edge/ line at which the stringer needs to be located"""
