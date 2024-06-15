@@ -28,7 +28,9 @@ class Skins(GeomBase):
     width_centerpiece = Input()
 
     """Upper skin pannel inner"""
-    @Attribute
+    @Attribute #This attribute determines the points at the root that are needed to make the upperskin (location of the
+    #frontspar and rearspar). The fl points are related to the other points, but they are a certain length_flanges apart.
+    # This will later result in the flanges
     def points_root_upper_skin(self):
         point_2 = Point(-0.8 * self.root_chord, 0, self.front_spar_coordinates[0][1] * self.root_chord) #frontspar
         point_3 = Point(-0.3 * self.root_chord, 0, self.rear_spar_coordinates[0][1] * self.root_chord) #rearspar
@@ -36,21 +38,20 @@ class Skins(GeomBase):
         point_3fl = Point(-0.3 * self.root_chord, 0, self.rear_spar_coordinates[0][1] * self.root_chord - self.length_flanges)
         return [point_2, point_3, point_2fl, point_3fl] #[point_1, point_2, point_3, point_4]
 
-    @Attribute
-    def angle_upperskin_inner(self):
-        return np.arctan((self.front_spar_coordinates[0][1] * ((self.root_chord+self.tip_chord_kink)/2) -
-                            self.rear_spar_coordinates[0][1] * ((self.root_chord+self.tip_chord_kink)/2)) /
-                         (0.8 * ((self.root_chord+self.tip_chord_kink)/2) - 0.3 * ((self.root_chord+self.tip_chord_kink)/2)))
+    # @Attribute
+    # def angle_upperskin_inner(self):
+    #     return np.arctan((self.front_spar_coordinates[0][1] * ((self.root_chord+self.tip_chord_kink)/2) -
+    #                         self.rear_spar_coordinates[0][1] * ((self.root_chord+self.tip_chord_kink)/2)) /
+    #                      (0.8 * ((self.root_chord+self.tip_chord_kink)/2) - 0.3 * ((self.root_chord+self.tip_chord_kink)/2)))
 
     @Part #Line from upper point of front spar to upper point of rear spar
     def line_root_upp(self):
         return LineSegment(start=self.points_root_upper_skin[0], end=self.points_root_upper_skin[1],
                     hidden=True)
-                         #  position = rotate(XOY, 'x', 90, deg=True)
 
 
     """At kink, upper inner"""
-    @Attribute
+    @Attribute #Similarly to points_root_upper_skin, but then for the points at the kink
     def points_kink_upper_skin(self):
         point2 = Point(-0.8 * self.tip_chord_kink, self.start_wing_to_kink, self.front_spar_coordinates[0][1] * self.tip_chord_kink)
         point3 = Point(-0.3 * self.tip_chord_kink, self.start_wing_to_kink, self.rear_spar_coordinates[0][1] * self.tip_chord_kink)
@@ -66,7 +67,7 @@ class Skins(GeomBase):
                            position=rotate(XOY, 'x', 90, deg=True),
                     hidden=True)
 
-    @Part
+    @Part #Connect the line at the root with the line at the kink to actually generate the upperskin surface
     def inner_upperskin_loft(self):  # generate a surface
         return LoftedSurface(
             profiles=[self.line_root_upp, self.line_kink_upp],
@@ -74,7 +75,7 @@ class Skins(GeomBase):
                     hidden=True)
 
     """Lower skin panel inner"""
-    @Attribute
+    @Attribute #Same as before
     def points_root_lower_skin(self):
         # point_1 = Point(0,0,0)
         point_2l = Point(-0.8 * self.root_chord, 0, self.front_spar_coordinates[1][1] * self.root_chord)
@@ -85,13 +86,10 @@ class Skins(GeomBase):
 
     @Part  # Line from lower point of front spar to lower point of rear spar
     def line_root_low(self):
-        return LineSegment(start=self.points_root_lower_skin[0], end=self.points_root_lower_skin[1])#,
-                    #hidden=True)
-                           #  position = rotate(XOY, 'x', 90, deg=True)
-
+        return LineSegment(start=self.points_root_lower_skin[0], end=self.points_root_lower_skin[1])
 
     """At kink, lower pannel inner"""
-    @Attribute
+    @Attribute #Same as before
     def points_kink_lower_skin(self):
         point2l = Point(-0.8 * self.tip_chord_kink, self.start_wing_to_kink,
                        self.front_spar_coordinates[1][1] * self.tip_chord_kink)
@@ -103,14 +101,13 @@ class Skins(GeomBase):
                         self.rear_spar_coordinates[1][1] * self.tip_chord_kink + self.length_flanges)
         return [point2l, point3l, point2_fl, point3_fl]
 
-    #Define four separate lines
-    @Part  # Line from upper point of front spar to upper point of rear spar
+    @Part  # Line from lower point of front spar to lower point of rear spar. Can use this for inner and outer
     def line_kink_low(self):
         return LineSegment(start=self.points_kink_lower_skin[0], end=self.points_kink_lower_skin[1],
                            position=rotate(XOY, 'x', 90, deg=True),
                     hidden=True)
 
-    @Part
+    @Part #Combine the two lines to make the lowerskin of the inner wingbox
     def inner_lowerskin_loft(self):  # generate a surface
         return LoftedSurface(
             profiles=[self.line_root_low, self.line_kink_low],
@@ -118,40 +115,38 @@ class Skins(GeomBase):
                     )
 
     """Outer skin panels, tip"""
-    @Attribute
+    @Attribute #Same as before
     def points_tip_upper_skin(self):
-        point_2t = Point((self.span/2 - self.width_centerpiece/2) * np.tan(radians(self.leading_edge_sweep))
+        point_2t = Point((self.span/2 - self.width_centerpiece) * np.tan(radians(self.leading_edge_sweep))
                          + self.tip_chord - self.root_chord-0.8 * self.tip_chord,
-                         self.span/2 - self.width_centerpiece/2,
+                         self.span/2 - self.width_centerpiece,
                          self.front_spar_coordinates[0][1] * self.tip_chord)
-        point_3t = Point((self.span/2 - self.width_centerpiece/2) * np.tan(radians(self.leading_edge_sweep))
+        point_3t = Point((self.span/2 - self.width_centerpiece) * np.tan(radians(self.leading_edge_sweep))
                          + self.tip_chord - self.root_chord-0.3 * self.tip_chord,
-                         self.span/2 - self.width_centerpiece/2, self.rear_spar_coordinates[0][1] * self.tip_chord)
-        point_2_fl = Point((self.span/2 - self.width_centerpiece/2) * np.tan(radians(self.leading_edge_sweep))
+                         self.span/2 - self.width_centerpiece, self.rear_spar_coordinates[0][1] * self.tip_chord)
+        point_2_fl = Point((self.span/2 - self.width_centerpiece) * np.tan(radians(self.leading_edge_sweep))
                            + self.tip_chord - self.root_chord-0.8 * self.tip_chord,
-                         self.span/2 - self.width_centerpiece/2,
+                         self.span/2 - self.width_centerpiece,
                          self.front_spar_coordinates[0][1] * self.tip_chord - self.length_flanges)
-        point_3_fl = Point((self.span / 2 - self.width_centerpiece / 2) * np.tan(
+        point_3_fl = Point((self.span / 2 - self.width_centerpiece) * np.tan(
             radians(self.leading_edge_sweep)) + self.tip_chord - self.root_chord - 0.3 * self.tip_chord,
-                         self.span / 2 - self.width_centerpiece / 2, self.rear_spar_coordinates[0][1] * self.tip_chord
+                         self.span / 2 - self.width_centerpiece, self.rear_spar_coordinates[0][1] * self.tip_chord
                            -self.length_flanges)
         return [point_2t, point_3t, point_2_fl, point_3_fl]
 
-    @Attribute
-    def angle_upperskin_outer(self):
-        return np.arctan((self.front_spar_coordinates[0][1] * ((self.tip_chord+self.tip_chord_kink)/2)
-                            - self.rear_spar_coordinates[0][1] * ((self.tip_chord+self.tip_chord_kink)/2)) /
-                         (0.8 * ((self.tip_chord+self.tip_chord_kink)/2) - 0.3 * ((self.tip_chord+self.tip_chord_kink)/2)))
+    # @Attribute #
+    # def angle_upperskin_outer(self):
+    #     return np.arctan((self.front_spar_coordinates[0][1] * ((self.tip_chord+self.tip_chord_kink)/2)
+    #                         - self.rear_spar_coordinates[0][1] * ((self.tip_chord+self.tip_chord_kink)/2)) /
+    #                      (0.8 * ((self.tip_chord+self.tip_chord_kink)/2) - 0.3 * ((self.tip_chord+self.tip_chord_kink)/2)))
 
-    # Define four separate lines
     @Part  # Line from upper point of front spar to upper point of rear spar
     def line_tip_upp(self):
         return LineSegment(start=self.points_tip_upper_skin[0], end=self.points_tip_upper_skin[1],
                     hidden=True)
-                           #  position = rotate(XOY, 'x', 90, deg=True)
 
-    #At the kink it already exists, take that one from previously
-    @Part
+
+    @Part#At the kink it already exists, take that one from previously. Combine with line at the tip
     def outer_upperskin_loft(self):  # generate a surface
         return LoftedSurface(
             profiles=[self.line_kink_upp, self.line_tip_upp],
@@ -161,29 +156,27 @@ class Skins(GeomBase):
     """Lower skin panel outer"""
     @Attribute
     def points_tip_lower_skin(self):
-        # point_1 = Point(0,0,0)
-        point_2lt = Point((self.span / 2 - self.width_centerpiece / 2) * np.tan(radians(self.leading_edge_sweep)) + self.tip_chord - self.root_chord - 0.8 * self.tip_chord,
-                          self.span/2 - self.width_centerpiece/2, self.front_spar_coordinates[1][1] * self.tip_chord)
+        point_2lt = Point((self.span / 2 - self.width_centerpiece) * np.tan(radians(self.leading_edge_sweep)) + self.tip_chord - self.root_chord - 0.8 * self.tip_chord,
+                          self.span/2 - self.width_centerpiece, self.front_spar_coordinates[1][1] * self.tip_chord)
 
-        point_3lt = Point((self.span / 2 - self.width_centerpiece / 2) * np.tan(radians(self.leading_edge_sweep)) + self.tip_chord - self.root_chord - 0.3 * self.tip_chord,
-                          self.span/2 - self.width_centerpiece/2, self.rear_spar_coordinates[1][1] * self.tip_chord)
-        point_2lt_fl = Point((self.span / 2 - self.width_centerpiece / 2) * np.tan(
+        point_3lt = Point((self.span / 2 - self.width_centerpiece) * np.tan(radians(self.leading_edge_sweep)) + self.tip_chord - self.root_chord - 0.3 * self.tip_chord,
+                          self.span/2 - self.width_centerpiece, self.rear_spar_coordinates[1][1] * self.tip_chord)
+        point_2lt_fl = Point((self.span / 2 - self.width_centerpiece) * np.tan(
             radians(self.leading_edge_sweep)) + self.tip_chord - self.root_chord - 0.8 * self.tip_chord,
-                          self.span / 2 - self.width_centerpiece / 2,
+                          self.span / 2 - self.width_centerpiece,
                           self.front_spar_coordinates[1][1] * self.tip_chord + self.length_flanges)
 
-        point_3lt_fl = Point((self.span / 2 - self.width_centerpiece / 2) * np.tan(
+        point_3lt_fl = Point((self.span / 2 - self.width_centerpiece) * np.tan(
             radians(self.leading_edge_sweep)) + self.tip_chord - self.root_chord - 0.3 * self.tip_chord,
-                          self.span / 2 - self.width_centerpiece / 2, self.rear_spar_coordinates[1][1] * self.tip_chord + self.length_flanges)
+                          self.span / 2 - self.width_centerpiece, self.rear_spar_coordinates[1][1] * self.tip_chord + self.length_flanges)
         return [point_2lt, point_3lt, point_2lt_fl, point_3lt_fl]
 
-    # Define four separate lines
-    @Part  # Line from upper point of front spar to upper point of rear spar
+    @Part  # Line from lower point of front spar to lower point of rear spar
     def line_tip_low(self):
         return LineSegment(start=self.points_tip_lower_skin[0], end=self.points_tip_lower_skin[1],
                     hidden=True)
 
-    @Part #Again, kink exists already
+    @Part #Again, kink exists already, combine with tip line
     def outer_lowerskin_loft(self):  # generate a surface
         return LoftedSurface(
             profiles=[self.line_tip_low, self.line_kink_low],
@@ -246,48 +239,3 @@ class Skins(GeomBase):
             profiles=[LineSegment(start=self.points_tip_upper_skin[3], end=self.points_kink_upper_skin[3]),
                       LineSegment(start=self.points_tip_upper_skin[1], end=self.points_kink_upper_skin[1])],
                     hidden=True)
-    # #Fused with flanges
-    # @Part
-    # def fused_inner_upperskin_and_flanges(self):
-    #     return Fused(shape_in=self.inner_upperskin_loft,
-    #                       tool = (self.flange_upperskin_inner_rear, self.flange_upperskin_inner_front))
-    #
-    # @Part
-    # def fused_inner_lowerskin_and_flanges(self):
-    #     return Fused(shape_in=self.inner_lowerskin_loft,
-    #                       tool = (self.flange_lowerskin_inner_rear, self.flange_lowerskin_inner_front))
-    #
-    # @Part
-    # def fused_outer_upperskin_and_flanges(self):
-    #     return Fused(shape_in=self.outer_upperskin_loft,
-    #                       tool = (self.flange_upperskin_outer_rear, self.flange_upperskin_outer_front))
-    #
-    # @Part
-    # def fused_outer_lowerskin_and_flanges(self):
-    #     return Fused(shape_in=self.outer_lowerskin_loft,
-    #                       tool = (self.flange_lowerskin_outer_rear, self.flange_lowerskin_outer_front))
-
-    # @Part
-    # def fused(self):
-    #     return Fused(shape_in=self.fused_inner_upperskin_and_flanges,
-    #                  tool= (self.front_spar_inner, self.rearspar_inner)
-    #         )
-
-    # @Part
-    # def mesh_fused_inner_upper_skin(self):
-    #     return MeshingFunc(part_class=self.fused_inner_upperskin_and_flanges, n_mesh_points=50)
-    #
-    # @Part
-    # def mesh_fused_inner_lower_skin(self):
-    #     return MeshingFunc(part_class=self.fused_inner_lowerskin_and_flanges, n_mesh_points=50)
-    #
-    # @Part
-    # def mesh_fused_outer_upper_skin(self):
-    #     return MeshingFunc(part_class=self.fused_outer_upperskin_and_flanges, n_mesh_points=50)
-    #
-    # @Part
-    # def mesh_fused_outer_lower_skin(self):
-    #     return MeshingFunc(part_class=self.fused_outer_lowerskin_and_flanges, n_mesh_points=50)
-
-
-

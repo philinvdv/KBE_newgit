@@ -27,14 +27,12 @@ for name in range(len(material_library.iloc[:, 0])):
     material_names.append(material_library.iloc[name, 0])
 
 class Wing_me(GeomBase):
-    """This class contains the wing itself, from the loaded airfoil points. Contains the components that are in the wing
-    as well, including the (front and rear) spars and the (upper and lower) skins."""
+    """This class contains the wing itself, from the loaded airfoil points. Contains the wingbox, since this is an
+    essential part of the wing. Would also contain for example flap systems (not in this program)"""
     #Inputs
     span = Input(35.8, validator=GT(0, msg="Wing span cannot be smaller than " "{validator.limit}!"))
     leading_edge_sweep = Input(25,  validator=Between(-60, 60, msg="Leading edge sweep angle cannot be greater than +-{60}!")) #deg
     root_chord = Input(5.9, validator=GT(0, msg="Root chord cannot be smaller than " "{validator.limit}!"))
-    # twist_angle = Input(0)
-    # dihedral_angle = Input(0)
     material = Input(material_names[0], widget=Dropdown(material_names, autocompute=False))
     skin_thickness = Input(0.003, validator=GT(0, msg="Skin thickness cannot be smaller than " "{validator.limit}!"))
     upper_inner_skin_thickness = Input(0.003, validator=GT(0, msg="Skin thickness cannot be smaller than " "{validator.limit}!"))
@@ -46,6 +44,13 @@ class Wing_me(GeomBase):
     centre_section_skin_thickness = Input(0.003, validator=GT(0, msg="Centre section skin thickness cannot be smaller than " "{validator.limit}!"))
     centre_section_spar_thickness = Input(0.01, validator=GT(0, msg="Centre section spar thickness cannot be smaller than " "{validator.limit}!"))
     centre_section_rib_thickness = Input(0.005, validator=GT(0, msg="Centre section rib thickness cannot be smaller than " "{validator.limit}!"))
+
+    nr_stringers_upper_inner = Input() #number of stringers in the inner wingbox on the upperskin
+    nr_stringers_lower_inner = Input() #number of stringers in the inner wingbox on the lowerskin
+    nr_stringers_upper_outer = Input() #number of stringers in the outer wingbox on the upperskin
+    nr_stringers_lower_outer = Input() #number of stringers in the outer wingbox on the lowerskin
+    nr_stringers_upper_CP = Input() #number of stringers in the centerpiece on the upperskin
+    nr_stringers_lower_CP = Input() #number of stringers in the centerpiece on the upperskin
 
     @Attribute
     def material_properties(self):
@@ -65,78 +70,61 @@ class Wing_me(GeomBase):
     width_centerpiece = Input(3, validator=smaller_than_span)
     rib_pitch = Input(2, validator=GT(0, msg="{value} cannot be greater than " "{validator.limit}!"))
 
-    @Attribute
+    @Input #This gives the distance between the kink and the start of the wing
     def start_wing_to_kink(self):
-        return self.kink_location - self.width_centerpiece / 2
+        return self.kink_location - self.width_centerpiece
 
-    @Attribute
+    @Input #This gives the chord at the location of the kink
     def tip_chord_kink(self):
         return self.root_chord - self.start_wing_to_kink * np.tan(
             radians(self.leading_edge_sweep))  # if trailing edge kink has zero sweep
 
     @Attribute
     def pts_pre(self):
-        """ Extract airfoil coordinates from a data file and create a list of 3D points. Also create points for spars (20% and 70%)"""
+        """ Extract airfoil coordinates from a data file and create a list of 3D points.
+        Also create points for spars (20% and 70%)"""
         front_spar_coordinates = []
         rear_spar_coordinates = []
         with open('NACA_2412_points.dat', 'r') as f:
             points = []
             for line in f:
                 x, y = line.split(' ', 1)  # separator = " "; max number of split = 1
-                # Convert the strings to numbers and make 3D points for the FittedCurve class
+                # Convert the strings to numbers & make 3D points for the FittedCurve class
                 points.append(Point(float(x), float(y)))
-                # Note that the points are imported in the X-Y plane. A rotation below (line 79) could be avoided if
-                # points were imported in the X-Z plane, e.g. points.append(Point(float(x), 0, float(y)))
-                if float(x) == 0.2:
-                    # if (float(x) - 0.2) < abs(0.001):
+                if float(x) == 0.2: #The frontspar is located at 20%
                     front_spar_coordinates.append([float(x), float(y), 0])
-                if float(x) == 0.7:
+                if float(x) == 0.7: #The rearspar is located at 70%
                     rear_spar_coordinates.append([float(x), float(y), 0])
         return points, front_spar_coordinates, rear_spar_coordinates
 
-    @Attribute  # split into the different components (is this needed?)
+    @Attribute  # split into the different components
     def pts(self):
         points, front_spar_coordinates, rear_spar_coordinates = self.pts_pre
         return points
 
-    @Attribute
+    @Attribute #These are the frontspar coordinates of the unit airfoil
     def front_spar_coordinates(self):
         points, front_spar_coordinates, rear_spar_coordinates = self.pts_pre
         return front_spar_coordinates
 
-    @Attribute
+    @Attribute #These are the rearspar coordinates of the unit airfoil
     def rear_spar_coordinates(self):
         points, front_spar_coordinates, rear_spar_coordinates = self.pts_pre
         return rear_spar_coordinates
 
-    @Part
+    @Part #get the airfoil from the points
     def airfoil_from_3D_points(self):  # this curve is on the X-Y plane, with TE = (1, 0, 0) and LE = (0, 0, 0)
         return FittedCurve(points=self.pts,
                            mesh_deflection=0.0001, hidden=True)
 
-    @Part
-    def crv1_repositioned_inner(self):  # ***************THIS WON'T WORK!!! ************* a curve built from 3D points /
-        # cannot be moved. It stays nailed to its 3D points!
-        return FittedCurve(points=self.pts,
-                           position=translate(rotate(XOY, 'x', 90, deg=True),
-                                              'x', self.position.x,  # -1
-                                              'y', self.position.y,
-                                              'z', self.position.z),
-                           color="red", hidden=True)
-
-    @Part  # TransformedCurve is making a carbon copy of the fitted curve, which can be moved (rotated and translated) /
-    # from one position to another. /
-    # In this case we want to position the fitted curve copy in the x-z plane of the wing reference system, with its /
-    # TE in the origin (location) of this reference system. This requires a rotation and a few translations.
+    @Part  # TransformedCurve moves the (copy of) fitted curve to the desired location.
+    # In this case we want to position the fitted curve in the x-z plane of the wing reference system, with its
+    # TE in the origin. To get this, we rotate and translate
     def root_section_unscaled_inner(self):
         return TransformedCurve(
             curve_in=self.airfoil_from_3D_points,
-            # the curve to be repositioned
-            # from_position=rotate(translate(XOY, 'x', 1), 'x', -90, deg=True),
             from_position=rotate(translate(XOY, 'x', 0), 'x', -90, deg=True),
-            # Can be thought of as moving a frame to the position on the curve from which you want to move it. It will
-            # now be at the trailing edge and with X-Z plane aligned with curve plane.
-            to_position=self.position,  # The wing relative reference system
+            to_position=self.position,
             hidden=True
         )
 
@@ -154,8 +142,7 @@ class Wing_me(GeomBase):
         )
 
     @Part
-    def root_section_inner(self):  # the ScaledCurve primitive allows scaling a given curve. Here it is used to scale /
-        # the unit chord airfoil generated from the .dat file according to their actual chord length
+    def root_section_inner(self):  # This scales the unit airfoil to in this case the root airfoil
         return ScaledCurve(
             curve_in=self.root_section_unscaled_inner,
             reference_point=self.root_section_unscaled_inner.start,
@@ -166,21 +153,21 @@ class Wing_me(GeomBase):
         )
 
     @Part
-    def tip_section_inner(self):
+    def tip_section_inner(self): #Same but for tip inner, which is the airfoil at the location of the tip
         return ScaledCurve(
             curve_in=self.tip_section_unscaled_inner,
             reference_point=self.tip_section_unscaled_inner.start,
             factor=self.tip_chord_kink, hidden=True
         )
 
-    @Part
+    @Part #This gives the wing surface for the inner wing part
     def wing_loft_surf_inner(self):  # generate a surface
         return LoftedSurface(
             profiles=[self.root_section_inner, self.tip_section_inner],
             mesh_deflection=0.0001
         )
 
-    @Part  # Mirror and transform
+    @Part  # Mirror and transform to get it for the left wing as well
     def transform_mirror_wing_inner(self):
         return TransformedSurface(
             surface_in=MirroredSurface(surface_in=self.wing_loft_surf_inner, reference_point=Point(0, 0, 0),
@@ -190,7 +177,6 @@ class Wing_me(GeomBase):
         )
 
     """Outer wing"""
-
     @Part  # for the wing tip we use the same type of airfoil used for the wing root. We use again TransformedCurve
     def tip_section_unscaled_outer(self):
         return TransformedCurve(
@@ -198,15 +184,15 @@ class Wing_me(GeomBase):
             # the curve to be repositioned
             from_position=self.root_section_unscaled_inner.position,
             to_position=translate(self.root_section_unscaled_inner.position,  # to_position, i.e. the wing tip section
-                                  'y', self.span / 2 - self.width_centerpiece / 2 - self.start_wing_to_kink,
-                                  'x', (self.span / 2 - self.width_centerpiece / 2) * np.tan(
+                                  'y', self.span / 2 - self.width_centerpiece - self.start_wing_to_kink,
+                                  'x', (self.span / 2 - self.width_centerpiece) * np.tan(
                     radians(self.leading_edge_sweep)) + self.tip_chord - self.root_chord
                                   # 'x', (self.span / 2 - self.kink_location) * tan(radians(self.leading_edge_sweep)) + self.tip_chord - self.tip_chord_kink + self.start_wing_to_kink * tan(radians(self.leading_edge_sweep))
                                   ),  # the sweep is applied
             hidden=True
         )
 
-    @Part
+    @Part #Scale it to tip chord size
     def tip_section_outer(self):
         return ScaledCurve(
             curve_in=self.tip_section_unscaled_outer,
@@ -214,14 +200,14 @@ class Wing_me(GeomBase):
             factor=self.tip_chord, hidden=True
         )
 
-    @Part
+    @Part #The outer part of the wing
     def wing_loft_surf_outer(self):  # generate a surface
         return LoftedSurface(
             profiles=[self.tip_section_inner, self.tip_section_outer],
             mesh_deflection=0.0001
         )
 
-    @Part  # Mirror and move outer wing
+    @Part  # Mirror and move outer wing (for left wing)
     def transform_mirror_wing_outer(self):
         return TransformedSurface(
             surface_in=MirroredSurface(surface_in=self.wing_loft_surf_outer, reference_point=Point(0, 0, 0),
@@ -231,127 +217,37 @@ class Wing_me(GeomBase):
             to_position=translate(XOY, 'x', -1, 'y', -2*self.width_centerpiece)  # New position of the curve
         )
 
-    @Part
+    @Part #Initiate the wingbox, which inherits quite some things from the wing
     def my_wingbox(self):
         return Wingbox(start_wing_to_kink=self.start_wing_to_kink, tip_chord_kink=self.tip_chord_kink, pts=self.pts,
                        front_spar_coordinates=self.front_spar_coordinates,
                        rear_spar_coordinates=self.rear_spar_coordinates,  # these are attributes
                        span=self.span, leading_edge_sweep=self.leading_edge_sweep, root_chord=self.root_chord,
-                       twist_angle=self.twist_angle, dihedral_angle=self.dihedral_angle,
                        wing_material=self.wing_material,
                        kink_location=self.kink_location, tip_chord=self.tip_chord,
                        width_centerpiece=self.width_centerpiece,
                        rib_pitch=self.rib_pitch,
+                       nr_stringers_upper_inner=self.nr_stringers_upper_inner,
+                       nr_stringers_lower_inner=self.nr_stringers_lower_inner,
+                       nr_stringers_upper_outer=self.nr_stringers_upper_outer,
+                       nr_stringers_lower_outer=self.nr_stringers_lower_outer,
                        position=translate(self.position, 'x', 1, 'y', 0, 'z', 0))
 
-    # @Part
-    # def my_stringers(self):
-    #     return Stringer(tip_chord_kink=self.tip_chord_kink,
-    #                     span=self.span, leading_edge_sweep=self.leading_edge_sweep, root_chord=self.root_chord,
-    #                     kink_location=self.kink_location, tip_chord=self.tip_chord,
-    #                     width_centerpiece=self.width_centerpiece,
-    #                     position=translate(self.position, 'x', 1, 'y', 0, 'z', 0))
-
-    # @Part
-    # def my_ribs(self):
-    #     return Rib(rib_pitch=self.rib_pitch, root_chord=self.root_chord, tip_chord=self.tip_chord, leading_edge_sweep=self.leading_edge_sweep,
-    #                width_centerpiece=self.width_centerpiece, span=self.span,
-    #                position=translate(self.position, 'x', 1, 'y', 0, 'z', 0))
-    #
-    # @Part
-    # def my_stringers(self):
-    #     return Stringer(root_chord = self.root_chord, position=translate(self.position, 'x', 1, 'y', 0, 'z', 0))
-
-    @Part
+    @Part #Same for the centerpiece
     def centerpiece(self):
         return Centerpiece(start_wing_to_kink=self.start_wing_to_kink, tip_chord_kink=self.tip_chord_kink, pts=self.pts,
                            front_spar_coordinates=self.front_spar_coordinates,
                            rear_spar_coordinates=self.rear_spar_coordinates,  # these are attributes
                            span=self.span, leading_edge_sweep=self.leading_edge_sweep, root_chord=self.root_chord,
-                           twist_angle=self.twist_angle, dihedral_angle=self.dihedral_angle,
                            wing_material=self.wing_material,
                            kink_location=self.kink_location, tip_chord=self.tip_chord,
                            width_centerpiece=self.width_centerpiece,
+                           nr_stringers_upper_CP=self.nr_stringers_upper_CP,
+                           nr_stringers_lower_CP=self.nr_stringers_lower_CP,
                            position=translate(self.position, 'x', 1, 'y', 0, 'z', 0))
 
-    # @Part
-    # def my_spars(self):
-    #     return Spars(start_wing_to_kink=self.start_wing_to_kink, tip_chord_kink=self.tip_chord_kink, pts=self.pts,
-    #                  front_spar_coordinates=self.front_spar_coordinates,
-    #                  rear_spar_coordinates=self.rear_spar_coordinates,  # these are attributes
-    #                  span=self.span, leading_edge_sweep=self.leading_edge_sweep, root_chord=self.root_chord,
-    #                  twist_angle=self.twist_angle, dihedral_angle=self.dihedral_angle, wing_material=self.wing_material,
-    #                  kink_location=self.kink_location, tip_chord=self.tip_chord,
-    #                  width_centerpiece=self.width_centerpiece,
-    #                  hide_mesh=self.hide_mesh,
-    #                  position=translate(self.position, 'x', 1, 'y', 0, 'z', 0))
-
-    # @Part
-    # def my_skins(self):
-    #     return Skins(start_wing_to_kink=self.start_wing_to_kink, tip_chord_kink=self.tip_chord_kink, pts=self.pts,
-    #                  front_spar_coordinates=self.front_spar_coordinates,
-    #                  rear_spar_coordinates=self.rear_spar_coordinates,  # these are attributes
-    #                  span=self.span, leading_edge_sweep=self.leading_edge_sweep, root_chord=self.root_chord,
-    #                  twist_angle=self.twist_angle, dihedral_angle=self.dihedral_angle, wing_material=self.wing_material,
-    #                  kink_location=self.kink_location, tip_chord=self.tip_chord,
-    #                  width_centerpiece=self.width_centerpiece,
-    #                  position=translate(self.position, 'x', 1, 'y', 0, 'z', 0))
-
-    # @Part
-    # def wingbox_inner(self):
-    #     return ComposedSurface()
-
-    # @Attribute
-    # def parts_list(self):
-    #     return [Wing_me().wing_loft_surf_inner,
-    #             Wing_me().wing_loft_surf_outer,
-    #             Wing_me().my_skins.inner_upperskin_loft,
-    #             Wing_me().my_skins.inner_lowerskin_loft,
-    #             Wing_me().my_skins.outer_upperskin_loft,
-    #             Wing_me().my_skins.outer_lowerskin_loft,
-    #             Wing_me().my_spars.front_spar_inner]
-    #
-
-    # @Part
-    # def fused_wing_box(self):
-    #     return Fused(shape_in=self.my_skins.fused_outer_lowerskin_and_flanges,
-    #                  tool=(self.my_skins.fused_outer_upperskin_and_flanges,
-    #                        self.my_skins.fused_inner_lowerskin_and_flanges,
-    #                        self.my_skins.fused_inner_upperskin_and_flanges,
-    #                        self.my_spars.rearspar_outer,
-    #                        self.my_spars.rearspar_inner,
-    #                        self.my_spars.frontspar_outer,
-    #                        self.my_spars.front_spar_inner,
-    #                        ))
-
-
-
-
-
-    # @Part
-    # def step_writer(self):
-    #     return STEPWriter(nodes=[self.my_skins.fused_inner_upperskin_and_flanges,
-    #                          self.my_skins.fused_inner_lowerskin_and_flanges,
-    #                          self.my_skins.fused_outer_upperskin_and_flanges,
-    #                          self.my_skins.fused_outer_lowerskin_and_flanges,
-    #                          self.my_spars.front_spar_inner,
-    #                          self.my_spars.frontspar_outer,
-    #                          self.my_spars.rearspar_inner,
-    #                          self.my_spars.rearspar_outer],
-    #                   default_directory=DIR,
-    #                   filename="aircraft.step")
-
-
-
-
-    # @action
-    # def write_inp_file(self):
-    #     from Abaqus_analysisV3 import AbaqusINPwriter
-    #     AbaqusINPwriter().my_inp_writer.write('output//wing_box.inp')
-
-
-if __name__ == '__main__':
-    from parapy.gui import display
-
-    obj = Wing_me()
-    display(obj)
+# if __name__ == '__main__':
+#     from parapy.gui import display
+#
+#     obj = Wing_me()
+#     display(obj)
