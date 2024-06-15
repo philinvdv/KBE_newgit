@@ -60,22 +60,22 @@ class Wingbox(GeomBase):
     @Part
     def fused_inner_upperskin_and_flanges(self):
         return Fused(shape_in=self.my_skins.inner_upperskin_loft,
-                     tool=(self.my_skins.flange_upperskin_inner_rear, self.my_skins.flange_upperskin_inner_front),hidden=True)
+                     tool=(self.my_skins.flange_upperskin_inner_rear, self.my_skins.flange_upperskin_inner_front),hidden=False)
 
     @Part
     def fused_inner_lowerskin_and_flanges(self):
         return Fused(shape_in=self.my_skins.inner_lowerskin_loft,
-                     tool=(self.my_skins.flange_lowerskin_inner_rear, self.my_skins.flange_lowerskin_inner_front),hidden=True)
+                     tool=(self.my_skins.flange_lowerskin_inner_rear, self.my_skins.flange_lowerskin_inner_front),hidden=False)
 
     @Part
     def fused_outer_upperskin_and_flanges(self):
         return Fused(shape_in=self.my_skins.outer_upperskin_loft,
-                     tool=(self.my_skins.flange_upperskin_outer_rear, self.my_skins.flange_upperskin_outer_front),hidden=True)
+                     tool=(self.my_skins.flange_upperskin_outer_rear, self.my_skins.flange_upperskin_outer_front),hidden=False)
 
     @Part
     def fused_outer_lowerskin_and_flanges(self):
         return Fused(shape_in=self.my_skins.outer_lowerskin_loft,
-                     tool=(self.my_skins.flange_lowerskin_outer_rear, self.my_skins.flange_lowerskin_outer_front),hidden=True)
+                     tool=(self.my_skins.flange_lowerskin_outer_rear, self.my_skins.flange_lowerskin_outer_front),hidden=False)
 
     @Part
     def my_spars(self):

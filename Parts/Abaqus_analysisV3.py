@@ -27,6 +27,7 @@ from Parts.Meshing import MeshingFunc
 
 
 class AbaqusINPwriter(GeomBase):
+    "This file writes an inp file using the parapy abaqus adapter"
     # n_mesh_points = Input(30)
     path = Input()
     mesh_element_length = Input(0.2, validator=GT(0, msg="Mesh element length cannot be smaller than " "{validator.limit}!"))
@@ -54,10 +55,12 @@ class AbaqusINPwriter(GeomBase):
     engine_mass = Input(1000, validator=GE(0, msg="Engine cannot be smaller than " "{validator.limit}!"))
     Gravity = 9.81
 
+    # Importing the wing instance
     @Attribute
     def aircraft(self):
         return self.path
 
+    # Defining the material for the shell sections
     @Attribute
     def material(self):
         material_behaviours = [Density(self.density), ElasticIsotropic(self.elastic_modulus, self.poisson_ratio)]
@@ -94,6 +97,14 @@ class AbaqusINPwriter(GeomBase):
                      tool=self.aircraft.my_wingbox.my_spars.rearspar_outer,
                              hidden=False)
 
+    @Part
+    def ribs(self):
+        # return ModifiedShape(self.aircraft.my_wingbox.ribs_cut, keep=self.aircraft.my_wingbox.ribs_cut[0])
+        return Fused(shape_in=self.aircraft.my_wingbox.my_ribs.ribs_cut[1],
+                     tool=self.aircraft.my_wingbox.my_ribs.ribs_cut[2:-1],
+                             hidden=False)
+
+
 
     @Part
     def ribs_cp(self):
@@ -122,6 +133,7 @@ class AbaqusINPwriter(GeomBase):
         return Fused(shape_in=self.aircraft.centerpiece.rearspar_loft_centerpiece,
                      tool=self.aircraft.centerpiece.rearspar_loft_centerpiece)
 
+    # Meshing the parts and creating groups which are later used for application of forces and boundary conditions
     @Part
     def meshed_upper_skin(self):
         return MeshingFunc(part_class=self.upper_skin,
@@ -156,7 +168,23 @@ class AbaqusINPwriter(GeomBase):
                                   [FaceGroup(shape=self.rear_spar.faces[idx]) for idx in range(len(self.rear_spar.faces))] +
                                   [EdgeGroup(shape=self.rear_spar.edges[idy]) for idy in range(len(self.rear_spar.edges))],
                            mesh_element_length=self.mesh_element_length)
+    # @Part
+    # def meshed_ribs(self):
+    #     return MeshingFunc(part_class=self.ribs,
+    #                        groups=[FaceGroup(shape=self.ribs.faces)] +
+    #                               [EdgeGroup(shape=self.ribs.edges)] +
+    #                               [FaceGroup(shape=self.ribs.faces[idx]) for idx in range(len(self.ribs.faces))] +
+    #                               [EdgeGroup(shape=self.ribs.edges[idy]) for idy in range(len(self.ribs.edges))],
+    #                        mesh_element_length=self.mesh_element_length)
 
+    @Part
+    def meshed_ribs(self):
+        return MeshingFunc(part_class=self.aircraft.my_wingbox.my_ribs.ribs_cut[1],
+                           groups=[FaceGroup(shape=self.ribs.faces)] +
+                                  [EdgeGroup(shape=self.ribs.edges)] +
+                                  [FaceGroup(shape=self.ribs.faces[idx]) for idx in range(len(self.ribs.faces))] +
+                                  [EdgeGroup(shape=self.ribs.edges[idy]) for idy in range(len(self.ribs.edges))],
+                           mesh_element_length=self.mesh_element_length)
 
     @Part
     def meshed_ribs_cp(self):
@@ -202,6 +230,8 @@ class AbaqusINPwriter(GeomBase):
                                   [FaceGroup(shape=self.rear_spar_cp.faces[idx]) for idx in range(len(self.rear_spar_cp.faces))] +
                                   [EdgeGroup(shape=self.rear_spar_cp.edges[idy]) for idy in range(len(self.rear_spar_cp.edges))],
                            mesh_element_length=self.mesh_element_length)
+
+    # Shell sections which assign material properties to different parts
     @Attribute
     def upper_inner_skin_material_properties(self):
         return ShellSectionProperties(material=self.material, thickness=self.upper_inner_skin_thickness)
@@ -276,6 +306,11 @@ class AbaqusINPwriter(GeomBase):
         preferred_name=f"rear_spar"
         )
         #Fifth part: ribs
+        # my_obj.process_2d_part(self.ribs,
+        # "S{n}R",  # the type of 2d surface
+        # [(self.meshed_ribs.mesh.subgrid[0], self.rib_material_properties)],
+        # preferred_name=f"Ribs_centre_section"
+        # )
 
         # Sixth part
         my_obj.process_2d_part(self.upper_skin_cp,
@@ -353,6 +388,10 @@ class AbaqusINPwriter(GeomBase):
                                                     self.meshed_rear_spar.mesh.get_subgrid(self.rear_spar.faces[0]),
                                                     self.meshed_rear_spar.mesh.get_subgrid(self.rear_spar.faces[0].edges[0]))
 
+        IR_spar_tie = my_obj.process_face_surface_with_edges(self.rear_spar,
+                                                    self.meshed_rear_spar.mesh.get_subgrid(self.rear_spar.faces[0]),
+                                                    self.meshed_rear_spar.mesh.get_subgrid(self.rear_spar.faces[0].edges[1]))
+
         LIR_spar_tie = my_obj.process_face_surface_with_edges(self.rear_spar,
                                                     self.meshed_rear_spar.mesh.get_subgrid(self.rear_spar.faces[0]),
                                                     self.meshed_rear_spar.mesh.get_subgrid(self.rear_spar.faces[0].edges[2]))
@@ -368,6 +407,10 @@ class AbaqusINPwriter(GeomBase):
         UIF_spar_tie = my_obj.process_face_surface_with_edges(self.front_spar,
                                                     self.meshed_front_spar.mesh.get_subgrid(self.front_spar.faces[0]),
                                                     self.meshed_front_spar.mesh.get_subgrid(self.front_spar.faces[0].edges[0]))
+
+        IF_spar_tie = my_obj.process_face_surface_with_edges(self.front_spar,
+                                                    self.meshed_front_spar.mesh.get_subgrid(self.front_spar.faces[0]),
+                                                    self.meshed_front_spar.mesh.get_subgrid(self.front_spar.faces[0].edges[1]))
 
         LIF_spar_tie = my_obj.process_face_surface_with_edges(self.front_spar,
                                                     self.meshed_front_spar.mesh.get_subgrid(self.front_spar.faces[0]),
@@ -429,6 +472,30 @@ class AbaqusINPwriter(GeomBase):
                                                           self.meshed_rear_spar_cp.mesh.get_subgrid(self.rear_spar_cp.faces[0]),
                                                                "SPOS")
 
+        cp_UI_skin_edge_tie = my_obj.process_face_surface_with_edges(self.upper_skin_cp,
+                                                    self.meshed_upper_skin_cp.mesh.get_subgrid(self.upper_skin_cp.faces[0]),
+                                                    self.meshed_upper_skin_cp.mesh.get_subgrid(self.upper_skin_cp.faces[0].edges[1]))
+
+        cp_LI_skin_edge_tie = my_obj.process_face_surface_with_edges(self.lower_skin_cp,
+                                                    self.meshed_lower_skin_cp.mesh.get_subgrid(self.lower_skin_cp.faces[0]),
+                                                    self.meshed_lower_skin_cp.mesh.get_subgrid(self.lower_skin_cp.faces[0].edges[1]))
+
+        cp_RI_spar_edge_tie = my_obj.process_face_surface_with_edges(self.rear_spar_cp,
+                                                    self.meshed_rear_spar_cp.mesh.get_subgrid(self.rear_spar_cp.faces[0]),
+                                                    self.meshed_rear_spar_cp.mesh.get_subgrid(self.rear_spar_cp.faces[0].edges[1]))
+
+        cp_FI_spar_edge_tie = my_obj.process_face_surface_with_edges(self.front_spar_cp,
+                                                    self.meshed_front_spar_cp.mesh.get_subgrid(self.front_spar_cp.faces[0]),
+                                                    self.meshed_front_spar_cp.mesh.get_subgrid(self.front_spar_cp.faces[0].edges[1]))
+
+        UI_skin_tie = my_obj.process_element_based_surface(self.upper_skin,
+                                                          self.meshed_upper_skin.mesh.get_subgrid(self.upper_skin.faces[0]),
+                                                               "SPOS")
+        LI_skin_tie = my_obj.process_element_based_surface(self.lower_skin,
+                                                          self.meshed_lower_skin.mesh.get_subgrid(self.lower_skin.faces[0]),
+                                                               "SPOS")
+
+
         cp_U_ribs_tie = []
         cp_L_ribs_tie = []
         cp_F_ribs_tie = []
@@ -447,6 +514,7 @@ class AbaqusINPwriter(GeomBase):
                                                     self.meshed_ribs_cp.mesh.get_subgrid(self.ribs_cp.faces[i]),
                                                     self.meshed_ribs_cp.mesh.get_subgrid(self.ribs_cp.faces[i].edges[1])))
 
+
         # Wing upper connections
         my_obj.process_tie(UIR_skin_tie, UIR_spar_tie, "Surface to Surface")
         my_obj.process_tie(UOR_skin_tie, UOR_spar_tie, "Surface to Surface")
@@ -462,12 +530,18 @@ class AbaqusINPwriter(GeomBase):
         my_obj.process_tie(cp_LF_skin_tie, cp_LF_spar_tie, "Surface to Surface")
         my_obj.process_tie(cp_UR_skin_tie, cp_UR_spar_tie, "Surface to Surface")
         my_obj.process_tie(cp_LR_skin_tie, cp_LR_spar_tie, "Surface to Surface")
+        # Wing to centre section connections
+        my_obj.process_tie(UI_skin_tie, cp_UI_skin_edge_tie, "Surface to Surface")
+        my_obj.process_tie(LI_skin_tie, cp_LI_skin_edge_tie, "Surface to Surface")
+        # my_obj.process_tie(cp_front_spar_tie, IF_spar_tie, "Surface to Surface")
+        # my_obj.process_tie(cp_rear_spar_tie, IR_spar_tie, "Surface to Surface")
 
-        for i in range(len(self.ribs_cp.faces)):
-            my_obj.process_tie(cp_U_ribs_tie[i], cp_upper_skin_tie, "Surface to Surface")
-            my_obj.process_tie(cp_L_ribs_tie[i], cp_lower_skin_tie, "Surface to Surface")
-            my_obj.process_tie(cp_F_ribs_tie[i], cp_front_spar_tie, "Surface to Surface")
-            my_obj.process_tie(cp_R_ribs_tie[i], cp_rear_spar_tie, "Surface to Surface")
+
+        # for i in range(len(self.ribs_cp.faces)):
+        #     my_obj.process_tie(cp_U_ribs_tie[i], cp_upper_skin_tie, "Surface to Surface")
+        #     my_obj.process_tie(cp_L_ribs_tie[i], cp_lower_skin_tie, "Surface to Surface")
+        #     my_obj.process_tie(cp_F_ribs_tie[i], cp_front_spar_tie, "Surface to Surface")
+        #     my_obj.process_tie(cp_R_ribs_tie[i], cp_rear_spar_tie, "Surface to Surface")
 
 
         # boundary conditions
@@ -495,6 +569,7 @@ class AbaqusINPwriter(GeomBase):
 
         return my_obj
 
+    # Filtering of mesh nodes based on where the engine is
     @Attribute
     def engine_mass_nodes(self):
         nodes_per_engine = []
@@ -509,6 +584,8 @@ class AbaqusINPwriter(GeomBase):
             nodes_per_engine = []
         return nodes_of_all_engines
 
+    # Filtering mesh nodes based on their Y coordinate.
+    # Nodes are arranged based in rows with the same Y coordinates.
     @Attribute
     def spanwise_nodes(self):
         upper_surface_nodes_y_coord = []
@@ -521,7 +598,10 @@ class AbaqusINPwriter(GeomBase):
         lower_surface_nodes_y_coord.sort(key=lambda x: x[1])
         return [upper_surface_nodes_y_coord, lower_surface_nodes_y_coord]
 
-
+    # Here the loads on the wing are defined.
+    # The lift distribution is triangular and is calculated based on the total force.
+    # F_total is the load factor * aircraft mass * gravity.
+    # Then force is applied to each row of nodes. At the root force is the highest, at the tip it is zero
     @Attribute
     def loads(self):
 
@@ -533,7 +613,7 @@ class AbaqusINPwriter(GeomBase):
         node_per_section = []
         for s in range(len(span_sections)-1):
             for i in range(len(self.spanwise_nodes[0])):
-                if (self.spanwise_nodes[0][i][1] <= span_sections[s+1] and self.spanwise_nodes[0][i][1] >= span_sections[s]):
+                if self.spanwise_nodes[0][i][1] <= span_sections[s+1] and self.spanwise_nodes[0][i][1] >= span_sections[s]:
                     node_per_section.append(self.spanwise_nodes[0][i])
                 else:
                     continue
@@ -571,21 +651,13 @@ class AbaqusINPwriter(GeomBase):
         return [node_lift_load, node_engine_load], [span_sections, node_per_section, node_sets, n_x_nodes, F_total, F_0, F_y, F_x, F_num]
 
 
-    # @Attribute
-    # def force_lines(self):
-    #     lines = []
-    #     for i in range(len(self.loads[1])):
-    #         lines.append([LineSegment(Point(0, self.loads[1][i], 0),
-    #                                   Point(0, self.loads[1][i], 0.0005*self.loads[7][i]))])
-    #     return lines
 
-
-
+    # Defining output field for abaqus
     @property
     def my_outputs(self):
         return [FieldOutput(name="field-output"), HistoryOutput(name="history-output")]
 
-
+    # Defining a static analysis
     @property
     def my_step(self):
         return Step(name="analysis1",
@@ -594,11 +666,12 @@ class AbaqusINPwriter(GeomBase):
                                          minimum_time_increment=1e-15,
                                          maximum_time_increment=0.1,
                                          initial_time_increment=0.01)],
-                    loads=self.loads[0][0] + self.loads[0][1],
+                    loads=self.loads[0][0] + self.loads[0][1], #load from lift distribution and from engine(s) mass
                     boundary_conditions=[],
                     outputs=self.my_outputs,
                     interactions=[])
 
+    # Write inp file
     @Attribute
     def my_inp_writer(self):
         return Writer(adaptor=self.my_abaqus_adaptor, steps=[self.my_step])

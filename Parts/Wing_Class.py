@@ -33,8 +33,8 @@ class Wing_me(GeomBase):
     span = Input(35.8, validator=GT(0, msg="Wing span cannot be smaller than " "{validator.limit}!"))
     leading_edge_sweep = Input(25,  validator=Between(-60, 60, msg="Leading edge sweep angle cannot be greater than +-{60}!")) #deg
     root_chord = Input(5.9, validator=GT(0, msg="Root chord cannot be smaller than " "{validator.limit}!"))
-    twist_angle = Input(0)
-    dihedral_angle = Input(0)
+    # twist_angle = Input(0)
+    # dihedral_angle = Input(0)
     material = Input(material_names[0], widget=Dropdown(material_names, autocompute=False))
     skin_thickness = Input(0.003, validator=GT(0, msg="Skin thickness cannot be smaller than " "{validator.limit}!"))
     upper_inner_skin_thickness = Input(0.003, validator=GT(0, msg="Skin thickness cannot be smaller than " "{validator.limit}!"))

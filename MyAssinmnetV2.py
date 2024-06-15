@@ -53,8 +53,8 @@ class Aircraft(GeomBase):
     root_chord = Input(5.9, validator=GT(0, msg="Root chord cannot be smaller than " "{validator.limit}!"))
     tip_chord = Input(1.64, validator=GT(0, msg="{value} cannot be greater than " "{validator.limit}!"))
     kink_location = Input(6, validator=Parts.Wing_me.smaller_than_span) #measured from centerline of fuselage
-    twist_angle = Input(0)
-    dihedral_angle = Input(0)
+    # twist_angle = Input(0)
+    # dihedral_angle = Input(0)
     material = Input(Parts.Wing_Class.material_names[0], widget=Dropdown(Parts.Wing_Class.material_names, autocompute=False))
     skin_thickness = Input(0.003, validator=GT(0, msg="Skin thickness cannot be smaller than " "{validator.limit}!"))
     upper_inner_skin_thickness = Input(0.003, validator=GT(0, msg="Skin thickness cannot be smaller than " "{validator.limit}!"))
@@ -222,6 +222,8 @@ class Aircraft(GeomBase):
         print('Results were processed successfully')
         print('max U3 displacement is: ', max(U3_magnitude), '[m]', 'and max mises stress is: ', max(mises), '[Pa]')
 
+
+
     @action()
     def save_aircraft_configuration(self):
         os.chdir(DIR)
@@ -233,8 +235,8 @@ class Aircraft(GeomBase):
                            "span": self.wing.span,
                            "leading_edge_sweep": self.wing.leading_edge_sweep,
                            "root_chord": self.wing.root_chord,
-                           "twist_angle": self.wing.twist_angle,
-                           "dihedral_angle": self.wing.dihedral_angle,
+                           # "twist_angle": self.wing.twist_angle,
+                           # "dihedral_angle": self.wing.dihedral_angle,
                            "material_name": self.wing.material,
                            "material_density": self.wing.material_properties[0],
                            "material_elastic_modulus": self.wing.material_properties[1],
@@ -275,8 +277,8 @@ class Aircraft(GeomBase):
                 return Aircraft(span=float(self.wing_param[0]),
                                 leading_edge_sweep=float(self.wing_param[1]),
                                 root_chord=float(self.wing_param[2]),
-                                twist_angle=float(self.wing_param[3]),
-                                dihedral_angle=float(self.wing_param[4]),
+                                # twist_angle=float(self.wing_param[3]),
+                                # dihedral_angle=float(self.wing_param[4]),
                                 material=self.wing_param[5],
                                 skin_thickness=float(self.wing_param[9]),
                                 upper_inner_skin_thickness=float(self.wing_param[10]),
@@ -390,7 +392,7 @@ if __name__ == '__main__':
 
     from parapy.gui.data import DataPanel
 
-    DataPanel.POPUP_EXCEPTIONS = False
-    DataPanel.LOG_EXCEPTIONS = False
+    # DataPanel.POPUP_EXCEPTIONS = False
+    # DataPanel.LOG_EXCEPTIONS = False
     obj = Aircraft(label="aircraft")
     display(obj)

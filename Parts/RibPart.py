@@ -139,7 +139,7 @@ class Rib(GeomBase):
         return Face(
             quantify=len(self.intersected_edges_ribs),
             island=ComposedCurve(self.intersected_edges_ribs[child.index].edges, ordered=False),
-            hidden=True
+            hidden=False
         )
 
     @Part  # This is purely to cut the ribs at the right locations, such that they do not go into the centerpiece
@@ -177,7 +177,7 @@ class Rib(GeomBase):
     def intersected_edges_ribs_mirror(self):
         return IntersectedShapes(quantify=len(self.rib_surfaces_mirrored),
                                  shape_in=self.fused_wingbox_centerpiece,
-                                 tool=self.rib_surfaces_mirrored[child.index], hidden=True)
+                                 tool=self.rib_surfaces_mirrored[child.index], hidden=False)
 
     # @Part
     # def cutted_rib(self):

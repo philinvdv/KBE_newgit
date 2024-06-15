@@ -85,7 +85,7 @@ class Centerpiece(GeomBase):
     def upperskin_centerpiece_loft(self):  # generate a surface
         return LoftedSurface(
             profiles=[self.line_root_upp, self.line_root_upp_centerpiece],
-            mesh_deflection=0.0001, hidden=True)
+            mesh_deflection=0.0001, hidden=False)
 
     @Part  # Mirror and transform
     def transform_mirror_CP_upperskin(self):
@@ -106,7 +106,7 @@ class Centerpiece(GeomBase):
     def lowerskin_centerpiece_loft(self):  # generate a surface
         return LoftedSurface(
             profiles=[self.line_root_low, self.line_root_low_centerpiece],
-            mesh_deflection=0.0001, hidden=True
+            mesh_deflection=0.0001, hidden=False
         )
 
     @Part  # Mirror and transform
@@ -135,7 +135,7 @@ class Centerpiece(GeomBase):
     def frontspar_surf_centerpiece(self):  # generate a surface
         return LoftedSurface(
             profiles=[self.line_root_front, self.mirror_line_root_front],
-            mesh_deflection=0.0001, hidden=True
+            mesh_deflection=0.0001, hidden=False
         )
 
     @Part  # Mirror and transform
@@ -163,7 +163,7 @@ class Centerpiece(GeomBase):
     def rearspar_loft_centerpiece(self):  # generate a surface
         return LoftedSurface(
             profiles=[self.line_root_rear, self.mirror_line_root_rear],
-            mesh_deflection=0.0001, hidden=True
+            mesh_deflection=0.0001, hidden=False
         )
 
     @Part  # Mirror and transform
