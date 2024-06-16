@@ -1,1 +1,32 @@
-This is a README file for the KBE application designed by
+                        **** Integrated Wing Structure Modeler - GKN AEROSPACE ****
+
+--This KBE application was developed by Philippina Nikkels van der Veen and Matan Neumark (group 6)--
+The purpose of the application is to be an integrated tool for the design and structural analysis of a wing.
+
+Software requirements:
+    1. ParaPy
+    2. Abaqus
+
+Features:
+    1. The parametric wing model allows modification of common wing geometry parameters such as span, sweep, chord lengths, etc.
+    2. Structural parameters allow the user to modify the wing box structure. These include part's thickness, number of ribs and stringers etc.
+    3. Mesh density can be modified at the part level
+    4. An .inp file can be generated for use in Abaqus
+    5. An Abaqus script to run a job and output results can be executed directly from the ParaPy GUI.
+    6. Post processing of the FEM results and output plot with information about deformation and stress.
+    7. Save wing configuration
+    8. Load wing configuration
+    9. Output a .step file for the entire assembly, or of the whole structure as a unified part.
+
+
+Wing design workflow:
+    a. Run the 'Parametric_wing_modeller' file.
+    b. In the GUI, configure the wing's geometry, structure, material and mesh to your heart's content.
+    c. Optional -Name your aircraft configuration (aircraft -> input ->'aircraft_name') and save it if desired (aircraft -> actions -> 'save_aircraft_configuration')
+    d. Generate an .inp file (aircraft -> actions -> 'INP_file_writer')
+    e. Run FEM analysis by executing Abaqus in the background (aircraft -> actions -> 'run abaqus')
+    f. Once the analysis is done, post process the results (aircraft -> actions -> 'process_results')
+    g. Open the figures in the Parts/output directory to view the geometry, deformations and stresses.
+    h. If the design should be tweaked (such as to eliminate stressed that cause yield), go back to step b and repeat.
+    i. Once the resulting structure is satisfactory, generate a .step file.
+    j. Email the .step file to your boss and go home. it's already 17:00.
