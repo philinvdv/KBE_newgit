@@ -36,7 +36,7 @@ class Aircraft(GeomBase):
     rib_pitch = Input(2, validator=GT(0, msg="Rib pitch cannot be smaller than " "{validator.limit}!")) #pitch between the ribs in meters
     load_factor = Input(2.5, validator=GT(0, msg="Load factor cannot be smaller than " "{validator.limit}!"))
     aircraft_mass = Input(10000, validator=GT(0, msg="Aircraft mass cannot be smaller than " "{validator.limit}!"))
-    engine_position_inp = Input([4])  # , validator=Between(0, 60, msg="Engine position has to be between wing root and tip!"))
+    engine_position = Input([4])  # , validator=Between(0, 60, msg="Engine position has to be between wing root and tip!"))
     engine_mass = Input(1000, validator=GE(0, msg="Engine mass cannot be smaller than " "{validator.limit}!"))
     root_chord = Input(5.9, validator=Between(0,30, msg="Root chord cannot be smaller than " "{validator.limit}!"))
     tip_chord = Input(1.64, validator=GT(0, msg="{value} cannot be greater than " "{validator.limit}!"))
@@ -103,7 +103,7 @@ class Aircraft(GeomBase):
     @Part  # Since the centerpiece depends fully on the geometry of the wing and is basically an extended part of the wing
     #as well as the connection between the wings , it is a subclass of the wing
     def wing(self):
-        return Parts.Wing_me(span=self.span,
+        return Parts.Wing(span=self.span,
                              leading_edge_sweep=self.leading_edge_sweep,
                              width_centerpiece=self.width_centerpiece,
                              rib_pitch=self.rib_pitch,

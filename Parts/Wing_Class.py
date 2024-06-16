@@ -28,7 +28,7 @@ for name in range(len(material_library.iloc[:, 0])):
     material_names.append(material_library.iloc[name, 0])
 
 
-class Wing_me(GeomBase):
+class Wing(GeomBase):
     """This class contains the wing itself, from the loaded airfoil points. Contains the wingbox, since this is an
     essential part of the wing. Would also contain for example flap systems (not in this program)"""
     #Inputs

@@ -20,7 +20,7 @@ from parapy.core.validate import *
 #import MyAssinmnetV2
 from Parts.Meshing import MeshingFunc
 #from MyAssinmnetV2 import Aircraft
-#from Parts.Wing_Class import Wing_me
+#from Parts.Wing_Class import Wing
 #import Wing_Class
 
 # backwardCompatibility.setValues(includeDeprecated=True, reportDeprecated=False)
