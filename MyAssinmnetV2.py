@@ -293,7 +293,7 @@ class Aircraft(GeomBase):
 
             @Part
             def wing_from_file(self):
-                return Aircraft(span=float(self.wing_param[0]),
+                return Aircraft(span_inp=float(self.wing_param[0]),
                                 leading_edge_sweep=float(self.wing_param[1]),
                                 root_chord=float(self.wing_param[2]),
                                 material=self.wing_param[5],
