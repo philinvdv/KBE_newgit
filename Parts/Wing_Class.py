@@ -21,55 +21,26 @@ from Parts.Wingbox import *
 from Parts.Meshing import *
 from Parts.Stringers import *
 
-DIR = os.path.dirname(__file__)
-material_library = pd.read_excel(io='Parts/Material_library.xlsx')
-material_names=[]
-for name in range(len(material_library.iloc[:, 0])):
-    material_names.append(material_library.iloc[name, 0])
-
 
 class Wing(GeomBase):
     """This class contains the wing itself, from the loaded airfoil points. Contains the wingbox, since this is an
     essential part of the wing. Would also contain for example flap systems (not in this program)"""
-    #Inputs
-    span = Input(35.8, validator=GT(0, msg="Wing span cannot be smaller than " "{validator.limit}!"))
-    leading_edge_sweep = Input(25,  validator=Between(-60, 60, msg="Leading edge sweep angle cannot be greater than +-{60}!")) #deg
-    root_chord = Input(5.9, validator=GT(0, msg="Root chord cannot be smaller than " "{validator.limit}!"))
-    material = Input(material_names[0], widget=Dropdown(material_names, autocompute=False))
-    skin_thickness = Input(0.003, validator=GT(0, msg="Skin thickness cannot be smaller than " "{validator.limit}!"))
-    upper_inner_skin_thickness = Input(0.003, validator=GT(0, msg="Skin thickness cannot be smaller than " "{validator.limit}!"))
-    upper_outer_skin_thickness = Input(0.003, validator=GT(0, msg="Skin thickness cannot be smaller than " "{validator.limit}!"))
-    lower_inner_skin_thickness = Input(0.003, validator=GT(0, msg="Skin thickness cannot be smaller than " "{validator.limit}!"))
-    lower_outer_skin_thickness = Input(0.003, validator=GT(0, msg="Skin thickness cannot be smaller than " "{validator.limit}!"))
-    spar_thickness = Input(0.05, validator=GT(0, msg="Spar thickness cannot be smaller than " "{validator.limit}!"))
-    rib_thickness = Input(0.005, validator=GT(0, msg="Rib thickness cannot be smaller than " "{validator.limit}!"))
-    centre_section_skin_thickness = Input(0.003, validator=GT(0, msg="Centre section skin thickness cannot be smaller than " "{validator.limit}!"))
-    centre_section_spar_thickness = Input(0.01, validator=GT(0, msg="Centre section spar thickness cannot be smaller than " "{validator.limit}!"))
-    centre_section_rib_thickness = Input(0.005, validator=GT(0, msg="Centre section rib thickness cannot be smaller than " "{validator.limit}!"))
 
-    nr_stringers_upper_inner = Input() #number of stringers in the inner wingbox on the upperskin
-    nr_stringers_lower_inner = Input() #number of stringers in the inner wingbox on the lowerskin
-    nr_stringers_upper_outer = Input() #number of stringers in the outer wingbox on the upperskin
-    nr_stringers_lower_outer = Input() #number of stringers in the outer wingbox on the lowerskin
-    nr_stringers_upper_CP = Input() #number of stringers in the centerpiece on the upperskin
-    nr_stringers_lower_CP = Input() #number of stringers in the centerpiece on the upperskin
-    popup_gui = True
-
-
-    @Attribute
-    def material_properties(self):
-        index = material_names.index(self.material)
-        density = material_library.iloc[index, 1]
-        elastic_modulus = material_library.iloc[index, 2]
-        poisson_ratio = material_library.iloc[index, 3]
-        yield_strength = material_library.iloc[index, 4]
-        return [density, elastic_modulus, poisson_ratio, yield_strength]
-
-
-    kink_location = Input(6, validator=GreaterThan(0,msg="{value} cannot be smaller than " "{validator.limit}!")) #measured from centerline of fuselage
+    width_centerpiece = Input(2.5, validator=GT(0, #needed to determine the effective span of the wing
+        msg="Centre section width cannot be smaller than " "{validator.limit}!"))  # This is the width of half the
+    # total centerpiece, so basically from the middle of the fuselage until where the actual wing starts
+    # (outside of the fuselage)
+    span_inp = Input(35.8, validator=GT(0,
+                    msg="Wing span cannot be smaller than " "{validator.limit}!"))  # span of the aircraft in meters
+    leading_edge_sweep = Input(25, validator=Between(-60, 60,
+                                msg="Leading edge sweep angle cannot be greater than +-{60}!"))  # in degrees
+    root_chord = Input(5.9, validator=Between(0, 30, msg="Root chord cannot be smaller than " "{validator.limit}!"))
     tip_chord = Input(1.64, validator=GT(0, msg="{value} cannot be greater than " "{validator.limit}!"))
-    width_centerpiece = Input(3, validator=GreaterThan(0,msg="{value} cannot be smaller than " "{validator.limit}!"))
-    rib_pitch = Input(2, validator=GT(0, msg="{value} cannot be greater than " "{validator.limit}!"))
+    kink_location = Input(6, validator=GreaterThan(0,
+            msg="{value} cannot be smaller than " "{validator.limit}!"))  # measured from centerline of fuselage
+    material = Input()
+
+    popup_gui = True
 
     @Input #This gives the distance between the kink and the start of the wing
     def start_wing_to_kink(self):
@@ -79,6 +50,20 @@ class Wing(GeomBase):
     def tip_chord_kink_calc(self):
         return self.root_chord - self.start_wing_to_kink \
                * np.tan(radians(self.leading_edge_sweep))  # if trailing edge kink has zero sweep
+
+    @Attribute
+    def span(self):
+        """Checks wheter the kink chord becomes 0 or negative (twisted wing)"""
+        if self.span_inp / 2 < self.kink_location:
+            msg = f"The halfspan ({self.span_inp/2}) should be larger than the spanwise location of the kink " \
+                  f"({self.kink_location}). Input will be ignored, and the span will be set equal to 36."
+            # print warning message in console:
+            warnings.warn(msg)
+            if self.popup_gui:  # invoke pop-up dialogue box using Tk"""
+                generate_warning("Warning: Invalid input", msg)
+            return 36
+        else:
+            return self.span_inp
 
     @Attribute
     def tip_chord_kink(self):
@@ -243,23 +228,16 @@ class Wing(GeomBase):
                        wing_material=self.wing_material,
                        kink_location=self.kink_location, tip_chord=self.tip_chord,
                        width_centerpiece=self.width_centerpiece,
-                       rib_pitch=self.rib_pitch,
-                       nr_stringers_upper_inner=self.nr_stringers_upper_inner,
-                       nr_stringers_lower_inner=self.nr_stringers_lower_inner,
-                       nr_stringers_upper_outer=self.nr_stringers_upper_outer,
-                       nr_stringers_lower_outer=self.nr_stringers_lower_outer,
                        position=translate(self.position, 'x', 1, 'y', 0, 'z', 0))
 
     @Part #Same for the centerpiece
-    def centerpiece(self):
+    def my_centerpiece(self):
         return Centerpiece(start_wing_to_kink=self.start_wing_to_kink, tip_chord_kink=self.tip_chord_kink, pts=self.pts,
                            front_spar_coordinates=self.front_spar_coordinates,
                            rear_spar_coordinates=self.rear_spar_coordinates,  # these are attributes
                            span=self.span, leading_edge_sweep=self.leading_edge_sweep, root_chord=self.root_chord,
                            kink_location=self.kink_location, tip_chord=self.tip_chord,
                            width_centerpiece=self.width_centerpiece,
-                           nr_stringers_upper_CP=self.nr_stringers_upper_CP,
-                           nr_stringers_lower_CP=self.nr_stringers_lower_CP,
                            position=translate(self.position, 'x', 1, 'y', 0, 'z', 0))
 
 

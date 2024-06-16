@@ -5,7 +5,8 @@ The purpose of the application is to be an integrated tool for the design and st
 
 Features:
     1. The parametric wing model allows modification of common wing geometry parameters such as span, sweep, chord
-        lengths, etc.
+        lengths, etc. The coordinates of a NACA2412 are loaded via a .dat file and the material properties via an
+        Excel file.
     2. Structural parameters allow the user to modify the wing box structure. These include part's thickness, number
         of ribs and stringers etc.
     3. Mesh density can be modified at the part level
@@ -20,7 +21,7 @@ Software requirements:
     1. Python
         Required Python packages:
             a. ParaPy abaqus adaptor
-            b. abaqpy
+            b. abaqpy (needs to correspond with the Abaqus version
             c. pandas
             d. numpy
             e. matplotlib
@@ -39,4 +40,4 @@ Wing design workflow:
     g. Open the figures in the Parts/output directory to view the geometry, deformations and stresses.
     h. If the design should be tweaked (such as to eliminate stressed that cause yield), go back to step b and repeat.
     i. Once the resulting structure is satisfactory, generate a .step file.
-    j. Email the .step file to your boss and go home. it's already 17:00.
+    j. Email the .step file to your boss and go home. It's already 17:00.

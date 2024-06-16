@@ -12,6 +12,7 @@ class Centerpiece(GeomBase):
     makes all the parts for the centerpiece, so skins, spars, stringers and ribs."""
     flange_length_skins = Input(0.02) #size of the flanges
     stringer_width_cp = Input(0.1) #Size of the stringers
+    rib_pitch_cp = Input(2)
 
     # The attributes and inputs from Wing()
     start_wing_to_kink = Input()
@@ -25,10 +26,9 @@ class Centerpiece(GeomBase):
     kink_location = Input()  # measured from centerline of fuselage
     tip_chord = Input()
     width_centerpiece = Input()
-    rib_pitch_cp = Input(2)
 
-    nr_stringers_upper_CP = Input()
-    nr_stringers_lower_CP = Input()
+    nr_stringers_upper_CP = Input(4) #number of stringers in the centerpiece on the upperskin
+    nr_stringers_lower_CP = Input(4) #number of stringers in the centerpiece on the upperskin
 
     """Upper&lower skin pannel centerpiece"""
     @Attribute #This gives the points needed to create the skin surface (from lines)
@@ -58,7 +58,7 @@ class Centerpiece(GeomBase):
                            #  position = rotate(XOY, 'x', 90, deg=True)
                            hidden=True)
 
-    @Part #The one at the wing root exists already, take from Skins and combine with new line
+    @Part #The one at the wing root exists already, take from Skin and combine with new line
     def upperskin_centerpiece_loft(self):  # generate a surface
         return LoftedSurface(
             profiles=[self.parent.my_wingbox.my_skins.line_root_upp, self.line_root_upp_centerpiece],
@@ -96,12 +96,6 @@ class Centerpiece(GeomBase):
         )
 
     """SPARS"""
-    @Part  # Line for front spar root
-    def line_root_front(self):
-        return LineSegment(start=Point(-0.8 * self.root_chord, 0, self.front_spar_coordinates[0][1] * self.root_chord),
-                           end=Point(-0.8 * self.root_chord, 0, self.front_spar_coordinates[1][1] * self.root_chord),
-                           hidden=True)
-
     @Part  # Line for front spar at root centerpiece
     def mirror_line_root_front(self):
         return LineSegment(start=Point(-0.8 * self.root_chord, -self.width_centerpiece, self.front_spar_coordinates[0][1] * self.root_chord),
@@ -111,7 +105,7 @@ class Centerpiece(GeomBase):
     @Part #Make the frontspar of the centerpiece
     def frontspar_surf_centerpiece(self):  # generate a surface
         return LoftedSurface(
-            profiles=[self.line_root_front, self.mirror_line_root_front],
+            profiles=[self.parent.my_wingbox.my_spars.line_root_front, self.mirror_line_root_front],
             mesh_deflection=0.0001, hidden=False
         )
 
@@ -124,12 +118,6 @@ class Centerpiece(GeomBase):
             to_position=translate(XOY, 'x', 0, 'y', -2*self.width_centerpiece)  # New position of the curve
         )
 
-    @Part #this is for the rear spar
-    def line_root_rear(self):
-        return LineSegment(start=Point(-0.3 * self.root_chord, 0, self.rear_spar_coordinates[0][1] * self.root_chord),
-                           end=Point(-0.3 * self.root_chord, 0, self.rear_spar_coordinates[1][1] * self.root_chord),
-                           hidden=True)
-
     @Part #Mirror to the left wing (move to Centerpiece()?)
     def mirror_line_root_rear(self):
         return LineSegment(start=Point(-0.3 * self.root_chord, -self.width_centerpiece, self.rear_spar_coordinates[0][1] * self.root_chord),
@@ -139,7 +127,7 @@ class Centerpiece(GeomBase):
     @Part #for the rear spar of the centerpiece
     def rearspar_loft_centerpiece(self):  # generate a surface
         return LoftedSurface(
-            profiles=[self.line_root_rear, self.mirror_line_root_rear],
+            profiles=[self.parent.my_wingbox.my_spars.line_root_rear, self.mirror_line_root_rear],
             mesh_deflection=0.0001, hidden=False
         )
 

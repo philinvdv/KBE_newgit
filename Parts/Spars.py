@@ -4,10 +4,10 @@ from parapy.core import *
 import numpy as np
 from Parts.Meshing import *
 
-class Spars(GeomBase):
+class Spar(GeomBase):
     """This class contains the spar geometry, for the front and rear spar of the inner and outer wingbox. It works with
     making lines, then from these lines making a surface."""
-    thickness_flange = Input(0.01) #m
+    length_flange_spar = Input(0.01) #m
 
     #The attributes and inputs from Wing() (thus inherited)
     start_wing_to_kink = Input()
@@ -117,8 +117,8 @@ class Spars(GeomBase):
     # 2 along skin. These flanges are there to connect the wingbox to the wing
     @Part
     def flangeline1_front_upper_inner(self): #flangeline of the front spar, upper inner
-        return LineSegment(start=Point(-0.8 * self.root_chord - self.thickness_flange, 0, self.front_spar_coordinates[0][1] * self.root_chord),
-                           end=Point(-0.8 * self.tip_chord_kink - self.thickness_flange, self.start_wing_to_kink, self.front_spar_coordinates[0][1] * self.tip_chord_kink))
+        return LineSegment(start=Point(-0.8 * self.root_chord - self.length_flange_spar, 0, self.front_spar_coordinates[0][1] * self.root_chord),
+                           end=Point(-0.8 * self.tip_chord_kink - self.length_flange_spar, self.start_wing_to_kink, self.front_spar_coordinates[0][1] * self.tip_chord_kink))
 
     @Part
     def flangeline2_front_upper_inner(self): #flangeline2 of the front spar, upper inner
@@ -135,8 +135,8 @@ class Spars(GeomBase):
     #Repeat procedure for the other flanges as well
     @Part
     def flangeline1_front_lower_inner(self): #flangeline for the frontspar, lower part inner box
-        return LineSegment(start=Point(-0.8 * self.root_chord - self.thickness_flange, 0, self.front_spar_coordinates[1][1] * self.root_chord),
-                           end=Point(-0.8 * self.tip_chord_kink - self.thickness_flange, self.start_wing_to_kink, self.front_spar_coordinates[1][1] * self.tip_chord_kink))
+        return LineSegment(start=Point(-0.8 * self.root_chord - self.length_flange_spar, 0, self.front_spar_coordinates[1][1] * self.root_chord),
+                           end=Point(-0.8 * self.tip_chord_kink - self.length_flange_spar, self.start_wing_to_kink, self.front_spar_coordinates[1][1] * self.tip_chord_kink))
 
     @Part
     def flangeline2_front_lower_inner(self): #flangeline2 for the frontspar, lower part inner box
@@ -152,8 +152,8 @@ class Spars(GeomBase):
 
     @Part #For rearspar, upper inner
     def flangeline1_rear_upper_inner(self):
-        return LineSegment(start=Point(-0.3 * self.root_chord + self.thickness_flange, 0, self.rear_spar_coordinates[0][1] * self.root_chord),
-                           end=Point(-0.3 * self.tip_chord_kink + self.thickness_flange, self.start_wing_to_kink,
+        return LineSegment(start=Point(-0.3 * self.root_chord + self.length_flange_spar, 0, self.rear_spar_coordinates[0][1] * self.root_chord),
+                           end=Point(-0.3 * self.tip_chord_kink + self.length_flange_spar, self.start_wing_to_kink,
                                        self.rear_spar_coordinates[0][1] * self.tip_chord_kink))
 
     @Part
@@ -171,8 +171,8 @@ class Spars(GeomBase):
 
     @Part #For rearspar, lower inner
     def flangeline1_rear_lower_inner(self):
-        return LineSegment(start=Point(-0.3 * self.root_chord + self.thickness_flange, 0, self.rear_spar_coordinates[1][1] * self.root_chord),
-                           end=Point(-0.3 * self.tip_chord_kink + self.thickness_flange, self.start_wing_to_kink,
+        return LineSegment(start=Point(-0.3 * self.root_chord + self.length_flange_spar, 0, self.rear_spar_coordinates[1][1] * self.root_chord),
+                           end=Point(-0.3 * self.tip_chord_kink + self.length_flange_spar, self.start_wing_to_kink,
                                      self.rear_spar_coordinates[1][1] * self.tip_chord_kink))
 
     @Part
@@ -192,10 +192,10 @@ class Spars(GeomBase):
     @Part
     def flangeline1_front_upper_outer(self):  # flang of the front spar, upper outer
         return LineSegment(start=Point((self.span/2 - self.width_centerpiece) * np.tan(radians(self.leading_edge_sweep)) + self.tip_chord - self.root_chord
-                                            -0.8 * self.tip_chord - self.thickness_flange, #x
+                                            -0.8 * self.tip_chord - self.length_flange_spar, #x
                                        self.span/2 - self.width_centerpiece, #y
                                        self.front_spar_coordinates[0][1] * self.tip_chord),
-                           end=Point(-0.8 * self.tip_chord_kink - self.thickness_flange, self.start_wing_to_kink, self.front_spar_coordinates[0][1] * self.tip_chord_kink))
+                           end=Point(-0.8 * self.tip_chord_kink - self.length_flange_spar, self.start_wing_to_kink, self.front_spar_coordinates[0][1] * self.tip_chord_kink))
 
     @Part
     def flangeline2_front_upper_outer(self):  # flang of the front spar, upper inner
@@ -216,10 +216,10 @@ class Spars(GeomBase):
     @Part
     def flangeline1_front_lower_outer(self):  # flange for the frontspar, lower part outer box
         return LineSegment(start=Point((self.span/2 - self.width_centerpiece) * np.tan(radians(self.leading_edge_sweep)) + self.tip_chord - self.root_chord
-                                            -0.8 * self.tip_chord - self.thickness_flange, #x
+                                            -0.8 * self.tip_chord - self.length_flange_spar, #x
                                        self.span/2 - self.width_centerpiece, #y
                                        self.front_spar_coordinates[1][1] * self.tip_chord),
-                           end=Point(-0.8 * self.tip_chord_kink - self.thickness_flange, self.start_wing_to_kink, self.front_spar_coordinates[1][1] * self.tip_chord_kink))
+                           end=Point(-0.8 * self.tip_chord_kink - self.length_flange_spar, self.start_wing_to_kink, self.front_spar_coordinates[1][1] * self.tip_chord_kink))
 
     @Part
     def flangeline2_front_lower_outer(self):
@@ -240,10 +240,10 @@ class Spars(GeomBase):
     @Part  # For rearspar, upper outer
     def flangeline1_rear_upper_outer(self):
         return LineSegment(start=Point((self.span/2 - self.width_centerpiece) * np.tan(radians(self.leading_edge_sweep)) + self.tip_chord - self.root_chord
-                                            -0.3 * self.tip_chord + self.thickness_flange, #x
+                                            -0.3 * self.tip_chord + self.length_flange_spar, #x
                                        self.span/2 - self.width_centerpiece, #y
                                        self.rear_spar_coordinates[0][1] * self.tip_chord),
-                           end=Point(-0.3 * self.tip_chord_kink + self.thickness_flange, self.start_wing_to_kink,
+                           end=Point(-0.3 * self.tip_chord_kink + self.length_flange_spar, self.start_wing_to_kink,
                                      self.rear_spar_coordinates[0][1] * self.tip_chord_kink))
 
     @Part
@@ -265,10 +265,10 @@ class Spars(GeomBase):
     @Part  # For rearspar, lower outer
     def flangeline1_rear_lower_outer(self):
         return LineSegment(start=Point((self.span/2 - self.width_centerpiece) * np.tan(radians(self.leading_edge_sweep)) + self.tip_chord - self.root_chord
-                                            -0.3 * self.tip_chord + self.thickness_flange, #x
+                                            -0.3 * self.tip_chord + self.length_flange_spar, #x
                                        self.span/2 - self.width_centerpiece, #y
                                        self.rear_spar_coordinates[1][1] * self.tip_chord),
-                           end=Point(-0.3 * self.tip_chord_kink + self.thickness_flange, self.start_wing_to_kink,
+                           end=Point(-0.3 * self.tip_chord_kink + self.length_flange_spar, self.start_wing_to_kink,
                                      self.rear_spar_coordinates[1][1] * self.tip_chord_kink))
 
     @Part

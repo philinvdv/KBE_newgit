@@ -3,11 +3,13 @@ from parapy.geom import *
 from parapy.core import *
 import numpy as np
 from parapy.geom.generic.positioning import VX, VY  # parapy.geom from 1.2.9
+from parapy.core.validate import *
 
 class Rib(GeomBase):
     """This class creates the ribs. It does so by first determining the positions, then creating surfaces which are then
     cut to be inside the wingbox. It also creates the closed airfoils at the root and tip that close the wing"""
-    rib_pitch = Input()
+    rib_pitch = Input(2, validator=GT(0, msg="Rib pitch cannot be smaller than " "{validator.limit}!"))  # pitch between the ribs in meters
+
     root_chord = Input()
     tip_chord = Input()
     leading_edge_sweep = Input()

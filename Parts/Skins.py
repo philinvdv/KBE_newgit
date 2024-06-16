@@ -5,7 +5,7 @@ import numpy as np
 from Parts.Meshing import *
 #from Spars import self.front_spar_inner
 
-class Skins(GeomBase):
+class Skin(GeomBase):
     """In this class, the different skin pannels are defined. This is done from different curves, formig lines,
     forming curves, forming lofts. For upper and lower inner and upper and lower outer"""
     # Define the points for the lines
@@ -37,12 +37,6 @@ class Skins(GeomBase):
         point_2fl = Point(-0.8 * self.root_chord, 0, self.front_spar_coordinates[0][1] * self.root_chord - self.length_flanges)
         point_3fl = Point(-0.3 * self.root_chord, 0, self.rear_spar_coordinates[0][1] * self.root_chord - self.length_flanges)
         return [point_2, point_3, point_2fl, point_3fl] #[point_1, point_2, point_3, point_4]
-
-    # @Attribute
-    # def angle_upperskin_inner(self):
-    #     return np.arctan((self.front_spar_coordinates[0][1] * ((self.root_chord+self.tip_chord_kink)/2) -
-    #                         self.rear_spar_coordinates[0][1] * ((self.root_chord+self.tip_chord_kink)/2)) /
-    #                      (0.8 * ((self.root_chord+self.tip_chord_kink)/2) - 0.3 * ((self.root_chord+self.tip_chord_kink)/2)))
 
     @Part #Line from upper point of front spar to upper point of rear spar
     def line_root_upp(self):
@@ -133,12 +127,6 @@ class Skins(GeomBase):
                          self.span / 2 - self.width_centerpiece, self.rear_spar_coordinates[0][1] * self.tip_chord
                            -self.length_flanges)
         return [point_2t, point_3t, point_2_fl, point_3_fl]
-
-    # @Attribute #
-    # def angle_upperskin_outer(self):
-    #     return np.arctan((self.front_spar_coordinates[0][1] * ((self.tip_chord+self.tip_chord_kink)/2)
-    #                         - self.rear_spar_coordinates[0][1] * ((self.tip_chord+self.tip_chord_kink)/2)) /
-    #                      (0.8 * ((self.tip_chord+self.tip_chord_kink)/2) - 0.3 * ((self.tip_chord+self.tip_chord_kink)/2)))
 
     @Part  # Line from upper point of front spar to upper point of rear spar
     def line_tip_upp(self):

@@ -18,10 +18,10 @@ class Stringer(GeomBase):
     kink_location = Input()  # measured from centerline of fuselage
     tip_chord = Input()
     width_centerpiece = Input()
-    nr_stringers_upper_inner = Input()
-    nr_stringers_lower_inner = Input()
-    nr_stringers_upper_outer = Input()
-    nr_stringers_lower_outer = Input()
+    nr_stringers_upper_inner = Input(4)  # number of stringers in the inner wingbox on the upperskin
+    nr_stringers_lower_inner = Input(4)  # number of stringers in the inner wingbox on the lowerskin
+    nr_stringers_upper_outer = Input(4)  # number of stringers in the outer wingbox on the upperskin
+    nr_stringers_lower_outer = Input(4)  # number of stringers in the outer wingbox on the lowerskin
 
     """Upper inner"""
     @Attribute #Split the root chord into the amount of stringers that we have, giving the starting points of the stringer
@@ -150,7 +150,7 @@ class Stringer(GeomBase):
     def stringer_upper_outer(self):
         return StringerPart(quantify=len(self.line_str_upper_outer),
                              edge_in=self.line_str_upper_outer[child.index].edges[0], up_down=-1, angle_sign=1,
-                             width_stringer=0.5*self.stringer_width)#, angle_y=self.parent.my_skins.angle_upperskin_outer)
+                             width_stringer=0.5*self.stringer_width)
 
     """Outer lower"""
     @Attribute

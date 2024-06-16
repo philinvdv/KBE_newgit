@@ -25,18 +25,10 @@ class Wingbox(GeomBase):
     kink_location = Input()  # measured from centerline of fuselage
     tip_chord = Input()
     width_centerpiece = Input()
-    rib_pitch = Input()
-    nr_stringers_upper_inner = Input() #number of stringers in the inner wingbox on the upperskin
-    nr_stringers_lower_inner = Input() #number of stringers in the inner wingbox on the lowerskin
-    nr_stringers_upper_outer = Input() #number of stringers in the outer wingbox on the upperskin
-    nr_stringers_lower_outer = Input() #number of stringers in the outer wingbox on the lowerskin
-    nr_stringers_upper_CP = Input() #number of stringers in the centerpiece on the upperskin
-    nr_stringers_lower_CP = Input() #number of stringers in the centerpiece on the upperskin
-
 
     @Part #Call the skins
     def my_skins(self):
-        return Skins(start_wing_to_kink=self.start_wing_to_kink, tip_chord_kink=self.tip_chord_kink, pts=self.pts,
+        return Skin(start_wing_to_kink=self.start_wing_to_kink, tip_chord_kink=self.tip_chord_kink, pts=self.pts,
                      front_spar_coordinates=self.front_spar_coordinates,
                      rear_spar_coordinates=self.rear_spar_coordinates,  # these are attributes
                      span=self.span, leading_edge_sweep=self.leading_edge_sweep, root_chord=self.root_chord,
@@ -67,7 +59,7 @@ class Wingbox(GeomBase):
 
     @Part #Call the spars
     def my_spars(self):
-        return Spars(start_wing_to_kink=self.start_wing_to_kink, tip_chord_kink=self.tip_chord_kink, pts=self.pts,
+        return Spar(start_wing_to_kink=self.start_wing_to_kink, tip_chord_kink=self.tip_chord_kink, pts=self.pts,
                      front_spar_coordinates=self.front_spar_coordinates,
                      rear_spar_coordinates=self.rear_spar_coordinates,  # these are attributes
                      span=self.span, leading_edge_sweep=self.leading_edge_sweep, root_chord=self.root_chord,
@@ -98,13 +90,13 @@ class Wingbox(GeomBase):
 
     @Part #Go to sibling class (centerpiece) and fuse upperskin and frontspar
     def fused_cp1(self):
-        return Fused(shape_in=self.parent.centerpiece.upperskin_centerpiece_loft,
-                     tool=self.parent.centerpiece.frontspar_surf_centerpiece,hidden=True)
+        return Fused(shape_in=self.parent.my_centerpiece.upperskin_centerpiece_loft,
+                     tool=self.parent.my_centerpiece.frontspar_surf_centerpiece,hidden=True)
 
     @Part #Go to sibling class (centerpiece) and fuse lowerskin and rearspar
     def fused_cp2(self):
-        return Fused(shape_in=self.parent.centerpiece.lowerskin_centerpiece_loft,
-                     tool=self.parent.centerpiece.rearspar_loft_centerpiece,hidden=True)
+        return Fused(shape_in=self.parent.my_centerpiece.lowerskin_centerpiece_loft,
+                     tool=self.parent.my_centerpiece.rearspar_loft_centerpiece,hidden=True)
 
     @Part #Combine the two
     def fused_centerpiece(self):
@@ -118,7 +110,7 @@ class Wingbox(GeomBase):
 
     @Part #Call the ribs
     def my_ribs(self):
-        return Rib(rib_pitch=self.rib_pitch, root_chord=self.root_chord, tip_chord=self.tip_chord,
+        return Rib(root_chord=self.root_chord, tip_chord=self.tip_chord,
                    leading_edge_sweep=self.leading_edge_sweep, width_centerpiece=self.width_centerpiece, span=self.span)
 
     @Part #Call the stringers
@@ -128,9 +120,5 @@ class Wingbox(GeomBase):
                         kink_location=self.kink_location, tip_chord=self.tip_chord,
                         width_centerpiece=self.width_centerpiece,
                         start_wing_to_kink = self.start_wing_to_kink,
-                        nr_stringers_upper_inner=self.nr_stringers_upper_inner,
-                        nr_stringers_lower_inner=self.nr_stringers_lower_inner,
-                        nr_stringers_upper_outer=self.nr_stringers_upper_outer,
-                        nr_stringers_lower_outer=self.nr_stringers_lower_outer
                         )
 

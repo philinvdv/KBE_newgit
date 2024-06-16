@@ -22,13 +22,14 @@ from Parts.Meshing import MeshingFunc
 
 
 class AbaqusINPwriter(GeomBase):
-    "This file writes an inp file using the parapy abaqus adapter"
+    """This file writes an inp file using the parapy abaqus adapter. Since the geometry consists of surfaces, the
+    thicknesses are added here."""
     # n_mesh_points = Input(30)
     path = Input()
     mesh_element_length = Input(0.2, validator=GT(0, msg="Mesh element length cannot be smaller than " "{validator.limit}!"))
     density = Input(1000., validator=GT(0, msg="Material density cannot be smaller than " "{validator.limit}!"))
     elastic_modulus = Input(1e9, validator=GT(0, msg="Elastic modulus cannot be smaller than " "{validator.limit}!"))
-    poisson_ratio = Input(0.3)
+    poisson_ratio = Input()
     skin_thickness = Input(0.003, validator=GT(0, msg="Skin thickness cannot be smaller than " "{validator.limit}!"))
     upper_inner_skin_thickness = Input(0.003, validator=GT(0, msg="Skin thickness cannot be smaller than " "{validator.limit}!"))
     upper_outer_skin_thickness = Input(0.003, validator=GT(0, msg="Skin thickness cannot be smaller than " "{validator.limit}!"))
@@ -42,13 +43,10 @@ class AbaqusINPwriter(GeomBase):
     centre_section_spar_thickness = Input(0.01, validator=GT(0, msg="Centre section spar thickness cannot be smaller than " "{validator.limit}!"))
     centre_section_rib_thickness = Input(0.005, validator=GT(0, msg="Centre section rib thickness cannot be smaller than " "{validator.limit}!"))
 
-
     load_factor = Input(2.5)
     aircraft_mass = Input(10000, validator=GT(0, msg="Aircraft mass cannot be smaller than " "{validator.limit}!"))
-    span = Input(10, validator=GT(0, msg="Wing span cannot be smaller than " "{validator.limit}!"))
-    width_centerpiece = Input(3, validator=GT(0, msg="Centre section width cannot be smaller than " "{validator.limit}!"))
     # number_of_engines = Input(1)
-    engine_position = Input([4, 8])
+    engine_position = Input()
     engine_mass = Input(1000, validator=GE(0, msg="Engine cannot be smaller than " "{validator.limit}!"))
     Gravity = 9.81
 
@@ -130,39 +128,39 @@ class AbaqusINPwriter(GeomBase):
     @Part
     def ribs_cp(self):
         # return ModifiedShape(self.aircraft.my_wingbox.ribs_cut, keep=self.aircraft.my_wingbox.ribs_cut[0])
-        return Fused(shape_in=self.aircraft.centerpiece.ribs_cp[0],
-                     tool=self.aircraft.centerpiece.ribs_cp[1:-1],
+        return Fused(shape_in=self.aircraft.my_centerpiece.ribs_cp[0],
+                     tool=self.aircraft.my_centerpiece.ribs_cp[1:-1],
                              hidden=False)
 
     @Part
     def upper_skin_cp(self):
-        return Fused(shape_in=self.aircraft.centerpiece.upperskin_centerpiece_loft,
-                     tool=self.aircraft.centerpiece.upperskin_centerpiece_loft)
+        return Fused(shape_in=self.aircraft.my_centerpiece.upperskin_centerpiece_loft,
+                     tool=self.aircraft.my_centerpiece.upperskin_centerpiece_loft)
 
     @Part
     def lower_skin_cp(self):
-        return Fused(shape_in=self.aircraft.centerpiece.lowerskin_centerpiece_loft,
-                     tool=self.aircraft.centerpiece.lowerskin_centerpiece_loft)
+        return Fused(shape_in=self.aircraft.my_centerpiece.lowerskin_centerpiece_loft,
+                     tool=self.aircraft.my_centerpiece.lowerskin_centerpiece_loft)
 
     @Part
     def front_spar_cp(self):
-        return Fused(shape_in=self.aircraft.centerpiece.frontspar_surf_centerpiece,
-                     tool=self.aircraft.centerpiece.frontspar_surf_centerpiece)
+        return Fused(shape_in=self.aircraft.my_centerpiece.frontspar_surf_centerpiece,
+                     tool=self.aircraft.my_centerpiece.frontspar_surf_centerpiece)
 
     @Part
     def rear_spar_cp(self):
-        return Fused(shape_in=self.aircraft.centerpiece.rearspar_loft_centerpiece,
-                     tool=self.aircraft.centerpiece.rearspar_loft_centerpiece)
+        return Fused(shape_in=self.aircraft.my_centerpiece.rearspar_loft_centerpiece,
+                     tool=self.aircraft.my_centerpiece.rearspar_loft_centerpiece)
 
 
     @Attribute
     def stringer_cp_path(self):
         cp_upper_stringers = []
         cp_lower_stringers = []
-        for i in range(len(self.aircraft.centerpiece.stringer_upper_CP)):
-            cp_upper_stringers.append(self.aircraft.centerpiece.stringer_upper_CP[i].lofted_stringer)
-        for i in range(len(self.aircraft.centerpiece.stringer_lower_CP)):
-            cp_lower_stringers.append(self.aircraft.centerpiece.stringer_lower_CP[i].lofted_stringer)
+        for i in range(len(self.aircraft.my_centerpiece.stringer_upper_CP)):
+            cp_upper_stringers.append(self.aircraft.my_centerpiece.stringer_upper_CP[i].lofted_stringer)
+        for i in range(len(self.aircraft.my_centerpiece.stringer_lower_CP)):
+            cp_lower_stringers.append(self.aircraft.my_centerpiece.stringer_lower_CP[i].lofted_stringer)
         return [cp_upper_stringers, cp_lower_stringers]
 
     @Part
@@ -725,7 +723,7 @@ class AbaqusINPwriter(GeomBase):
     @Attribute
     def loads(self):
 
-        n_sections = round((0.5*self.span - self.width_centerpiece)/self.mesh_element_length)
+        n_sections = round((0.5*self.parent.my_wing.span- self.self.parent.my_wing.width_centerpiece)/self.mesh_element_length)
         span_sections = np.linspace(self.spanwise_nodes[0][0][1],
                                     self.spanwise_nodes[0][-1][1],
                                     n_sections)
