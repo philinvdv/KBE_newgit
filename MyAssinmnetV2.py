@@ -245,7 +245,6 @@ class Aircraft(GeomBase):
         print('max U3 displacement is: ', max(U3_magnitude), '[m]', 'and max mises stress is: ', max(mises), '[Pa]')
 
 
-
     @action()
     def save_aircraft_configuration(self):
         os.chdir(DIR)
