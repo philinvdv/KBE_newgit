@@ -30,7 +30,8 @@ for name in range(len(material_library.iloc[:, 0])):
 
 
 class Aircraft(GeomBase):
-    """This is the Superclass. It only contains the Wing class."""
+    """This is the Superclass. It contains the Wing class and also the class that generates the Abaqus .inp file. It
+    also contains the actions to process the results obtained from Abaqus"""
     aircraft_name = Input("my_aircraft_name")
     saved_aircraft_configuration = Input('Parts/output/my_aircraft_name_configuration.csv',
                                          widget=FilePicker(wildcard="*.csv", default_dir="Parts/output"))
