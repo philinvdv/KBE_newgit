@@ -57,7 +57,7 @@ class Stringer(GeomBase):
             quantify=len(self.stringers_upper_inner_plane),
             shape_in=self.parent.my_skins.inner_upperskin_loft, #this takes the upperskin from Skins, which is a sibling
             tool=self.stringers_upper_inner_plane[child.index].custom_plane,
-            hidden=False
+            hidden=True
         )
 
     @Part #Use the custom made StringerPart class to generate stringers at the locations defined by the lines. See
@@ -100,7 +100,7 @@ class Stringer(GeomBase):
             quantify=len(self.stringers_lower_inner_plane),
             shape_in=self.parent.my_skins.inner_lowerskin_loft, #this takes the lowerskin from Skins, which is a sibling
             tool=self.stringers_lower_inner_plane[child.index].custom_plane,
-            hidden=False
+            hidden=True
         )
 
     @Part #This gives the actual stringers
@@ -143,7 +143,7 @@ class Stringer(GeomBase):
             quantify=len(self.stringers_upper_outer_plane),
             shape_in=self.parent.my_skins.outer_upperskin_loft, #this takes the upperskin from Skins, which is a sibling
             tool=self.stringers_upper_outer_plane[child.index].custom_plane,
-            hidden=False
+            hidden=True
         )
 
     @Part
@@ -187,7 +187,7 @@ class Stringer(GeomBase):
             quantify=len(self.stringers_lower_outer_plane),
             shape_in=self.parent.my_skins.outer_lowerskin_loft, #this takes the upperskin from Skins, which is a sibling
             tool=self.stringers_lower_outer_plane[child.index].custom_plane,
-            hidden=False
+            hidden=True
         )
 
     @Part

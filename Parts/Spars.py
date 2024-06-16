@@ -30,7 +30,7 @@ class Spar(GeomBase):
     def line_root_front(self):
         return LineSegment(start=Point(-0.8 * self.root_chord, 0, self.front_spar_coordinates[0][1] * self.root_chord),
                            end=Point(-0.8 * self.root_chord, 0, self.front_spar_coordinates[1][1] * self.root_chord),
-                           )
+                           hidden=True)
 
     @Part  # Similarly, line for front spar at kink
     def line_kink_front(self):
@@ -38,7 +38,7 @@ class Spar(GeomBase):
                                        self.front_spar_coordinates[0][1] * self.tip_chord_kink),
                            end=Point(-0.8 * self.tip_chord_kink, self.start_wing_to_kink,
                                      self.front_spar_coordinates[1][1] * self.tip_chord_kink),
-                           )
+                           hidden=True)
 
     @Part #Make the frontspar from the defined lines at root and kink
     def front_spar_inner(self):
@@ -51,14 +51,15 @@ class Spar(GeomBase):
     @Part #this part is the line at the root chord for the rear spar
     def line_root_rear(self):
         return LineSegment(start=Point(-0.3 * self.root_chord, 0, self.rear_spar_coordinates[0][1] * self.root_chord),
-                           end=Point(-0.3 * self.root_chord, 0, self.rear_spar_coordinates[1][1] * self.root_chord))
+                           end=Point(-0.3 * self.root_chord, 0, self.rear_spar_coordinates[1][1] * self.root_chord),
+                           hidden=True)
 
     @Part #This is the line for the rearspar at the kink
     def line_kink_rear(self):
         return LineSegment(start=Point(-0.3 * self.tip_chord_kink, self.start_wing_to_kink,
                                        self.rear_spar_coordinates[0][1] * self.tip_chord_kink),
                            end=Point(-0.3 * self.tip_chord_kink, self.start_wing_to_kink,
-                                     self.rear_spar_coordinates[1][1] * self.tip_chord_kink))
+                                     self.rear_spar_coordinates[1][1] * self.tip_chord_kink), hidden=True)
 
     @Part #Create the rearspar of the inner wing
     def rearspar_inner(self):  # generate a surface
@@ -81,7 +82,7 @@ class Spar(GeomBase):
                                      + self.tip_chord - self.root_chord
                                             -0.8 * self.tip_chord, #x
                                        self.span/2 - self.width_centerpiece, #y
-                                       self.front_spar_coordinates[1][1] * self.tip_chord)) #z
+                                       self.front_spar_coordinates[1][1] * self.tip_chord),hidden=True) #z
 
     @Part #Make the frontspar
     def frontspar_outer(self):  # generate a surface
@@ -102,7 +103,7 @@ class Spar(GeomBase):
                                      self.tip_chord - self.root_chord
                                             -0.3 * self.tip_chord, #x
                                        self.span/2 - self.width_centerpiece, #y
-                                       self.rear_spar_coordinates[1][1] * self.tip_chord)) #z
+                                       self.rear_spar_coordinates[1][1] * self.tip_chord),hidden=True) #z
 
 
     @Part #Make the rearspar
@@ -117,172 +118,191 @@ class Spar(GeomBase):
     # 2 along skin. These flanges are there to connect the wingbox to the wing
     @Part
     def flangeline1_front_upper_inner(self): #flangeline of the front spar, upper inner
-        return LineSegment(start=Point(-0.8 * self.root_chord - self.length_flange_spar, 0, self.front_spar_coordinates[0][1] * self.root_chord),
-                           end=Point(-0.8 * self.tip_chord_kink - self.length_flange_spar, self.start_wing_to_kink, self.front_spar_coordinates[0][1] * self.tip_chord_kink))
+        return LineSegment(start=Point(-0.8 * self.root_chord - self.length_flange_spar, 0,
+                                       self.front_spar_coordinates[0][1] * self.root_chord),
+                           end=Point(-0.8 * self.tip_chord_kink - self.length_flange_spar, self.start_wing_to_kink,
+                                     self.front_spar_coordinates[0][1] * self.tip_chord_kink), hidden=True)
 
     @Part
     def flangeline2_front_upper_inner(self): #flangeline2 of the front spar, upper inner
         return LineSegment(start=Point(-0.8 * self.root_chord, 0, self.front_spar_coordinates[0][1] * self.root_chord),
-                           end=Point(-0.8 * self.tip_chord_kink, self.start_wing_to_kink, self.front_spar_coordinates[0][1] * self.tip_chord_kink))
+                           end=Point(-0.8 * self.tip_chord_kink, self.start_wing_to_kink,
+                                     self.front_spar_coordinates[0][1] * self.tip_chord_kink), hidden=True)
 
     @Part #Generate the flange of the frontspar upper inner
     def flange_front_upper_inner(self):
         return LoftedSurface(
             profiles=[self.flangeline1_front_upper_inner, self.flangeline2_front_upper_inner],
-            mesh_deflection=0.0001
+            mesh_deflection=0.0001, hidden=True
         )
 
     #Repeat procedure for the other flanges as well
     @Part
     def flangeline1_front_lower_inner(self): #flangeline for the frontspar, lower part inner box
-        return LineSegment(start=Point(-0.8 * self.root_chord - self.length_flange_spar, 0, self.front_spar_coordinates[1][1] * self.root_chord),
-                           end=Point(-0.8 * self.tip_chord_kink - self.length_flange_spar, self.start_wing_to_kink, self.front_spar_coordinates[1][1] * self.tip_chord_kink))
+        return LineSegment(start=Point(-0.8 * self.root_chord - self.length_flange_spar, 0,
+                                       self.front_spar_coordinates[1][1] * self.root_chord),
+                           end=Point(-0.8 * self.tip_chord_kink - self.length_flange_spar, self.start_wing_to_kink,
+                                     self.front_spar_coordinates[1][1] * self.tip_chord_kink),hidden=True)
 
     @Part
     def flangeline2_front_lower_inner(self): #flangeline2 for the frontspar, lower part inner box
         return LineSegment(start=Point(-0.8 * self.root_chord, 0, self.front_spar_coordinates[1][1] * self.root_chord),
-                           end=Point(-0.8 * self.tip_chord_kink, self.start_wing_to_kink, self.front_spar_coordinates[1][1] * self.tip_chord_kink))
+                           end=Point(-0.8 * self.tip_chord_kink, self.start_wing_to_kink,
+                                     self.front_spar_coordinates[1][1] * self.tip_chord_kink),hidden=True)
 
     @Part
     def flange_front_lower_inner(self):
         return LoftedSurface(
             profiles=[self.flangeline1_front_lower_inner, self.flangeline2_front_lower_inner],
-            mesh_deflection=0.0001
+            mesh_deflection=0.0001, hidden=True
         )
 
     @Part #For rearspar, upper inner
     def flangeline1_rear_upper_inner(self):
         return LineSegment(start=Point(-0.3 * self.root_chord + self.length_flange_spar, 0, self.rear_spar_coordinates[0][1] * self.root_chord),
                            end=Point(-0.3 * self.tip_chord_kink + self.length_flange_spar, self.start_wing_to_kink,
-                                       self.rear_spar_coordinates[0][1] * self.tip_chord_kink))
+                                       self.rear_spar_coordinates[0][1] * self.tip_chord_kink), hidden=True)
 
     @Part
     def flangeline2_rear_upper_inner(self):
         return LineSegment(start=Point(-0.3 * self.root_chord, 0, self.rear_spar_coordinates[0][1] * self.root_chord),
                            end=Point(-0.3 * self.tip_chord_kink, self.start_wing_to_kink,
-                                     self.rear_spar_coordinates[0][1] * self.tip_chord_kink))
+                                     self.rear_spar_coordinates[0][1] * self.tip_chord_kink),hidden=True)
 
     @Part
     def flange_front_rear_upper_inner(self):
         return LoftedSurface(
             profiles=[self.flangeline1_rear_upper_inner, self.flangeline2_rear_upper_inner],
-            mesh_deflection=0.0001
+            mesh_deflection=0.0001, hidden=True
         )
 
     @Part #For rearspar, lower inner
     def flangeline1_rear_lower_inner(self):
-        return LineSegment(start=Point(-0.3 * self.root_chord + self.length_flange_spar, 0, self.rear_spar_coordinates[1][1] * self.root_chord),
+        return LineSegment(start=Point(-0.3 * self.root_chord + self.length_flange_spar, 0,
+                                       self.rear_spar_coordinates[1][1] * self.root_chord),
                            end=Point(-0.3 * self.tip_chord_kink + self.length_flange_spar, self.start_wing_to_kink,
-                                     self.rear_spar_coordinates[1][1] * self.tip_chord_kink))
+                                     self.rear_spar_coordinates[1][1] * self.tip_chord_kink), hidden=True)
 
     @Part
     def flangeline2_rear_lower_inner(self):
         return LineSegment(start=Point(-0.3 * self.root_chord, 0, self.rear_spar_coordinates[1][1] * self.root_chord),
                            end=Point(-0.3 * self.tip_chord_kink, self.start_wing_to_kink,
-                                     self.rear_spar_coordinates[1][1] * self.tip_chord_kink))
+                                     self.rear_spar_coordinates[1][1] * self.tip_chord_kink), hidden=True)
 
     @Part
     def flange_front_rear_lower_inner(self):
         return LoftedSurface(
             profiles=[self.flangeline1_rear_lower_inner, self.flangeline2_rear_lower_inner],
-            mesh_deflection=0.0001
+            mesh_deflection=0.0001, hidden=True
         )
 
     """Flanges, outer"""
     @Part
     def flangeline1_front_upper_outer(self):  # flang of the front spar, upper outer
-        return LineSegment(start=Point((self.span/2 - self.width_centerpiece) * np.tan(radians(self.leading_edge_sweep)) + self.tip_chord - self.root_chord
+        return LineSegment(start=Point((self.span/2 - self.width_centerpiece) * np.tan(radians(self.leading_edge_sweep))
+                                       + self.tip_chord - self.root_chord
                                             -0.8 * self.tip_chord - self.length_flange_spar, #x
                                        self.span/2 - self.width_centerpiece, #y
                                        self.front_spar_coordinates[0][1] * self.tip_chord),
-                           end=Point(-0.8 * self.tip_chord_kink - self.length_flange_spar, self.start_wing_to_kink, self.front_spar_coordinates[0][1] * self.tip_chord_kink))
+                           end=Point(-0.8 * self.tip_chord_kink - self.length_flange_spar, self.start_wing_to_kink,
+                                     self.front_spar_coordinates[0][1] * self.tip_chord_kink), hidden=True)
 
     @Part
     def flangeline2_front_upper_outer(self):  # flang of the front spar, upper inner
-        return LineSegment(start=Point((self.span/2 - self.width_centerpiece) * np.tan(radians(self.leading_edge_sweep)) + self.tip_chord - self.root_chord
+        return LineSegment(start=Point((self.span/2 - self.width_centerpiece) * np.tan(radians(self.leading_edge_sweep))
+                                       + self.tip_chord - self.root_chord
                                             -0.8 * self.tip_chord, #x
                                        self.span/2 - self.width_centerpiece, #y
                                        self.front_spar_coordinates[0][1] * self.tip_chord),
-                           end=Point(-0.8 * self.tip_chord_kink, self.start_wing_to_kink, self.front_spar_coordinates[0][1] * self.tip_chord_kink))
+                           end=Point(-0.8 * self.tip_chord_kink, self.start_wing_to_kink,
+                                     self.front_spar_coordinates[0][1] * self.tip_chord_kink), hidden=True)
 
 
     @Part
     def flange_front_upper_outer(self):
         return LoftedSurface(
             profiles=[self.flangeline1_front_upper_outer, self.flangeline2_front_upper_outer],
-            mesh_deflection=0.0001
+            mesh_deflection=0.0001, hidden=True
         )
 
     @Part
     def flangeline1_front_lower_outer(self):  # flange for the frontspar, lower part outer box
-        return LineSegment(start=Point((self.span/2 - self.width_centerpiece) * np.tan(radians(self.leading_edge_sweep)) + self.tip_chord - self.root_chord
+        return LineSegment(start=Point((self.span/2 - self.width_centerpiece) * np.tan(radians(self.leading_edge_sweep))
+                                       + self.tip_chord - self.root_chord
                                             -0.8 * self.tip_chord - self.length_flange_spar, #x
                                        self.span/2 - self.width_centerpiece, #y
                                        self.front_spar_coordinates[1][1] * self.tip_chord),
-                           end=Point(-0.8 * self.tip_chord_kink - self.length_flange_spar, self.start_wing_to_kink, self.front_spar_coordinates[1][1] * self.tip_chord_kink))
+                           end=Point(-0.8 * self.tip_chord_kink - self.length_flange_spar, self.start_wing_to_kink,
+                                     self.front_spar_coordinates[1][1] * self.tip_chord_kink),hidden=True)
 
     @Part
     def flangeline2_front_lower_outer(self):
-        return LineSegment(start=Point((self.span/2 - self.width_centerpiece) * np.tan(radians(self.leading_edge_sweep)) + self.tip_chord - self.root_chord
+        return LineSegment(start=Point((self.span/2 - self.width_centerpiece) * np.tan(radians(self.leading_edge_sweep))
+                                       + self.tip_chord - self.root_chord
                                             -0.8 * self.tip_chord, #x
                                        self.span/2 - self.width_centerpiece, #y
                                        self.front_spar_coordinates[1][1] * self.tip_chord),
-                           end=Point(-0.8 * self.tip_chord_kink, self.start_wing_to_kink, self.front_spar_coordinates[1][1] * self.tip_chord_kink))
+                           end=Point(-0.8 * self.tip_chord_kink, self.start_wing_to_kink,
+                                     self.front_spar_coordinates[1][1] * self.tip_chord_kink), hidden=True)
 
     @Part
     def flange_front_lower_outer(self):
         return LoftedSurface(
             profiles=[self.flangeline1_front_lower_outer, self.flangeline2_front_lower_outer],
-            mesh_deflection=0.0001
+            mesh_deflection=0.0001, hidden=True
         )
 
     #REARSPAR UPPER OUTER flanges
     @Part  # For rearspar, upper outer
     def flangeline1_rear_upper_outer(self):
-        return LineSegment(start=Point((self.span/2 - self.width_centerpiece) * np.tan(radians(self.leading_edge_sweep)) + self.tip_chord - self.root_chord
+        return LineSegment(start=Point((self.span/2 - self.width_centerpiece) * np.tan(radians(self.leading_edge_sweep))
+                                       + self.tip_chord - self.root_chord
                                             -0.3 * self.tip_chord + self.length_flange_spar, #x
                                        self.span/2 - self.width_centerpiece, #y
                                        self.rear_spar_coordinates[0][1] * self.tip_chord),
                            end=Point(-0.3 * self.tip_chord_kink + self.length_flange_spar, self.start_wing_to_kink,
-                                     self.rear_spar_coordinates[0][1] * self.tip_chord_kink))
+                                     self.rear_spar_coordinates[0][1] * self.tip_chord_kink), hidden=True)
 
     @Part
     def flangeline2_rear_upper_outer(self):
-        return LineSegment(start=Point((self.span/2 - self.width_centerpiece) * np.tan(radians(self.leading_edge_sweep)) + self.tip_chord - self.root_chord
+        return LineSegment(start=Point((self.span/2 - self.width_centerpiece) * np.tan(radians(self.leading_edge_sweep))
+                                       + self.tip_chord - self.root_chord
                                             -0.3 * self.tip_chord, #x
                                        self.span/2 - self.width_centerpiece, #y
                                        self.rear_spar_coordinates[0][1] * self.tip_chord),
                            end=Point(-0.3 * self.tip_chord_kink, self.start_wing_to_kink,
-                                     self.rear_spar_coordinates[0][1] * self.tip_chord_kink))
+                                     self.rear_spar_coordinates[0][1] * self.tip_chord_kink), hidden=True)
 
     @Part
     def flange_rear_upper_outer(self):
         return LoftedSurface(
             profiles=[self.flangeline1_rear_upper_outer, self.flangeline2_rear_upper_outer],
-            mesh_deflection=0.0001
+            mesh_deflection=0.0001, hidden=True
         )
 
     @Part  # For rearspar, lower outer
     def flangeline1_rear_lower_outer(self):
-        return LineSegment(start=Point((self.span/2 - self.width_centerpiece) * np.tan(radians(self.leading_edge_sweep)) + self.tip_chord - self.root_chord
+        return LineSegment(start=Point((self.span/2 - self.width_centerpiece) * np.tan(radians(self.leading_edge_sweep))
+                                       + self.tip_chord - self.root_chord
                                             -0.3 * self.tip_chord + self.length_flange_spar, #x
                                        self.span/2 - self.width_centerpiece, #y
                                        self.rear_spar_coordinates[1][1] * self.tip_chord),
                            end=Point(-0.3 * self.tip_chord_kink + self.length_flange_spar, self.start_wing_to_kink,
-                                     self.rear_spar_coordinates[1][1] * self.tip_chord_kink))
+                                     self.rear_spar_coordinates[1][1] * self.tip_chord_kink), hidden=True)
 
     @Part
     def flangeline2_rear_lower_outer(self):
-        return LineSegment(start=Point((self.span/2 - self.width_centerpiece) * np.tan(radians(self.leading_edge_sweep)) + self.tip_chord - self.root_chord
+        return LineSegment(start=Point((self.span/2 - self.width_centerpiece) * np.tan(radians(self.leading_edge_sweep))
+                                       + self.tip_chord - self.root_chord
                                             -0.3 * self.tip_chord, #x
                                        self.span/2 - self.width_centerpiece, #y
                                        self.rear_spar_coordinates[1][1] * self.tip_chord),
                            end=Point(-0.3 * self.tip_chord_kink, self.start_wing_to_kink,
-                                     self.rear_spar_coordinates[1][1] * self.tip_chord_kink))
+                                     self.rear_spar_coordinates[1][1] * self.tip_chord_kink), hidden=True)
 
     @Part
     def flange_rear_lower_outer(self):
         return LoftedSurface(
             profiles=[self.flangeline1_rear_lower_outer, self.flangeline2_rear_lower_outer],
-            mesh_deflection=0.0001
+            mesh_deflection=0.0001, hidden=True
         )

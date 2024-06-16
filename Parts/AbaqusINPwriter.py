@@ -723,7 +723,7 @@ class AbaqusINPwriter(GeomBase):
     @Attribute
     def loads(self):
 
-        n_sections = round((0.5*self.parent.my_wing.span- self.self.parent.my_wing.width_centerpiece)/self.mesh_element_length)
+        n_sections = round((0.5*self.parent.my_wing.span- self.parent.my_wing.width_centerpiece)/self.mesh_element_length)
         span_sections = np.linspace(self.spanwise_nodes[0][0][1],
                                     self.spanwise_nodes[0][-1][1],
                                     n_sections)

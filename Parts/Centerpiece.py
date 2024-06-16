@@ -207,7 +207,7 @@ class Centerpiece(GeomBase):
             quantify=len(self.stringers_CP_upper),
             shape_in=self.upperskin_centerpiece_loft,
             tool=self.stringers_CP_upper[child.index].custom_plane,
-            hidden=False
+            hidden=True
         )
 
     @Part  # This gives the curves on the wingbox at the location of the lower stringers
@@ -216,7 +216,7 @@ class Centerpiece(GeomBase):
             quantify=len(self.stringers_CP_lower),
             shape_in=self.lowerskin_centerpiece_loft,
             tool=self.stringers_CP_lower[child.index].custom_plane,
-            hidden=False
+            hidden=True
         )
 
     @Part #This gives the L-stringer. The [0] is to prevent errors; there is only 1 line however in the 'edges' of the

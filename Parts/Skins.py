@@ -34,8 +34,10 @@ class Skin(GeomBase):
     def points_root_upper_skin(self):
         point_2 = Point(-0.8 * self.root_chord, 0, self.front_spar_coordinates[0][1] * self.root_chord) #frontspar
         point_3 = Point(-0.3 * self.root_chord, 0, self.rear_spar_coordinates[0][1] * self.root_chord) #rearspar
-        point_2fl = Point(-0.8 * self.root_chord, 0, self.front_spar_coordinates[0][1] * self.root_chord - self.length_flanges)
-        point_3fl = Point(-0.3 * self.root_chord, 0, self.rear_spar_coordinates[0][1] * self.root_chord - self.length_flanges)
+        point_2fl = Point(-0.8 * self.root_chord, 0, self.front_spar_coordinates[0][1] * self.root_chord
+                          - self.length_flanges)
+        point_3fl = Point(-0.3 * self.root_chord, 0, self.rear_spar_coordinates[0][1] * self.root_chord
+                          - self.length_flanges)
         return [point_2, point_3, point_2fl, point_3fl] #[point_1, point_2, point_3, point_4]
 
     @Part #Line from upper point of front spar to upper point of rear spar
@@ -47,8 +49,10 @@ class Skin(GeomBase):
     """At kink, upper inner"""
     @Attribute #Similarly to points_root_upper_skin, but then for the points at the kink
     def points_kink_upper_skin(self):
-        point2 = Point(-0.8 * self.tip_chord_kink, self.start_wing_to_kink, self.front_spar_coordinates[0][1] * self.tip_chord_kink)
-        point3 = Point(-0.3 * self.tip_chord_kink, self.start_wing_to_kink, self.rear_spar_coordinates[0][1] * self.tip_chord_kink)
+        point2 = Point(-0.8 * self.tip_chord_kink, self.start_wing_to_kink, self.front_spar_coordinates[0][1]
+                       * self.tip_chord_kink)
+        point3 = Point(-0.3 * self.tip_chord_kink, self.start_wing_to_kink, self.rear_spar_coordinates[0][1]
+                       * self.tip_chord_kink)
         point2fl = Point(-0.8 * self.tip_chord_kink, self.start_wing_to_kink,
                        self.front_spar_coordinates[0][1] * self.tip_chord_kink - self.length_flanges)
         point3fl = Point(-0.3 * self.tip_chord_kink, self.start_wing_to_kink,
@@ -74,13 +78,15 @@ class Skin(GeomBase):
         # point_1 = Point(0,0,0)
         point_2l = Point(-0.8 * self.root_chord, 0, self.front_spar_coordinates[1][1] * self.root_chord)
         point_3l = Point(-0.3 * self.root_chord, 0, self.rear_spar_coordinates[1][1] * self.root_chord)
-        point_2fl = Point(-0.8 * self.root_chord, 0, self.front_spar_coordinates[1][1] * self.root_chord + self.length_flanges)
-        point_3fl = Point(-0.3 * self.root_chord, 0, self.rear_spar_coordinates[1][1] * self.root_chord + self.length_flanges)
+        point_2fl = Point(-0.8 * self.root_chord, 0, self.front_spar_coordinates[1][1] * self.root_chord
+                          + self.length_flanges)
+        point_3fl = Point(-0.3 * self.root_chord, 0, self.rear_spar_coordinates[1][1] * self.root_chord
+                          + self.length_flanges)
         return [point_2l, point_3l, point_2fl, point_3fl]
 
     @Part  # Line from lower point of front spar to lower point of rear spar
     def line_root_low(self):
-        return LineSegment(start=self.points_root_lower_skin[0], end=self.points_root_lower_skin[1])
+        return LineSegment(start=self.points_root_lower_skin[0], end=self.points_root_lower_skin[1], hidden=True)
 
     """At kink, lower pannel inner"""
     @Attribute #Same as before
@@ -138,16 +144,18 @@ class Skin(GeomBase):
     def outer_upperskin_loft(self):  # generate a surface
         return LoftedSurface(
             profiles=[self.line_kink_upp, self.line_tip_upp],
-            mesh_deflection=0.0001,
+            mesh_deflection=0.0001, hidden=True
                     )
 
     """Lower skin panel outer"""
     @Attribute
     def points_tip_lower_skin(self):
-        point_2lt = Point((self.span / 2 - self.width_centerpiece) * np.tan(radians(self.leading_edge_sweep)) + self.tip_chord - self.root_chord - 0.8 * self.tip_chord,
+        point_2lt = Point((self.span / 2 - self.width_centerpiece) * np.tan(radians(self.leading_edge_sweep))
+                          + self.tip_chord - self.root_chord - 0.8 * self.tip_chord,
                           self.span/2 - self.width_centerpiece, self.front_spar_coordinates[1][1] * self.tip_chord)
 
-        point_3lt = Point((self.span / 2 - self.width_centerpiece) * np.tan(radians(self.leading_edge_sweep)) + self.tip_chord - self.root_chord - 0.3 * self.tip_chord,
+        point_3lt = Point((self.span / 2 - self.width_centerpiece) * np.tan(radians(self.leading_edge_sweep))
+                          + self.tip_chord - self.root_chord - 0.3 * self.tip_chord,
                           self.span/2 - self.width_centerpiece, self.rear_spar_coordinates[1][1] * self.tip_chord)
         point_2lt_fl = Point((self.span / 2 - self.width_centerpiece) * np.tan(
             radians(self.leading_edge_sweep)) + self.tip_chord - self.root_chord - 0.8 * self.tip_chord,
@@ -156,7 +164,8 @@ class Skin(GeomBase):
 
         point_3lt_fl = Point((self.span / 2 - self.width_centerpiece) * np.tan(
             radians(self.leading_edge_sweep)) + self.tip_chord - self.root_chord - 0.3 * self.tip_chord,
-                          self.span / 2 - self.width_centerpiece, self.rear_spar_coordinates[1][1] * self.tip_chord + self.length_flanges)
+                          self.span / 2 - self.width_centerpiece, self.rear_spar_coordinates[1][1] * self.tip_chord
+                             + self.length_flanges)
         return [point_2lt, point_3lt, point_2lt_fl, point_3lt_fl]
 
     @Part  # Line from lower point of front spar to lower point of rear spar
