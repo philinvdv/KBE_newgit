@@ -40,6 +40,8 @@ class AbaqusINPwriter(GeomBase):
     lower_inner_skin_thickness = Input(0.003, validator=GT(0, msg="Skin thickness cannot be smaller than " "{validator.limit}!"))
     lower_outer_skin_thickness = Input(0.003, validator=GT(0, msg="Skin thickness cannot be smaller than " "{validator.limit}!"))
     spar_thickness = Input(0.01, validator=GT(0, msg="Spar thickness cannot be smaller than " "{validator.limit}!"))
+    upper_stringers_thickness = Input(0.005, validator=GT(0, msg="Spar thickness cannot be smaller than " "{validator.limit}!"))
+    lower_stringers_thickness =  Input(0.005, validator=GT(0, msg="Spar thickness cannot be smaller than " "{validator.limit}!"))
     rib_thickness = Input(0.005, validator=GT(0, msg="Rib thickness cannot be smaller than " "{validator.limit}!"))
     centre_section_skin_thickness = Input(0.003, validator=GT(0, msg="Centre section skin thickness cannot be smaller than " "{validator.limit}!"))
     centre_section_spar_thickness = Input(0.01, validator=GT(0, msg="Centre section spar thickness cannot be smaller than " "{validator.limit}!"))
@@ -96,7 +98,31 @@ class AbaqusINPwriter(GeomBase):
         return Fused(shape_in=self.aircraft.my_wingbox.my_spars.rearspar_inner,
                      tool=self.aircraft.my_wingbox.my_spars.rearspar_outer,
                              hidden=False)
-    #
+
+    @Attribute
+    def wing_stringer_path(self):
+        upper_inner_stringers = []
+        upper_outer_stringers = []
+        lower_inner_stringers = []
+        lower_outer_stringers = []
+        for i in range(len(self.aircraft.my_wingbox.my_stringers.stringer_upper_inner)):
+            upper_inner_stringers.append(self.aircraft.my_wingbox.my_stringers.stringer_upper_inner[i].lofted_stringer)
+        for i in range(len(self.aircraft.my_wingbox.my_stringers.stringer_upper_outer)):
+            upper_outer_stringers.append(self.aircraft.my_wingbox.my_stringers.stringer_upper_outer[i].lofted_stringer)
+        for i in range(len(self.aircraft.my_wingbox.my_stringers.stringer_lower_inner)):
+            lower_inner_stringers.append(self.aircraft.my_wingbox.my_stringers.stringer_lower_inner[i].lofted_stringer)
+        for i in range(len(self.aircraft.my_wingbox.my_stringers.stringer_lower_outer)):
+            lower_outer_stringers.append(self.aircraft.my_wingbox.my_stringers.stringer_lower_outer[i].lofted_stringer)
+        return [upper_inner_stringers + upper_outer_stringers, lower_inner_stringers + lower_outer_stringers]
+
+    @Part
+    def upper_stringers(self):
+        return Fused(shape_in=self.wing_stringer_path[0][0], tool=self.wing_stringer_path[0][:])
+
+    @Part
+    def lower_stringers(self):
+        return Fused(shape_in=self.wing_stringer_path[1][0], tool=self.wing_stringer_path[1][:])
+
     # @Part
     # def ribs(self):
     #     # return ModifiedShape(self.aircraft.my_wingbox.ribs_cut, keep=self.aircraft.my_wingbox.ribs_cut[0])
@@ -133,6 +159,25 @@ class AbaqusINPwriter(GeomBase):
         return Fused(shape_in=self.aircraft.centerpiece.rearspar_loft_centerpiece,
                      tool=self.aircraft.centerpiece.rearspar_loft_centerpiece)
 
+
+    @Attribute
+    def stringer_cp_path(self):
+        cp_upper_stringers = []
+        cp_lower_stringers = []
+        for i in range(len(self.aircraft.centerpiece.stringer_upper_CP)):
+            cp_upper_stringers.append(self.aircraft.centerpiece.stringer_upper_CP[i].lofted_stringer)
+        for i in range(len(self.aircraft.centerpiece.stringer_lower_CP)):
+            cp_lower_stringers.append(self.aircraft.centerpiece.stringer_lower_CP[i].lofted_stringer)
+        return [cp_upper_stringers, cp_lower_stringers]
+
+    @Part
+    def upper_stringers_cp(self):
+        return Fused(shape_in=self.stringer_cp_path[0][0], tool=self.stringer_cp_path[0][:])
+
+    @Part
+    def lower_stringers_cp(self):
+        return Fused(shape_in=self.stringer_cp_path[1][0], tool=self.stringer_cp_path[1][:])
+
     # Meshing the parts and creating groups which are later used for application of forces and boundary conditions
     @Part
     def meshed_upper_skin(self):
@@ -168,23 +213,25 @@ class AbaqusINPwriter(GeomBase):
                                   [FaceGroup(shape=self.rear_spar.faces[idx]) for idx in range(len(self.rear_spar.faces))] +
                                   [EdgeGroup(shape=self.rear_spar.edges[idy]) for idy in range(len(self.rear_spar.edges))],
                            mesh_element_length=self.mesh_element_length)
-    # @Part
-    # def meshed_ribs(self):
-    #     return MeshingFunc(part_class=self.ribs,
-    #                        groups=[FaceGroup(shape=self.ribs.faces)] +
-    #                               [EdgeGroup(shape=self.ribs.edges)] +
-    #                               [FaceGroup(shape=self.ribs.faces[idx]) for idx in range(len(self.ribs.faces))] +
-    #                               [EdgeGroup(shape=self.ribs.edges[idy]) for idy in range(len(self.ribs.edges))],
-    #                        mesh_element_length=self.mesh_element_length)
 
-    # @Part
-    # def meshed_ribs(self):
-    #     return MeshingFunc(part_class=self.aircraft.my_wingbox.my_ribs.ribs_cut[1],
-    #                        groups=[FaceGroup(shape=self.ribs.faces)] +
-    #                               [EdgeGroup(shape=self.ribs.edges)] +
-    #                               [FaceGroup(shape=self.ribs.faces[idx]) for idx in range(len(self.ribs.faces))] +
-    #                               [EdgeGroup(shape=self.ribs.edges[idy]) for idy in range(len(self.ribs.edges))],
-    #                        mesh_element_length=self.mesh_element_length)
+    @Part
+    def meshed_upper_stringers(self):
+        return MeshingFunc(part_class=self.upper_stringers,
+                           groups=[FaceGroup(shape=self.upper_stringers.faces)] +
+                                  [EdgeGroup(shape=self.upper_stringers.edges)] +
+                                  [FaceGroup(shape=self.upper_stringers.faces[idx]) for idx in range(len(self.upper_stringers.faces))] +
+                                  [EdgeGroup(shape=self.upper_stringers.edges[idy]) for idy in range(len(self.upper_stringers.edges))],
+                           mesh_element_length=self.mesh_element_length)
+    @Part
+    def meshed_lower_stringers(self):
+        return MeshingFunc(part_class=self.lower_stringers,
+                           groups=[FaceGroup(shape=self.lower_stringers.faces)] +
+                                  [EdgeGroup(shape=self.lower_stringers.edges)] +
+                                  [FaceGroup(shape=self.lower_stringers.faces[idx]) for idx in range(len(self.lower_stringers.faces))] +
+                                  [EdgeGroup(shape=self.lower_stringers.edges[idy]) for idy in range(len(self.lower_stringers.edges))],
+                           mesh_element_length=self.mesh_element_length)
+
+
 
     @Part
     def meshed_ribs_cp(self):
@@ -231,6 +278,24 @@ class AbaqusINPwriter(GeomBase):
                                   [EdgeGroup(shape=self.rear_spar_cp.edges[idy]) for idy in range(len(self.rear_spar_cp.edges))],
                            mesh_element_length=self.mesh_element_length)
 
+
+    @Part
+    def meshed_upper_stringers_cp(self):
+        return MeshingFunc(part_class=self.upper_stringers_cp,
+                           groups=[FaceGroup(shape=self.upper_stringers_cp.faces)] +
+                                  [EdgeGroup(shape=self.upper_stringers_cp.edges)] +
+                                  [FaceGroup(shape=self.upper_stringers_cp.faces[idx]) for idx in range(len(self.upper_stringers_cp.faces))] +
+                                  [EdgeGroup(shape=self.upper_stringers_cp.edges[idy]) for idy in range(len(self.upper_stringers_cp.edges))],
+                           mesh_element_length=self.mesh_element_length)
+    @Part
+    def meshed_lower_stringers_cp(self):
+        return MeshingFunc(part_class=self.lower_stringers_cp,
+                           groups=[FaceGroup(shape=self.lower_stringers_cp.faces)] +
+                                  [EdgeGroup(shape=self.lower_stringers_cp.edges)] +
+                                  [FaceGroup(shape=self.lower_stringers_cp.faces[idx]) for idx in range(len(self.lower_stringers_cp.faces))] +
+                                  [EdgeGroup(shape=self.lower_stringers_cp.edges[idy]) for idy in range(len(self.lower_stringers_cp.edges))],
+                           mesh_element_length=self.mesh_element_length)
+
     # Shell sections which assign material properties to different parts
     @Attribute
     def upper_inner_skin_material_properties(self):
@@ -252,6 +317,13 @@ class AbaqusINPwriter(GeomBase):
     def spar_material_properties(self):
         return ShellSectionProperties(material=self.material, thickness=self.spar_thickness)
 
+    @Attribute
+    def upper_stringers_material_properties(self):
+        return ShellSectionProperties(material=self.material, thickness=self.upper_stringers_thickness)
+
+    @Attribute
+    def lower_stringers_material_properties(self):
+        return ShellSectionProperties(material=self.material, thickness=self.lower_stringers_thickness)
     @Attribute
     def rib_material_properties(self):
         return ShellSectionProperties(material=self.material, thickness=self.rib_thickness)
@@ -277,7 +349,7 @@ class AbaqusINPwriter(GeomBase):
     def my_abaqus_adaptor(self):
         my_obj = Adaptor()
 
-        # First part: upper skin
+        # Abaqus part: upper skin
         my_obj.process_2d_part(self.upper_skin,
         "S{n}R",  # the type of 2d surface
        [(self.meshed_upper_skin.mesh.subgrid[0], self.upper_inner_skin_material_properties)],
@@ -285,64 +357,87 @@ class AbaqusINPwriter(GeomBase):
                     # (self.meshed_upper_skin.mesh.subgrid[6], self.upper_outer_skin_material_properties)],
         preferred_name=f"Upper_Skin"
         )
-        # Second part: lower skin
+        # Abaqus part: lower skin
         my_obj.process_2d_part(self.lower_skin,
         "S{n}R",  # the type of 2d surface
         [(self.meshed_lower_skin.mesh.subgrid[0], self.lower_inner_skin_material_properties)],
         #           [(self.meshed_lower_skin.mesh.subgrid[3], self.lower_inner_skin_material_properties),
         #           (self.meshed_lower_skin.mesh.subgrid[6], self.lower_outer_skin_material_properties)],
-        preferred_name=f"lower_Skin"
+        preferred_name=f"Lower_Skin"
         )
-        # Third part: front spar
+        # Abaqus part:  front spar
         my_obj.process_2d_part(self.front_spar,
         "S{n}R",  # the type of 2d surface
         [(self.meshed_front_spar.mesh.subgrid[0], self.spar_material_properties)],
-        preferred_name=f"front_spar"
+        preferred_name=f"Front_spar"
         )
-        # Forth part: rear spar
+        # Abaqus part: rear spars
         my_obj.process_2d_part(self.rear_spar,
         "S{n}R",  # the type of 2d surface
         [(self.meshed_rear_spar.mesh.subgrid[0], self.spar_material_properties)],
-        preferred_name=f"rear_spar"
+        preferred_name=f"Rear_spar"
         )
-        #Fifth part: ribs
+        # Abaqus part: upper_stringers
+        # for i in range(len(self.upper_stringers.faces)):
+        my_obj.process_2d_part(self.upper_stringers,
+        "S{n}R",  # the type of 2d surface
+        [(self.meshed_upper_stringers.mesh.subgrid[0], self.upper_stringers_material_properties)],
+        preferred_name=f"Upper_stringers"
+        )
+        # Abaqus part: lower stringers
+        my_obj.process_2d_part(self.lower_stringers,
+        "S{n}R",  # the type of 2d surface
+        [(self.meshed_lower_stringers.mesh.subgrid[0], self.lower_stringers_material_properties)],
+        preferred_name=f"Lower_stringers"
+        )
+        # Abaqus part: ribs
         # my_obj.process_2d_part(self.ribs,
         # "S{n}R",  # the type of 2d surface
         # [(self.meshed_ribs.mesh.subgrid[0], self.rib_material_properties)],
         # preferred_name=f"Ribs_centre_section"
         # )
 
-        # Sixth part
+        # Abaqus part: centre section upper skin
         my_obj.process_2d_part(self.upper_skin_cp,
         "S{n}R",  # the type of 2d surface
         [(self.meshed_upper_skin_cp.mesh.subgrid[0], self.cp_skin_material_properties)],
         preferred_name=f"Upper_Skin_centre_section"
         )
-        # Seventh part
+        # Abaqus part: centre section lower skin
         my_obj.process_2d_part(self.lower_skin_cp,
         "S{n}R",  # the type of 2d surface
         [(self.meshed_lower_skin_cp.mesh.subgrid[0], self.cp_skin_material_properties)],
         preferred_name=f"Lower_Skin_centre_section"
         )
-        # Eighth part
+        # Abaqus part: centre section front spar
         my_obj.process_2d_part(self.front_spar_cp,
         "S{n}R",  # the type of 2d surface
         [(self.meshed_front_spar_cp.mesh.subgrid[0], self.cp_spar_material_properties)],
         preferred_name=f"Front_spar_centre_section"
         )
-        # Ninth part
+        # Abaqus part: centre section rear spar
         my_obj.process_2d_part(self.rear_spar_cp,
         "S{n}R",  # the type of 2d surface
         [(self.meshed_rear_spar_cp.mesh.subgrid[0], self.cp_spar_material_properties)],
         preferred_name=f"Rear_spar_centre_section"
         )
-        # Tenth part
+        # Abaqus part: centre section ribs
         my_obj.process_2d_part(self.ribs_cp,
         "S{n}R",  # the type of 2d surface
         [(self.meshed_ribs_cp.mesh.subgrid[0], self.cp_rib_material_properties)],
         preferred_name=f"Ribs_centre_section"
         )
-
+        my_obj.process_2d_part(self.upper_stringers_cp,
+        "S{n}R",  # the type of 2d surface
+        [(self.meshed_upper_stringers_cp.mesh.subgrid[0], self.upper_stringers_material_properties)],
+        preferred_name=f"Upper_stringers_centre_section"
+        )
+        # Abaqus part: lower stringers
+        my_obj.process_2d_part(self.lower_stringers_cp,
+        "S{n}R",  # the type of 2d surface
+        [(self.meshed_lower_stringers_cp.mesh.subgrid[0], self.lower_stringers_material_properties)],
+        preferred_name=f"Lower_stringers_centre_section"
+        )
         #U=upper
         #L=lower
         #I=inner
@@ -360,6 +455,9 @@ class AbaqusINPwriter(GeomBase):
                                                           self.meshed_upper_skin.mesh.get_subgrid(self.upper_skin.faces[2]),
                                                                "SPOS")
 
+        L_skin_tie = my_obj.process_element_based_surface(self.lower_skin,
+                                                          self.meshed_upper_skin.mesh.get_subgrid(self.upper_skin.faces[2]),
+                                                               "SPOS")
         UOR_skin_tie = my_obj.process_element_based_surface(self.upper_skin,
                                                           self.meshed_upper_skin.mesh.get_subgrid(self.upper_skin.faces[4]),
                                                                "SPOS")
@@ -423,6 +521,7 @@ class AbaqusINPwriter(GeomBase):
         LOF_spar_tie = my_obj.process_face_surface_with_edges(self.front_spar,
                                                     self.meshed_front_spar.mesh.get_subgrid(self.front_spar.faces[1]),
                                                     self.meshed_front_spar.mesh.get_subgrid(self.front_spar.faces[1].edges[2]))
+
 
         cp_UF_spar_tie = my_obj.process_face_surface_with_edges(self.front_spar_cp,
                                                     self.meshed_front_spar_cp.mesh.get_subgrid(self.front_spar_cp.faces[0]),
@@ -491,9 +590,42 @@ class AbaqusINPwriter(GeomBase):
         UI_skin_tie = my_obj.process_element_based_surface(self.upper_skin,
                                                           self.meshed_upper_skin.mesh.get_subgrid(self.upper_skin.faces[0]),
                                                                "SPOS")
+
+        UO_skin_tie = my_obj.process_element_based_surface(self.upper_skin,
+                                                          self.meshed_upper_skin.mesh.get_subgrid(self.upper_skin.faces[3]),
+                                                               "SPOS")
+
+        U_skin_tie = my_obj.process_element_based_surface(self.upper_skin,
+                                                          self.meshed_upper_skin.mesh.subgrid[2],
+                                                               "SPOS")
+
+        L_skin_tie = my_obj.process_element_based_surface(self.lower_skin,
+                                                          self.meshed_lower_skin.mesh.subgrid[2],
+                                                               "SPOS")
+
         LI_skin_tie = my_obj.process_element_based_surface(self.lower_skin,
                                                           self.meshed_lower_skin.mesh.get_subgrid(self.lower_skin.faces[0]),
                                                                "SPOS")
+
+        upper_stringers_tie = []
+        lower_stringers_tie = []
+
+        for i in range(int(len(self.upper_stringers.faces) / 2)):
+            upper_stringers_tie.append(my_obj.process_element_based_surface(self.upper_stringers,
+                                                    self.meshed_upper_stringers.mesh.get_subgrid(self.upper_stringers.faces[2*i])))
+        for i in range(int(len(self.lower_stringers.faces) / 2)):
+            lower_stringers_tie.append(my_obj.process_element_based_surface(self.lower_stringers,
+                                                    self.meshed_lower_stringers.mesh.get_subgrid(self.lower_stringers.faces[2*i])))
+
+        upper_stringers_cp_tie = []
+        lower_stringers_cp_tie = []
+
+        for i in range(int(len(self.upper_stringers_cp.faces) / 2)):
+            upper_stringers_cp_tie.append(my_obj.process_element_based_surface(self.upper_stringers_cp,
+                                                    self.meshed_upper_stringers_cp.mesh.get_subgrid(self.upper_stringers_cp.faces[2*i])))
+        for i in range(int(len(self.lower_stringers_cp.faces) / 2)):
+            lower_stringers_cp_tie.append(my_obj.process_element_based_surface(self.lower_stringers_cp,
+                                                    self.meshed_lower_stringers_cp.mesh.get_subgrid(self.lower_stringers_cp.faces[2*i])))
 
 
         cp_U_ribs_tie = []
@@ -535,6 +667,17 @@ class AbaqusINPwriter(GeomBase):
         my_obj.process_tie(LI_skin_tie, cp_LI_skin_edge_tie, "Surface to Surface")
         # my_obj.process_tie(cp_front_spar_tie, IF_spar_tie, "Surface to Surface")
         # my_obj.process_tie(cp_rear_spar_tie, IR_spar_tie, "Surface to Surface")
+
+        # Stringer ties to upper and lower skins
+        for i in range(int(len(self.upper_stringers.faces) / 2)):
+            my_obj.process_tie(upper_stringers_tie[i], U_skin_tie, "Surface to Surface")
+        for i in range(int(len(self.lower_stringers.faces) / 2)):
+            my_obj.process_tie(lower_stringers_tie[i], L_skin_tie, "Surface to Surface")
+
+        # for i in range(int(len(self.upper_stringers_cp.faces) / 2)):
+        #     my_obj.process_tie(upper_stringers_cp_tie[i], cp_upper_skin_tie, "Surface to Surface")
+        # for i in range(int(len(self.lower_stringers_cp.faces) / 2)):
+        #     my_obj.process_tie(lower_stringers_cp_tie[i], cp_lower_skin_tie, "Surface to Surface")
 
 
         # for i in range(len(self.ribs_cp.faces)):

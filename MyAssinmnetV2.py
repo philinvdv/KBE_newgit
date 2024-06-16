@@ -53,8 +53,8 @@ class Aircraft(GeomBase):
     centre_section_spar_thickness = Input(0.01, validator=GT(0, msg="Centre section spar thickness cannot be smaller than " "{validator.limit}!"))
     centre_section_rib_thickness = Input(0.005, validator=GT(0, msg="Centre section rib thickness cannot be smaller than " "{validator.limit}!"))
 
-    nr_stringers_upper_inner = Input(6) #number of stringers in the inner wingbox on the upperskin
-    nr_stringers_lower_inner = Input(5) #number of stringers in the inner wingbox on the lowerskin
+    nr_stringers_upper_inner = Input(4) #number of stringers in the inner wingbox on the upperskin
+    nr_stringers_lower_inner = Input(4) #number of stringers in the inner wingbox on the lowerskin
     nr_stringers_upper_outer = Input(4) #number of stringers in the outer wingbox on the upperskin
     nr_stringers_lower_outer = Input(4) #number of stringers in the outer wingbox on the lowerskin
     nr_stringers_upper_CP = Input(4) #number of stringers in the centerpiece on the upperskin
@@ -148,10 +148,7 @@ class Aircraft(GeomBase):
         X = []
         Y = []
         Z = []
-        # check_if_float(stresses.iloc[i, -1])
         for i in range(len(stresses.iloc[:, ])):
-            # print(i, (type(item) in item for item in stresses.iloc[i, :]))
-            # print(i, any("SPOS" in item for item in stresses.iloc[i, :]))
             if check_if_float(stresses.iloc[i, -1]) and any("SPOS" in item for item in stresses.iloc[i, :]):
                 mises.append(float(stresses.iloc[i, -1]))
                 X.append(float(stresses.iloc[i, :].get('X')))
@@ -171,20 +168,7 @@ class Aircraft(GeomBase):
                 # yield_exceeded.append(0)
 
         print('Plotting results, please wait')
-        # for i in range(len(yield_exceeded)):
-        #     if yield_exceeded[i] > 5.05e8:
-        #         print(yield_exceeded[i])
 
-        # index = mises.index(max_mises_stress)
-        # fig = plt.figure()
-        # ax = fig.add_subplot(projection='3d')
-        # ax.scatter(X, Y, Z, color='green', s=10)
-        # ax.quiver(X, Y, Z, X, Y, mises, length=0.1, normalize=True)
-        # # plt.axis('equal')
-        # plt.show()
-
-        # fig = plt.figure()
-        # ax = fig.add_subplot()
         plt.scatter(Y, mises)
         plt.scatter(Y_for_yield_exceeded, yield_exceeded, color='red', s=5)
         plt.xlabel('Spanwise direction [m]')
@@ -227,9 +211,6 @@ class Aircraft(GeomBase):
     @action()
     def save_aircraft_configuration(self):
         os.chdir(DIR)
-        # os.chdir('Parts/output')
-        # spamwriter = csv.DictWriter(csvfile, delimiter=',',
-        #                         quotechar='|', quoting=csv.QUOTE_MINIMAL)
         user_input_list = {"Parameter": "Value",
                            "aircraft_name": self.aircraft_name,
                            "span": self.wing.span,
@@ -259,8 +240,6 @@ class Aircraft(GeomBase):
                 writer.writerow([key, value])
         print('Custom aircraft configuration was saved successfully')
 
-        # os.chdir(DIR)
-
     @action()
     def open_saved_aircraft_configuration(self):
 
@@ -277,8 +256,6 @@ class Aircraft(GeomBase):
                 return Aircraft(span=float(self.wing_param[0]),
                                 leading_edge_sweep=float(self.wing_param[1]),
                                 root_chord=float(self.wing_param[2]),
-                                # twist_angle=float(self.wing_param[3]),
-                                # dihedral_angle=float(self.wing_param[4]),
                                 material=self.wing_param[5],
                                 skin_thickness=float(self.wing_param[9]),
                                 upper_inner_skin_thickness=float(self.wing_param[10]),
@@ -290,8 +267,7 @@ class Aircraft(GeomBase):
                                 centre_section_skin_thickness=float(self.wing_param[16]),
                                 centre_section_spar_thickness=float(self.wing_param[17]),
                                 centre_section_rib_thickness=float(self.wing_param[18]))
-                # position=translate(self.position, 'x', -1, 'y', 0, 'z',
-                #                0))  # Puts the origin at the trailing edge of the kink
+
 
         if __name__ == '__main__':
             from parapy.gui import display
@@ -300,19 +276,42 @@ class Aircraft(GeomBase):
             display(obj)
 
     @Part
-    def step_writer(self):
-        return STEPWriter(nodes=[Parts.Wing_me().my_skins.fused_inner_upperskin_and_flanges,
-                                 Parts.Wing_me().my_skins.fused_inner_lowerskin_and_flanges,
-                                 Parts.Wing_me().my_skins.fused_outer_upperskin_and_flanges,
-                                 Parts.Wing_me().my_skins.fused_outer_lowerskin_and_flanges,
-                                 Parts.Wing_me().my_spars.front_spar_inner,
-                                 Parts.Wing_me().my_spars.frontspar_outer,
-                                 Parts.Wing_me().my_spars.rearspar_inner,
-                                 Parts.Wing_me().my_spars.rearspar_outer],
-                          default_directory=DIR,
-                          unit='m',
-                          filename="aircraft.step")
-
+    def step_writer_unified_wing(self):
+        return STEPWriter(nodes=[self.wing.wing_loft_surf_inner,
+                                 self.wing.wing_loft_surf_outer,
+                                 self.wing.my_wingbox.my_spars.front_spar_inner,
+                                 self.wing.my_wingbox.my_spars.frontspar_outer,
+                                 self.wing.my_wingbox.my_spars.rearspar_inner,
+                                 self.wing.my_wingbox.my_spars.rearspar_outer,
+                                 self.wing.my_wingbox.my_ribs.root_rib,
+                                 self.wing.my_wingbox.my_ribs.tip_rib,
+                                 self.wing.my_wingbox.my_ribs.ribs_cut,
+                                 self.wing.my_wingbox.my_stringers.stringer_upper_inner,
+                                 self.wing.my_wingbox.my_stringers.stringer_upper_outer,
+                                 self.wing.my_wingbox.my_stringers.stringer_lower_inner,
+                                 self.wing.my_wingbox.my_stringers.stringer_lower_outer,
+                                 self.wing.centerpiece.upperskin_centerpiece_loft,
+                                 self.wing.centerpiece.lowerskin_centerpiece_loft,
+                                 self.wing.centerpiece.frontspar_surf_centerpiece,
+                                 self.wing.centerpiece.rearspar_loft_centerpiece,
+                                 self.wing.centerpiece.ribs_cp,
+                                 self.wing.centerpiece.stringer_upper_CP,
+                                 self.wing.centerpiece.stringer_lower_CP,
+                                 self.wing.transform_mirror_wing_inner,
+                                 self.wing.transform_mirror_wing_outer,
+                                 self.wing.centerpiece.transform_mirror_CP_upperskin,
+                                 self.wing.centerpiece.transform_mirror_CP_lowerskin,
+                                 self.wing.centerpiece.transform_mirror_CP_frontspar,
+                                 self.wing.centerpiece.transform_mirror_CP_rearspar],
+                          default_directory='Parts/output',
+                          unit='M',
+                          filename="wing.step")
+    @Part
+    def step_writer_full_assembly(self):
+        return STEPWriter(trees=[self.wing],
+                          default_directory='Parts/output',
+                          unit='M',
+                          filename="wing_assembly.step")
 
 if __name__ == '__main__':
     from parapy.gui import display
