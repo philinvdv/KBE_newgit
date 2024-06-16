@@ -172,6 +172,7 @@ class Aircraft(GeomBase):
                            "leading_edge_sweep": self.my_wing.leading_edge_sweep,
                            "root_chord": self.my_wing.root_chord,
                            "material_name": self.material,
+                           "tip_chord": self.my_wing.tip_chord,
                            "material_density": self.material_properties[0],
                            "material_elastic_modulus": self.material_properties[1],
                            "material_poisson_ratio": self.material_properties[2],
@@ -205,13 +206,36 @@ class Aircraft(GeomBase):
                 wing_param.append(read_csv.iloc[i + 1, 1])
 
             @Part
-            def wing_from_file(self):
+            def ac_from_file(self):
                 return Aircraft(material=self.wing_param[9],
                                 load_factor=self.wing_param[2],
                                 aircraft_mass=self.wing_param[3],
                                 engine_position=self.wing_param[4],
                                 engine_mass=self.engine_mass[5],
                                 )
+
+            @Part
+            def wing_from_file(self):
+                return Parts.Wing(span_inp=self.wing_param[6],
+                                  leading_edge_sweep=self.wing_param[7],
+                                  root_chord=self.wing_param[8],
+                                  tip_chord=self.wing_param[10]
+                                )
+
+            @Part
+            def inp_from_file(self):
+                return Parts.AbaqusINPwriter(skin_thickness=float(self.wing_param[14]),
+                                upper_inner_skin_thickness=float(self.wing_param[15]),
+                                upper_outer_skin_thickness=float(self.wing_param[16]),
+                                lower_inner_skin_thickness=float(self.wing_param[17]),
+                                lower_outer_skin_thickness=float(self.wing_param[18]),
+                                spar_thickness=float(self.wing_param[19]),
+                                rib_thickness=float(self.wing_param[20]),
+                                centre_section_skin_thickness=float(self.wing_param[21]),
+                                centre_section_spar_thickness=float(self.wing_param[22]),
+                                centre_section_rib_thickness=float(self.wing_param[23]))
+
+
 
 
         if __name__ == '__main__':
