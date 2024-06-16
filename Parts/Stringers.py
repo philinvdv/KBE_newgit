@@ -133,7 +133,7 @@ class Stringer(GeomBase):
         return CustomPlane(quantify=self.nr_stringers_upper_outer,
                            stringer_location_1=self.kink_stringer_pts_upper_outer[child.index],
                            stringer_location_2=self.tip_stringer_pts_upper_outer[child.index],
-                           width_section=(self.span/2 - self.width_centerpiece/2 - self.start_wing_to_kink),
+                           width_section=(self.span/2 - self.width_centerpiece - self.start_wing_to_kink),
                            chord=self.root_chord,
                            sign=1, start_y=self.start_wing_to_kink, hidden=True)
 

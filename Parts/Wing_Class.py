@@ -8,6 +8,7 @@ from parapy.core.widgets import (
     Button, CheckBox, ColorPicker, Dropdown, FilePicker, MultiCheckBox,
     ObjectPicker, SingleSelection, TextField)
 from parapy.core.validate import *
+import warnings
 
 import os
 import pandas as pd
@@ -25,6 +26,7 @@ material_library = pd.read_excel(io='Parts/Material_library.xlsx')
 material_names=[]
 for name in range(len(material_library.iloc[:, 0])):
     material_names.append(material_library.iloc[name, 0])
+
 
 class Wing_me(GeomBase):
     """This class contains the wing itself, from the loaded airfoil points. Contains the wingbox, since this is an
@@ -51,6 +53,8 @@ class Wing_me(GeomBase):
     nr_stringers_lower_outer = Input() #number of stringers in the outer wingbox on the lowerskin
     nr_stringers_upper_CP = Input() #number of stringers in the centerpiece on the upperskin
     nr_stringers_lower_CP = Input() #number of stringers in the centerpiece on the upperskin
+    popup_gui = True
+
 
     @Attribute
     def material_properties(self):
@@ -62,12 +66,9 @@ class Wing_me(GeomBase):
         return [density, elastic_modulus, poisson_ratio, yield_strength]
 
 
-    def smaller_than_span(self, value):
-        return value < self.span/2 and value > 0, "Number should be greater than 0 and smaller than the half-span"
-
-    kink_location = Input(6, validator=smaller_than_span) #measured from centerline of fuselage
+    kink_location = Input(6, validator=GreaterThan(0,msg="{value} cannot be smaller than " "{validator.limit}!")) #measured from centerline of fuselage
     tip_chord = Input(1.64, validator=GT(0, msg="{value} cannot be greater than " "{validator.limit}!"))
-    width_centerpiece = Input(3, validator=smaller_than_span)
+    width_centerpiece = Input(3, validator=GreaterThan(0,msg="{value} cannot be smaller than " "{validator.limit}!"))
     rib_pitch = Input(2, validator=GT(0, msg="{value} cannot be greater than " "{validator.limit}!"))
 
     @Input #This gives the distance between the kink and the start of the wing
@@ -75,9 +76,25 @@ class Wing_me(GeomBase):
         return self.kink_location - self.width_centerpiece
 
     @Input #This gives the chord at the location of the kink
+    def tip_chord_kink_calc(self):
+        return self.root_chord - self.start_wing_to_kink \
+               * np.tan(radians(self.leading_edge_sweep))  # if trailing edge kink has zero sweep
+
+    @Attribute
     def tip_chord_kink(self):
-        return self.root_chord - self.start_wing_to_kink * np.tan(
-            radians(self.leading_edge_sweep))  # if trailing edge kink has zero sweep
+        """Checks wheter the kink chord becomes 0 or negative (twisted wing)"""
+        if self.tip_chord_kink_calc < 0.3:
+            msg = f"The combination of root chord, tip chord, leading edge sweep, kink location and span that you have " \
+                  "provided would lead to an impossible geometry that could not exist in reality. Please modify your " \
+                  "geometry accordingly."
+            # print warning message in console:
+            warnings.warn(msg)
+            if self.popup_gui:  # invoke pop-up dialogue box using Tk"""
+                generate_warning("Warning: Impossible geometry", msg)
+            return 0.3
+        else:
+            return self.tip_chord_kink_calc
+
 
     @Attribute
     def pts_pre(self):
@@ -244,6 +261,29 @@ class Wing_me(GeomBase):
                            nr_stringers_upper_CP=self.nr_stringers_upper_CP,
                            nr_stringers_lower_CP=self.nr_stringers_lower_CP,
                            position=translate(self.position, 'x', 1, 'y', 0, 'z', 0))
+
+
+def generate_warning(warning_header, msg):
+    """
+    This function generates the warning dialog box
+    :param warning_header: The text to be shown on the dialog box header
+    :param msg: the message to be shown in dialog box
+    :return: None as it is GUI operation
+    """
+    from tkinter import Tk, messagebox
+
+    # initialization
+    window = Tk()
+    window.withdraw()
+
+    # generates message box and waits for user to close it
+    messagebox.showwarning(warning_header, msg)
+
+    # kills the gui
+    window.deiconify()
+    window.destroy()
+    window.quit()
+
 
 # if __name__ == '__main__':
 #     from parapy.gui import display
