@@ -164,6 +164,10 @@ class Aircraft(GeomBase):
         os.chdir(DIR)
         user_input_list = {"Parameter": "Value",
                            "aircraft_name": self.aircraft_name,
+                           "load_factor": self.load_factor,
+                           "aircraft_mass:": self.aircraft_mass,
+                           "engine_position": self.engine_position,
+                           "engine_mass": self.engine_mass,
                            "span": self.my_wing.span,
                            "leading_edge_sweep": self.my_wing.leading_edge_sweep,
                            "root_chord": self.my_wing.root_chord,
@@ -202,20 +206,12 @@ class Aircraft(GeomBase):
 
             @Part
             def wing_from_file(self):
-                return Aircraft(span_inp=float(self.wing_param[0]),
-                                leading_edge_sweep=float(self.wing_param[1]),
-                                root_chord=float(self.wing_param[2]),
-                                material=self.wing_param[5],
-                                skin_thickness=float(self.wing_param[9]),
-                                upper_inner_skin_thickness=float(self.wing_param[10]),
-                                upper_outer_skin_thickness=float(self.wing_param[11]),
-                                lower_inner_skin_thickness=float(self.wing_param[12]),
-                                lower_outer_skin_thickness=float(self.wing_param[13]),
-                                spar_thickness=float(self.wing_param[14]),
-                                rib_thickness=float(self.wing_param[15]),
-                                centre_section_skin_thickness=float(self.wing_param[16]),
-                                centre_section_spar_thickness=float(self.wing_param[17]),
-                                centre_section_rib_thickness=float(self.wing_param[18]))
+                return Aircraft(material=self.wing_param[9],
+                                load_factor=self.wing_param[2],
+                                aircraft_mass=self.wing_param[3],
+                                engine_position=self.wing_param[4],
+                                engine_mass=self.engine_mass[5],
+                                )
 
 
         if __name__ == '__main__':
