@@ -26,12 +26,6 @@ Software requirements:
     3. Abaqus
     4. PyCharm (recommended)
 
-
-
-
-
-
-
 Wing design workflow:
     a. Run the 'Parametric_wing_modeller' file.
     b. In the GUI, configure the wing's geometry, structure, material and mesh to your heart's content.
