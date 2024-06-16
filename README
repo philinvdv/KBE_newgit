@@ -3,10 +3,6 @@
 --This KBE application was developed by Philippina Nikkels van der Veen and Matan Neumark (group 6)--
 The purpose of the application is to be an integrated tool for the design and structural analysis of a wing.
 
-Software requirements:
-    1. ParaPy
-    2. Abaqus
-
 Features:
     1. The parametric wing model allows modification of common wing geometry parameters such as span, sweep, chord lengths, etc.
     2. Structural parameters allow the user to modify the wing box structure. These include part's thickness, number of ribs and stringers etc.
@@ -17,6 +13,23 @@ Features:
     7. Save wing configuration
     8. Load wing configuration
     9. Output a .step file for the entire assembly, or of the whole structure as a unified part.
+
+Software requirements:
+    1. Python
+        Required Python packages:
+            a. ParaPy abaqus adaptor
+            b. abaqpy
+            c. pandas
+            d. numpy
+            e. matplotlib
+    2. ParaPy
+    3. Abaqus
+    4. PyCharm (recommended)
+
+
+
+
+
 
 
 Wing design workflow:
