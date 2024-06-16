@@ -114,7 +114,7 @@ class Aircraft(GeomBase):
         yield_exceeded = []
         Y_for_yield_exceeded = []
         for i in range(len(mises)):
-            if mises[i] > self.my_wing.material_properties[3]:
+            if mises[i] > self.material_properties[3]:
                 yield_exceeded.append(mises[i])
                 Y_for_yield_exceeded.append(Y[i])
             else:
@@ -167,20 +167,20 @@ class Aircraft(GeomBase):
                            "span": self.my_wing.span,
                            "leading_edge_sweep": self.my_wing.leading_edge_sweep,
                            "root_chord": self.my_wing.root_chord,
-                           "material_name": self.my_wing.material,
-                           "material_density": self.my_wing.material_properties[0],
-                           "material_elastic_modulus": self.my_wing.material_properties[1],
-                           "material_poisson_ratio": self.my_wing.material_properties[2],
+                           "material_name": self.material,
+                           "material_density": self.material_properties[0],
+                           "material_elastic_modulus": self.material_properties[1],
+                           "material_poisson_ratio": self.material_properties[2],
                            "skin_thickness": self.my_wing.skin_thickness,
-                           "upper_inner_skin_thickness": self.my_wing.upper_inner_skin_thickness,
-                           "upper_outer_skin_thickness": self.my_wing.upper_outer_skin_thickness,
-                           "lower_inner_skin_thickness": self.my_wing.lower_inner_skin_thickness,
-                           "lower_outer_skin_thickness": self.my_wing.lower_outer_skin_thickness,
-                           "spar_thickness": self.my_wing.spar_thickness,
-                           "rib_thickness": self.my_wing.rib_thickness,
-                           "centre_section_skin_thickness": self.my_wing.centre_section_skin_thickness,
-                           "centre_section_spar_thickness": self.my_wing.centre_section_spar_thickness,
-                           "centre_section_rib_thickness": self.my_wing.centre_section_rib_thickness}
+                           "upper_inner_skin_thickness": self.write_inp.upper_inner_skin_thickness,
+                           "upper_outer_skin_thickness": self.write_inp.upper_outer_skin_thickness,
+                           "lower_inner_skin_thickness": self.write_inp.lower_inner_skin_thickness,
+                           "lower_outer_skin_thickness": self.write_inp.lower_outer_skin_thickness,
+                           "spar_thickness": self.write_inp.spar_thickness,
+                           "rib_thickness": self.write_inp.rib_thickness,
+                           "centre_section_skin_thickness": self.write_inp.centre_section_skin_thickness,
+                           "centre_section_spar_thickness": self.write_inp.centre_section_spar_thickness,
+                           "centre_section_rib_thickness": self.write_inp.centre_section_rib_thickness}
 
         filename = f"Parts/output/{user_input_list['aircraft_name']}_configuration.csv"
         with open(filename, 'w', newline='') as csvfile:
