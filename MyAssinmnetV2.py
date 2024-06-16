@@ -231,8 +231,6 @@ class Aircraft(GeomBase):
                 U3_Y.append(float(U3.iloc[i, :].get('Y')))
                 U3_Z.append(float(U3.iloc[i, :].get('Z')))
 
-        print(len(U3.iloc[:, ]), len(U3_magnitude), len(U3_Y))
-        # plt.ion()
         plt.scatter(Y, Z)
         plt.scatter(U3_Y, U3_magnitude, color='red', s=5)
         plt.xlabel('Spanwise direction [m]')
