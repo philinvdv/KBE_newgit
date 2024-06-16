@@ -1,0 +1,19 @@
+Parameter,Value
+aircraft_name,ATR-72
+span,27.05
+leading_edge_sweep,2
+root_chord,2.62
+material_name,Aluminimum 2024 T3
+material_density,2780
+material_elastic_modulus,72400000000.0
+material_poisson_ratio,0.33
+skin_thickness,0.003
+upper_inner_skin_thickness,0.003
+upper_outer_skin_thickness,0.003
+lower_inner_skin_thickness,0.003
+lower_outer_skin_thickness,0.003
+spar_thickness,0.05
+rib_thickness,0.005
+centre_section_skin_thickness,0.003
+centre_section_spar_thickness,0.01
+centre_section_rib_thickness,0.005
