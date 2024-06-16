@@ -171,7 +171,7 @@ class Aircraft(GeomBase):
                            "material_density": self.material_properties[0],
                            "material_elastic_modulus": self.material_properties[1],
                            "material_poisson_ratio": self.material_properties[2],
-                           "skin_thickness": self.my_wing.skin_thickness,
+                           "skin_thickness": self.write_inp.skin_thickness,
                            "upper_inner_skin_thickness": self.write_inp.upper_inner_skin_thickness,
                            "upper_outer_skin_thickness": self.write_inp.upper_outer_skin_thickness,
                            "lower_inner_skin_thickness": self.write_inp.lower_inner_skin_thickness,
