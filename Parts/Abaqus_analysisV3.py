@@ -19,11 +19,6 @@ from parapy.core.validate import *
 
 #import MyAssinmnetV2
 from Parts.Meshing import MeshingFunc
-#from MyAssinmnetV2 import Aircraft
-#from Parts.Wing_Class import Wing
-#import Wing_Class
-
-# backwardCompatibility.setValues(includeDeprecated=True, reportDeprecated=False)
 
 
 class AbaqusINPwriter(GeomBase):
@@ -674,28 +669,14 @@ class AbaqusINPwriter(GeomBase):
         for i in range(int(len(self.lower_stringers.faces) / 2)):
             my_obj.process_tie(lower_stringers_tie[i], L_skin_tie, "Surface to Surface")
 
-        # for i in range(int(len(self.upper_stringers_cp.faces) / 2)):
-        #     my_obj.process_tie(upper_stringers_cp_tie[i], cp_upper_skin_tie, "Surface to Surface")
-        # for i in range(int(len(self.lower_stringers_cp.faces) / 2)):
-        #     my_obj.process_tie(lower_stringers_cp_tie[i], cp_lower_skin_tie, "Surface to Surface")
 
 
-        # for i in range(len(self.ribs_cp.faces)):
-        #     my_obj.process_tie(cp_U_ribs_tie[i], cp_upper_skin_tie, "Surface to Surface")
-        #     my_obj.process_tie(cp_L_ribs_tie[i], cp_lower_skin_tie, "Surface to Surface")
-        #     my_obj.process_tie(cp_F_ribs_tie[i], cp_front_spar_tie, "Surface to Surface")
-        #     my_obj.process_tie(cp_R_ribs_tie[i], cp_rear_spar_tie, "Surface to Surface")
+        # Boundary conditions:
+        # At the centreline of the (full) centre section
+        # And, at the nodes of the upper surface, at the interface between the root chord and the centre section.
 
-
-        # boundary conditions
         my_obj.process_boundary_condition(self.upper_skin, self.meshed_upper_skin.mesh.get_subgrid(self.upper_skin.faces[0].edges[1]).nodes,
                                     U1=0, U2=0, U3=0, UR1=0, UR2=0, UR3=0)
-        # my_obj.process_boundary_condition(self.lower_skin, self.meshed_lower_skin.mesh.get_subgrid(self.lower_skin.faces[0].edges[1]).nodes,
-        #                             U1=0, U2=0, U3=0, UR1=0, UR2=0, UR3=0)
-        # my_obj.process_boundary_condition(self.front_spar, self.meshed_front_spar.mesh.get_subgrid(self.front_spar.faces[0].edges[1]).nodes,
-        #                             U1=0, U2=0, U3=0, UR1=0, UR2=0, UR3=0)
-        # my_obj.process_boundary_condition(self.rear_spar, self.meshed_rear_spar.mesh.get_subgrid(self.rear_spar.faces[0].edges[1]).nodes,
-        #                             U1=0, U2=0, U3=0, UR1=0, UR2=0, UR3=0)
         my_obj.process_boundary_condition(self.upper_skin_cp, self.meshed_upper_skin_cp.mesh.get_subgrid(self.upper_skin_cp.faces[0].edges[3]).nodes,
                                     U1=0, U2=0, U3=0, UR1=0, UR2=0, UR3=0)
         my_obj.process_boundary_condition(self.lower_skin_cp, self.meshed_lower_skin_cp.mesh.get_subgrid(self.lower_skin_cp.faces[0].edges[3]).nodes,
@@ -704,10 +685,6 @@ class AbaqusINPwriter(GeomBase):
                                     U1=0, U2=0, U3=0, UR1=0, UR2=0, UR3=0)
         my_obj.process_boundary_condition(self.rear_spar_cp, self.meshed_rear_spar_cp.mesh.get_subgrid(self.rear_spar_cp.faces[0].edges[3]).nodes,
                                     U1=0, U2=0, U3=0, UR1=0, UR2=0, UR3=0)
-        # Engine as point masses
-        # for n in range(len(self.engine_position)):
-        #     pairs = [(self.lower_skin, node) for node in self.engine_mass_nodes[n]]
-        #     my_obj.process_point_mass(pairs, self.engine_mass, preferred_name=f"engine_{n}_point_mass")
 
 
         return my_obj
