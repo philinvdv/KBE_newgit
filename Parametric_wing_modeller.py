@@ -73,8 +73,6 @@ class Aircraft(GeomBase):
                                      centre_section_skin_thickness=self.my_wing.centre_section_skin_thickness,
                                      centre_section_spar_thickness=self.my_wing.centre_section_spar_thickness,
                                      centre_section_rib_thickness=self.my_wing.centre_section_rib_thickness,
-                                     span=self.span,
-                                     width_centerpiece=self.width_centerpiece,
                                      load_factor=self.load_factor,
                                      aircraft_mass=self.aircraft_mass,
                                      engine_position=self.engine_position,
